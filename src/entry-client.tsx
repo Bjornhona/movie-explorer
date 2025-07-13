@@ -2,15 +2,14 @@ import React, { StrictMode } from "react";
 import { hydrateRoot } from 'react-dom/client';
 import App from './App.tsx';
 
+const url = window.location.pathname + window.location.search;
 const container = document.getElementById("root");
 
 if (container) {
   hydrateRoot(
     container,
     <StrictMode>
-      <App />
+      <App url={url} />
     </StrictMode>
   );
-} else {
-  console.error("❌ Could not find root element to hydrate");
 }

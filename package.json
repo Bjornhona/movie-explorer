@@ -7,8 +7,6 @@
     "dev": "vite",
     "dev:ssr": "node server.js",
     "build": "vite build && vite build --ssr src/entry-server.tsx",
-    "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
     "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview"
   },
