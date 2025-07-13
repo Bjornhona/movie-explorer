@@ -9,13 +9,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
-  // css: {
-  //   preprocessorOptions: {
-  //     scss: {
-  //       additionalData: `@import "@/styles/main.scss";`
-  //     }
-  //   }
-  // },
   build: {
     ssr: 'src/entry-server.tsx',
     outDir: 'dist',
