@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "lib": ["DOM", "DOM.Iterable", "ES6"],
+    "jsx": "react-jsx",
+    "types": ["vite/client", "node"],
+    "allowImportingTsExtensions": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "outDir": "dist",
+  },
+  "include": ["src", "server.js"],
+  "exclude": ["node_modules", "dist"]
+}
