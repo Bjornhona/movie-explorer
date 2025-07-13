@@ -33,7 +33,7 @@ async function startServer() {
       const html = template.replace(`<!--ssr-outlet-->`, () => appHtml);
       
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
-    } catch (err) {
+    } catch (err: any) {
       vite.ssrFixStacktrace(err);
       console.error(err.stack);
       res.status(500).end(err.stack);
@@ -45,4 +45,6 @@ async function startServer() {
   });
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("❌ Failed to start server:", err);
+});

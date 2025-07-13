@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:ssr": "node server.js",
+    "dev:ssr": "node --loader ts-node/esm server.ts",
     "build": "vite build && vite build --ssr src/entry-server.tsx",
     "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview"
