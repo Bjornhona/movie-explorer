@@ -1,11 +1,12 @@
 import React from "react";
-import "./App.css";
+import '@/styles/App.scss';
+import '@/styles/main.scss';
 
 interface AppProps {
   url: string;
 }
 
-const App: React.FC<AppProps> = ({url}) => {
+const App: React.FC<AppProps> = ({ url }) => {
   const pathname = new URL(url, "http://localhost").pathname;
 
   if (pathname === "/") return <h1>Home</h1>;
@@ -17,6 +18,6 @@ const App: React.FC<AppProps> = ({url}) => {
   }
 
   return <h1>404 - Not Found</h1>;
-}
+};
 
 export default App;
