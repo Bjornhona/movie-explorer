@@ -48,21 +48,9 @@ VITE_TMDB_API_KEY=your_tmdb_api_key_here
 ```
 
 
-### 4. Run in Development Mode (Client Only)
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-The app will be available at:
-http://localhost:5173
-
-
 ### 5. Run project in SSR Mode
 
-To run with SSR support locally:
+Run the app in development mode using SSR:
 
 ```bash
 npm run dev:ssr
@@ -72,44 +60,38 @@ yarn dev:ssr
 
 This starts the SSR server at http://localhost:3000
 
+⚠️ npm run dev (standard Vite dev mode) is not supported for this app and will result in a hydration mismatch. Always use npm run dev:ssr for proper SSR development.
 
-## 🏗 Build for Production
 
-### 1. Build the client and SSR bundle:
+## 🏗 Build
+
+To build both the client and the SSR server:
 
 ```bash
 npm run build
 ```
 
-This will generate the static client files and the SSR server bundle in the dist/ folder.
+This generates a production-ready output in the dist/ folder.
 
 
-### 2. Preview the production build (locally):
+### 2. Preview (production):
+
+After building the app, you can preview it locally using:
 
 ```bash
 npm run preview
 ```
 
-This runs the Vite preview server for the client build (not SSR).
-
-### 3. Run SSR server in production mode:
-
-If you want to serve the SSR output in production, use:
-
-```bash
-node dist/server.js
-```
-
-Make sure you’ve handled copying or bundling your server.ts logic into the dist folder properly. You may need a custom bundler or script to compile server.ts separately (e.g. with esbuild or tsc).
+This will start a Node server with the compiled files.
 
 
 ## 📁 Folder Structure
 
 ```bash
 project-root/
+├── public/   
 ├── src/
 │ ├── App.tsx
-│ ├── main.tsx
 │ ├── entry-client.tsx
 │ ├── entry-server.tsx
 │ └── components/
@@ -165,10 +147,6 @@ This project is provided for technical assessment purposes only. All rights to m
 * React Docs
 
 
-
 ## 🙋‍♀️ Author
 
 Built by Åsa Eriksson — passionate about clean code, UI/UX, and frontend craftsmanship.
-
-
-```    "dev:ssr": "ts-node --esm server.ts",```

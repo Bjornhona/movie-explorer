@@ -33,7 +33,7 @@ async function startServer() {
 
       console.log('Rendering for ', url);
       
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
+      const html = template.replace(`<!--ssr-outlet-->`, () => appHtml);
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (err) {
       vite.ssrFixStacktrace(err);
