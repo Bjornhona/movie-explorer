@@ -1,8 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-
-interface Movie {
-  id: number;
-}
+import { Movie } from '../types.ts';
 
 interface MoviesResponse {
   results: Movie[];
@@ -11,23 +8,18 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export const useMovies = () => {
+export const useMovies = (category: string = 'now_playing') => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  console.log('movies: ', movies);
-  console.log('page: ', page);
-  console.log('totalPages: ', totalPages);
-  console.log('loading: ', loading);
-
-  const fetchNowPlayingMovies = useCallback(async (pageToFetch = 1) => {
+  const fetchMovies = useCallback(async (pageToFetch = 1) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/tmdb/movie/now_playing?page=${pageToFetch}`);
+      const response = await fetch(`/api/tmdb/movie/list?category=${category}&page=${pageToFetch}`);
       if (!response.ok) throw new Error('Failed to fetch movies');
       const data: MoviesResponse = await response.json();
       setMovies(prev => pageToFetch === 1 ? data.results : [...prev, ...data.results]);
@@ -45,23 +37,27 @@ export const useMovies = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [category]);
 
   // Initial load
   useEffect(() => {
-    fetchNowPlayingMovies(1);
-  }, [fetchNowPlayingMovies]);
+    setMovies([]); // Reset movies when category changes
+    setPage(1);
+    setTotalPages(null);
+    fetchMovies(1);
+  }, [fetchMovies]);
+  // useEffect(() => {
+  //   fetchMovies(1);
+  // }, [fetchMovies]);
 
-  // const loadMore = () => {
-  //   if (totalPages && page < totalPages && !loading) {
-  //     fetchMovies(page + 1);
-  //   }
-  // };
   const loadMore = () => {
     const nextPage = page + 1;
     if (totalPages && nextPage <= totalPages && !loading) {
-      fetchNowPlayingMovies(nextPage);
+      fetchMovies(nextPage);
     }
+    // if (totalPages && page < totalPages && !loading) {
+    //   fetchMovies(page + 1);
+    // }
   };
 
   return { movies, loading, error, loadMore, hasMore: totalPages ? page < totalPages : true };

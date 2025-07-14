@@ -38,15 +38,20 @@ async function startServer() {
     }
   });
 
-  // TMDB movie changes proxy endpoint
-  app.get('/api/tmdb/movie/now_playing', async (req: Request, res: Response) => {
+  // TMDB movies list proxy endpoint (supports category)
+  app.get('/api/tmdb/movie/list', async (req: Request, res: Response) => {
     try {
       const accessToken = process.env.TMDB_ACCESS_TOKEN;
       if (!accessToken) {
         return res.status(500).json({ error: 'TMDB access token not configured' });
       }
+      const category = req.query.category || 'now_playing';
       const page = req.query.page || 1;
-      const url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${page}`;
+      const allowedCategories = ['now_playing', 'popular', 'top_rated'];
+      if (!allowedCategories.includes(category as string)) {
+        return res.status(400).json({ error: 'Invalid category' });
+      }
+      const url = `https://api.themoviedb.org/3/movie/${category}?page=${page}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -55,12 +60,13 @@ async function startServer() {
         },
       });
       if (!response.ok) {
-        return res.status(response.status).json({ error: 'Failed to fetch TMDB movie now playing' });
+        return res.status(response.status).json({ error: 'Failed to fetch TMDB movies' });
       }
       const data = await response.json();
+      res.setHeader('Cache-Control', 'public, max-age=86400');
       res.json(data);
     } catch (error) {
-      console.error("TMDB API Error:", error);
+      console.error('TMDB Movies List Error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
