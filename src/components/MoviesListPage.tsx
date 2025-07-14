@@ -45,8 +45,8 @@ const MoviesListPage = () => {
             style={{
               flex: "0 0 auto",
               scrollSnapAlign: "start",
-              minWidth: 220,
-              maxWidth: 220,
+              minWidth: 150,
+              maxWidth: 150,
             }}
           >
             <MovieCard movie={movie} />
