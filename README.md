@@ -94,11 +94,12 @@ project-root/
 │ ├── App.tsx
 │ ├── entry-client.tsx
 │ ├── entry-server.tsx
+│ ├── styles/
+│ │   └── main.scss
 │ └── components/
-├── styles/
-│ └── main.scss
 ├── index.html
 ├── server.ts
+├── package.json  
 ├── vite.config.ts
 ├── tsconfig.json
 └── README.md

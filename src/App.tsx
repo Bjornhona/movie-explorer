@@ -1,23 +1,37 @@
 import React from "react";
-import '@/styles/App.scss';
-import '@/styles/main.scss';
+import "@/styles/App.scss";
+import "@/styles/main.scss";
+import HomePage from "./components/HomePage.tsx";
+import MoviesListPage from "./components/MoviesListPage.tsx";
+import MoviePage from "./components/MoviePage.tsx";
+import NotFoundPage from "./components/NotFoundPage.tsx";
+import { useAuthentication } from "./hooks/useAuthentication.ts";
 
 interface AppProps {
   url: string;
 }
 
 const App: React.FC<AppProps> = ({ url }) => {
+  const { isAuthenticated, loading, error } = useAuthentication();
   const pathname = new URL(url, "http://localhost").pathname;
 
-  if (pathname === "/") return <h1>Home</h1>;
-  if (pathname === "/movies") return <h1>Movies List</h1>;
+  if (loading) {
+    return <div>Setting up guest session...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (pathname === "/") return <HomePage />;
+  if (pathname === "/movies") return <MoviesListPage />;
 
   const movieMatch = pathname.match(/^\/movies\/(\d+)$/);
   if (movieMatch) {
-    return <h1>Movie ID: {movieMatch[1]}</h1>;
+    return <MoviePage movieId={movieMatch[1]} />;
   }
 
-  return <h1>404 - Not Found</h1>;
+  return <NotFoundPage />;
 };
 
 export default App;
