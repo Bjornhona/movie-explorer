@@ -45,9 +45,9 @@ async function startServer() {
       if (!accessToken) {
         return res.status(500).json({ error: 'TMDB access token not configured' });
       }
-      const category = req.query.category || 'now_playing';
+      const category = req.query.category || 'upcoming';
       const page = req.query.page || 1;
-      const allowedCategories = ['now_playing', 'popular', 'top_rated'];
+      const allowedCategories = ['upcoming', 'popular', 'top_rated'];
       if (!allowedCategories.includes(category as string)) {
         return res.status(400).json({ error: 'Invalid category' });
       }

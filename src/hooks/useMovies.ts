@@ -8,7 +8,7 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export const useMovies = (category: string = 'now_playing') => {
+export const useMovies = (category: string = 'upcoming') => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
@@ -22,14 +22,12 @@ export const useMovies = (category: string = 'now_playing') => {
       const response = await fetch(`/api/tmdb/movie/list?category=${category}&page=${pageToFetch}`);
       if (!response.ok) throw new Error('Failed to fetch movies');
       const data: MoviesResponse = await response.json();
-      setMovies(prev => pageToFetch === 1 ? data.results : [...prev, ...data.results]);
-      // setMovies(prev => {
-      //   if (pageToFetch === 1) return data.results;
-      //   const existingIds = new Set(prev.map(m => m.id));
-      //   const newUnique = data.results.filter(m => !existingIds.has(m.id));
-      //   return [...prev, ...newUnique];
-      // });
-      // setPage(data.page);
+      setMovies(prev => {
+        if (pageToFetch === 1) return data.results;
+        const existingIds = new Set(prev.map(m => m.id));
+        const newUnique = data.results.filter(m => !existingIds.has(m.id));
+        return [...prev, ...newUnique];
+      });
       setPage(pageToFetch);
       setTotalPages(data.total_pages);
     } catch (err) {
@@ -46,18 +44,12 @@ export const useMovies = (category: string = 'now_playing') => {
     setTotalPages(null);
     fetchMovies(1);
   }, [fetchMovies]);
-  // useEffect(() => {
-  //   fetchMovies(1);
-  // }, [fetchMovies]);
 
   const loadMore = () => {
     const nextPage = page + 1;
     if (totalPages && nextPage <= totalPages && !loading) {
       fetchMovies(nextPage);
     }
-    // if (totalPages && page < totalPages && !loading) {
-    //   fetchMovies(page + 1);
-    // }
   };
 
   return { movies, loading, error, loadMore, hasMore: totalPages ? page < totalPages : true };

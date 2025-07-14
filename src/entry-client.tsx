@@ -9,7 +9,7 @@ if (container) {
   hydrateRoot(
     container,
     <StrictMode>
-      <App url={url} />
+      <App initialUrl={url} />
     </StrictMode>
   );
 }

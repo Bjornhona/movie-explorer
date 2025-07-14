@@ -1,18 +1,28 @@
-import React from "react";
+import { useState, useEffect, FC } from "react";
 import "@/styles/App.scss";
 import "@/styles/main.scss";
-import HomePage from "./components/HomePage.tsx";
 import MoviesListPage from "./components/MoviesListPage.tsx";
 import MoviePage from "./components/MoviePage.tsx";
 import NotFoundPage from "./components/NotFoundPage.tsx";
 import { useAuthentication } from "./hooks/useAuthentication.ts";
 
 interface AppProps {
-  url: string;
+  initialUrl: string;
 }
 
-const App: React.FC<AppProps> = ({ url }) => {
-  const { isAuthenticated, loading, error } = useAuthentication();
+const App: FC<AppProps> = ({ initialUrl }) => {
+  const { loading, error } = useAuthentication();
+  const [url, setUrl] = useState(initialUrl);
+
+ useEffect(() => {
+    const onPopState = () => {
+      const newUrl = window.location.pathname + window.location.search;
+      setUrl(newUrl);
+    }
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [initialUrl]);
+
   const pathname = new URL(url, "http://localhost").pathname;
 
   if (loading) {
@@ -23,10 +33,9 @@ const App: React.FC<AppProps> = ({ url }) => {
     return <div>Error: {error}</div>;
   }
 
-  if (pathname === "/") return <HomePage />;
-  if (pathname === "/movies") return <MoviesListPage />;
+  if (pathname === "/") return <MoviesListPage />;
 
-  const movieMatch = pathname.match(/^\/movies\/(\d+)$/);
+  const movieMatch = pathname.match(/^\/(\d+)$/);
   if (movieMatch) {
     return <MoviePage movieId={movieMatch[1]} />;
   }
