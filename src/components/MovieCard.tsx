@@ -1,17 +1,11 @@
-import { Ref } from 'react';
-import { Movie } from '../types.ts';
-
-interface MovieCardProps {
-  movie: Movie;
-  ref: Ref<HTMLDivElement> | undefined;
-  onClick: (movieId: number) => void;
-}
+import { MovieCardProps } from '../types.ts';
 
 const MovieCard = ({movie, ref, onClick}: MovieCardProps) => {
   const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
   return (
     <div
+      data-testid={'movie-card'}
       ref={ref}
       style={{
         flex: "0 0 auto",

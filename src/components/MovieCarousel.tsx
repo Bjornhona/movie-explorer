@@ -32,15 +32,13 @@ const MovieCarousel = ({
     [loading, hasMore, loadMore]
   );
 
-  console.log(movies);
-
   const handleCardClick = (movieId: number) => {
     window.history.pushState({}, "", `/${movieId}`);
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   return (
-    <div style={{ padding: 16 }}>
+    <div data-testid={`carousel-${category}`} style={{ padding: 16 }}>
       <h4>{title}</h4>
       <div
         style={{
