@@ -13,6 +13,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@vercel/node": "^5.3.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "react": "^19.1.0",
