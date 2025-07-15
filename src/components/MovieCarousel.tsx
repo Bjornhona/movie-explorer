@@ -32,8 +32,12 @@ const MovieCarousel = ({
     [loading, hasMore, loadMore]
   );
 
+  // const handleCardClick = (movieId: number) => {
+  //   window.history.pushState({}, "", `/${movieId}`);
+  //   window.dispatchEvent(new PopStateEvent("popstate"));
+  // };
   const handleCardClick = (movieId: number) => {
-    window.history.pushState({}, "", `/${movieId}`);
+    window.history.pushState({}, "", `/${category}/${movieId}`);
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
 

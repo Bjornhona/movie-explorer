@@ -8,9 +8,10 @@ import { useAuthentication } from "./hooks/useAuthentication.ts";
 
 interface AppProps {
   initialUrl: string;
+  initialMovie?: any;
 }
 
-const App: FC<AppProps> = ({ initialUrl }) => {
+const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
   const { loading, error } = useAuthentication();
   const [url, setUrl] = useState(initialUrl);
 
@@ -35,9 +36,16 @@ const App: FC<AppProps> = ({ initialUrl }) => {
 
   if (pathname === "/") return <MoviesListPage />;
 
-  const movieMatch = pathname.match(/^\/(\d+)$/);
+  // const movieMatch = pathname.match(/^\/(\d+)$/);
+  const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
+
+  // if (movieMatch) {
+  //   return <MovieDetailsPage movieId={movieMatch[1]} movie={initialMovie} />;
+  // }
   if (movieMatch) {
-    return <MovieDetailsPage movieId={movieMatch[1]} />;
+    const category = movieMatch[1];
+    const movieId = movieMatch[2];
+    return <MovieDetailsPage movieId={movieId} initialMovie={initialMovie} category={category} />;
   }
 
   return <NotFoundPage />;

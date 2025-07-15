@@ -4,24 +4,26 @@ import { describe, it, vi, expect } from 'vitest';
 import { MovieDetailsProps } from '../types.ts';
 
 describe('Testing MovieListPage', () => {
-  const moviesListProps: MovieDetailsProps = {
+  const moviesDetailsProps: MovieDetailsProps = {
     category: 'upcoming',
     movieId: 'movie-123'
   }
-  
+
   let systemUnderTest;
   beforeEach(() => {
-    systemUnderTest = render(<MovieDetailsPage {...moviesListProps} />);
+    systemUnderTest = render(<MovieDetailsPage {...moviesDetailsProps} />);
   });
 
   afterEach(() => vi.restoreAllMocks());
 
   it('WHEN component renders THEN the movie title should show as a header', () => {
-    // expect(screen.getByText('Movies')).toBeInTheDocument();
+    const movieTitle = screen.getByText(moviesDetailsProps.movieId);
+    expect(movieTitle).toBeInTheDocument();
   });
 
   it('WHEN component renders THEN the movie image should show', () => {
-    // expect(screen.getByTestId('carousel-upcoming')).toBeInTheDocument();
+    // const image = screen.getByRole('img', { name:  movie.title});
+    // expect(image).toBeInTheDocument();
   });
 
   it('WHEN component renders THEN the movie description should show', () => {

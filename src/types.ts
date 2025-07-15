@@ -15,5 +15,6 @@ export interface MovieCardProps {
 
 export interface MovieDetailsProps {
   movieId: string;
+  initialMovie?: Movie;
   category: string;
 }
