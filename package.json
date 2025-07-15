@@ -4,13 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "dev": "vite",
     "dev:ssr": "node --loader ts-node/esm server.ts",
     "build": "vite build && vite build --ssr src/entry-server.tsx",
-    "lint": "eslint . --ext .ts,.tsx",
+    "deploy": "npm run build && gh-pages -d dist",
     "preview": "vite preview",
+    "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest"
   },
   "dependencies": {

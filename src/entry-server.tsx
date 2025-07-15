@@ -5,7 +5,7 @@ import { renderToString } from "react-dom/server";
 export function render(url: string) {
   const html = renderToString(
     <StrictMode>
-      <App url={url} />
+      <App initialUrl={url} />
     </StrictMode>
   );
   return html;
