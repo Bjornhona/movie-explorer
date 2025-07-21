@@ -1,20 +1,23 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import MovieCard from "../components/MovieCard.tsx";
 import { describe, it, vi, expect } from "vitest";
+import { Movie } from "../types.ts";
 
 describe("Testing MovieCard Component", () => {
-  const movie = {
+  const movie: Movie = {
     id: 123,
     title: "Test Movie",
+    tagline: 'Some tagline',
     overview: "",
     poster_path: "/test.jpg",
+    backdrop_path: "/test.jpg",
+    release_date: new Date()
   };
 
   const handleClick = vi.fn();
 
-  let systemUderTest;
   beforeEach(() => {
-    systemUderTest = render(
+    render(
       <MovieCard movie={movie} ref={undefined} onClick={handleClick} />
     );
   });

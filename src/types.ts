@@ -5,6 +5,9 @@ export interface Movie {
   title: string;
   overview: string;
   poster_path: string;
+  tagline: string;
+  backdrop_path: string;
+  release_date: Date;
 }
 
 export interface MovieCardProps {
@@ -17,4 +20,10 @@ export interface MovieDetailsProps {
   movieId: string;
   initialMovie?: Movie;
   category: string;
+}
+
+export interface IconProps {
+  color?: string;
+  size?: number;
+  strokeWidth?: number;
 }
