@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import StarIcon from './icons/StarIcon.tsx';
 import HeartIcon from './icons/HeartIcon.tsx';
 import BookmarkIcon from "./icons/BookmarkIcon.tsx";
+import { getBackgroundColor } from "../functions.ts";
 
 const MovieDetailsPage = ({
   movieId,
@@ -15,7 +16,6 @@ const MovieDetailsPage = ({
 
   console.log(movie);
   console.log(category);
-  console.log(loading);
 
   useEffect(() => {
     if (!movie) {
@@ -27,7 +27,7 @@ const MovieDetailsPage = ({
     }
   }, [movieId, movie]);
 
-  const WishlistIcon = () => {
+  const getWishlistIcon = () => {
     switch (category) {
       case 'upcoming':
         return <HeartIcon color={'red'} />;
@@ -41,13 +41,13 @@ const MovieDetailsPage = ({
   if (loading) return <p>Loading...</p>;
 
   return (
-    <>
-      <h1>{movieId}</h1>
+    <div data-testid={'movie-details'} style={{ backgroundColor: getBackgroundColor(category) }}>
+      <h1>{movie?.title}</h1>
       <p>{category}</p>
       <button aria-label="Add to wishlist">
-        {WishlistIcon()}
+        {getWishlistIcon()}
       </button>
-    </>
+    </div>
   );
 };
 

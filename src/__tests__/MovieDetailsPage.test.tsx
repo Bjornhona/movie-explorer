@@ -79,7 +79,7 @@ describe('Testing MovieListPage', () => {
       expect(movieCategory).toBeInTheDocument();
     });
 
-    it('GIVEN a category WHEN component renders THEN a specific font should show', async () => {
+    it('GIVEN the Upcoming movie category WHEN component renders THEN a specific font should show', async () => {
       await waitFor(() => {
         const title = screen.getByText(mockedMovie.title);
         const style = window.getComputedStyle(title);
@@ -87,12 +87,13 @@ describe('Testing MovieListPage', () => {
       });
     });
 
-    it('GIVEN a category WHEN component renders THEN a specific button should show', () => {
+    it('GIVEN the Upcoming movie category WHEN component renders THEN the heart icon button should show', () => {
       expect(screen.getByLabelText('heart-icon')).toBeInTheDocument();
     });
 
-    it('GIVEN a category WHEN component renders THEN a specific background color should show', () => {
-      // expect(screen.getByText('Upcoming')).toBeInTheDocument();
+    it('GIVEN the Upcoming movie category WHEN component renders THEN a specific background color should show', () => {
+      const container = screen.getByTestId('movie-details');
+      expect(container).toHaveStyle('background-color: light-pink');
     });
   });
 
@@ -108,13 +109,13 @@ describe('Testing MovieListPage', () => {
 
     afterEach(() => vi.restoreAllMocks());
 
-    it('GIVEN a category WHEN component renders THEN a specific font should show', () => {
+    it('GIVEN the Popular movie category WHEN component renders THEN a specific font should show', () => {
       const title = screen.getByText(mockedMovie.title);
       const style = window.getComputedStyle(title);
       expect(style.fontFamily).toMatch(/Poppins/i);
     });
 
-    it('GIVEN a category WHEN component renders THEN a specific button should show', () => {
+    it('GIVEN the Popular movie category WHEN component renders THEN the start icon button should show', () => {
       expect(screen.getByLabelText('star-icon')).toBeInTheDocument();
     });
   });
