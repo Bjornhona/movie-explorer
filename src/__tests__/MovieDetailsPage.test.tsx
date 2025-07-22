@@ -104,7 +104,7 @@ describe('Testing MovieListPage', () => {
     }
 
     beforeEach(() => {
-      render(<MovieDetailsPage {...moviesDetailsPropsPopular} initialMovie={mockedMovie} />);
+      render(<MovieDetailsPage {...moviesDetailsPropsPopular} />);
     });
 
     afterEach(() => vi.restoreAllMocks());

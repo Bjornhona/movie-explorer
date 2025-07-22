@@ -12,31 +12,32 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function startServer() {
   const app = express();
+  app.use(express.json());
 
-    // TMDB guest session authentication proxy endpoint
-  app.get('/api/tmdb/guest-session', async (req: Request, res: Response) => {
-    try {
-      const accessToken = process.env.TMDB_ACCESS_TOKEN;
-      if (!accessToken) {
-        return res.status(500).json({ error: 'TMDB access token not configured' });
-      }
-      const response = await fetch('https://api.themoviedb.org/3/authentication/guest_session/new', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'accept': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        return res.status(response.status).json({ error: 'Failed to create guest session' });
-      }
-      const data = await response.json();
-      res.json(data);
-    } catch (error) {
-      console.error("TMDB Guest Session Error:", error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
+  // TMDB guest session authentication proxy endpoint
+  // app.get('/api/tmdb/guest-session', async (req: Request, res: Response) => {
+  //   try {
+  //     const accessToken = process.env.TMDB_ACCESS_TOKEN;
+  //     if (!accessToken) {
+  //       return res.status(500).json({ error: 'TMDB access token not configured' });
+  //     }
+  //     const response = await fetch('https://api.themoviedb.org/3/authentication/guest_session/new', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Authorization': `Bearer ${accessToken}`,
+  //         'accept': 'application/json',
+  //       },
+  //     });
+  //     if (!response.ok) {
+  //       return res.status(response.status).json({ error: 'Failed to create guest session' });
+  //     }
+  //     const data = await response.json();
+  //     res.json(data);
+  //   } catch (error) {
+  //     console.error("TMDB Guest Session Error:", error);
+  //     res.status(500).json({ error: 'Internal server error' });
+  //   }
+  // });
 
   // TMDB movies list proxy endpoint (supports category)
   app.get('/api/tmdb/movie/list', async (req: Request, res: Response) => {
@@ -121,6 +122,38 @@ async function startServer() {
       res.json(data);
     } catch (error) {
       console.error('TMDB Create Access Token Error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // TMDB session authentication proxy endpoint
+  app.post('/api/tmdb/session', async (req: Request, res: Response) => {
+    try {
+      const accessToken = process.env.TMDB_ACCESS_TOKEN;
+      const { request_token } = req.body;
+      if (!accessToken) {
+        return res.status(500).json({ error: 'TMDB access token not configured' });
+      }
+      if (!request_token) {
+        return res.status(400).json({ error: 'Missing request_token in request body' });
+      }
+      const response = await fetch('https://api.themoviedb.org/3/authentication/session/new', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: JSON.stringify({ request_token })
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return res.status(response.status).json({ error: 'Failed to create session', details: errorText });
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("TMDB Session Error:", error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });

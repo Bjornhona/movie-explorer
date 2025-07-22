@@ -12,8 +12,12 @@ interface AppProps {
 }
 
 const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
-  const { loading, error } = useAuthentication();
   const [url, setUrl] = useState(initialUrl);
+  const {refreshSession} = useAuthentication();
+
+  useEffect(() => {
+    // refreshSession();
+  }, []);
 
  useEffect(() => {
     const onPopState = () => {
@@ -26,26 +30,14 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
 
   const pathname = new URL(url, "http://localhost").pathname;
 
-  if (loading) {
-    return <div>Setting up guest session...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   if (pathname === "/") return <MoviesListPage />;
 
-  // const movieMatch = pathname.match(/^\/(\d+)$/);
   const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
 
-  // if (movieMatch) {
-  //   return <MovieDetailsPage movieId={movieMatch[1]} movie={initialMovie} />;
-  // }
   if (movieMatch) {
     const category = movieMatch[1];
     const movieId = movieMatch[2];
-    return <MovieDetailsPage movieId={movieId} initialMovie={initialMovie} category={category} />;
+    return <MovieDetailsPage movieId={movieId} category={category} />;
   }
 
   return <NotFoundPage />;

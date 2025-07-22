@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import { MovieDetailsProps } from "../types.ts";
 import { useEffect } from "react";
 import StarIcon from './icons/StarIcon.tsx';
@@ -6,29 +6,43 @@ import HeartIcon from './icons/HeartIcon.tsx';
 import BookmarkIcon from "./icons/BookmarkIcon.tsx";
 import { getBackgroundColor } from "../functions.ts";
 import { useAuthentication } from '../hooks/useAuthentication.ts';
+import { useMovieById } from '../hooks/useMovieById.ts';
 import { BASE_URL } from '../constants.ts';
+
+interface SessionTypes {
+  success: boolean;
+  session_id: string;
+  expires_at: string;
+}
 
 const MovieDetailsPage = ({
   movieId,
-  initialMovie,
   category,
 }: MovieDetailsProps) => {
-  const { requestToken } = useAuthentication();
-  const [movie, setMovie] = useState(initialMovie || null);
-  const [loading, setLoading] = useState(!initialMovie);
+  const { movieById, getMovieById, loading } = useMovieById();
+  const { doRequestToken, createSession, getStoredSession } = useAuthentication();
 
-  console.log(movie);
-  console.log(category);
+  const sessionData = getStoredSession();
+  console.log(sessionData);
 
   useEffect(() => {
-    if (!movie) {
-      fetch(`/api/tmdb/movie/${movieId}`)
-        .then(res => res.json())
-        .then(setMovie)
-        .catch(console.error)
-        .finally(() => setLoading(false));
+    const params = new URLSearchParams(window.location.search);
+      const isApproved = params.get('approved');
+      isApproved && createSession();
+  }, []);
+
+  useEffect(() => {
+    getMovieById(movieId);
+  }, [movieId]);
+
+  const handleAddToWishlist = async () => {
+    const token = await doRequestToken();
+    if (!token) {
+      alert('Could not get a valid request token. Try again.');
+      return;
     }
-  }, [movieId, movie]);
+    window.location.href = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${BASE_URL}/${category}/${movieId}`;
+  };
 
   const getWishlistIcon = () => {
     switch (category) {
@@ -41,17 +55,15 @@ const MovieDetailsPage = ({
     }
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading && !movieById) return <p>Loading...</p>;
 
   return (
     <div data-testid={'movie-details'} style={{ backgroundColor: getBackgroundColor(category) }}>
-      <h1>{movie?.title}</h1>
+      <h1>{movieById?.title}</h1>
       <p>{category}</p>
-      <a href={`https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=${BASE_URL}/approved`}>
-        <button aria-label="Add to wishlist">
+        <button aria-label="Add to wishlist" onClick={handleAddToWishlist}>
           {getWishlistIcon()}
         </button>
-      </a>
     </div>
   );
 };

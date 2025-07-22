@@ -1,10 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-interface GuestSessionData {
+interface SessionData {
   success: boolean;
-  guest_session_id: string;
+  session_id: string;
   expires_at: string;
 }
+
+// interface GuestSessionData {
+//   success: boolean;
+//   guest_session_id: string;
+//   expires_at: string;
+// }
 
 interface RequestTokenData {
   success: boolean;
@@ -12,184 +18,276 @@ interface RequestTokenData {
   expires_at: string;
 }
 
-const GUEST_SESSION_STORAGE_KEY = 'tmdb_guest_session';
-const REQUEST_TOKEN_STORAGE_KEY = 'tmdb_request_token';
+interface SessionTypes {
+  success: boolean;
+  session_id: string;
+  expires_at: string;
+}
+
+const SESSION_STORAGE_KEY = 'tmdb_session';
+const REQUEST_TOKEN_STORAGE_KEY = "tmdb_request_token";
 
 export const useAuthentication = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [hasToken, setHasToken] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [guestSessionId, setGuestSessionId] = useState<string | null>(null);
-  const [requestToken, setRequestToken] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
 
-  const isSessionExpired = (expiresAt: string): boolean => {
-    const expiryDate = new Date(expiresAt);
-    const now = new Date();
-    return now >= expiryDate;
-  };
+    const isSessionExpired = (expiresAt: string): boolean => {
+      const expiryDate = new Date(expiresAt);
+      const now = new Date();
+      return now >= expiryDate;
+    };
 
-  const isTokenExpired = (expiresAt: string): boolean => {
-    const expiryDate = new Date(expiresAt);
-    const now = new Date();
-    return now >= expiryDate;
-  };
+  // const isTokenExpired = (expiresAt: string): boolean => {
+  //   const expiryDate = new Date(expiresAt);
+  //   const now = new Date();
+  //   return now >= expiryDate;
+  // };
 
-  const getStoredGuestSession = (): GuestSessionData | null => {
+    const getStoredRequestToken = (): string | null => {
+      try {
+        const stored = localStorage.getItem(REQUEST_TOKEN_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : null;
+      } catch {
+        return null;
+      }
+    };
+
+  const getStoredSession = (): SessionData | null => {
     try {
-      const stored = localStorage.getItem(GUEST_SESSION_STORAGE_KEY);
+      const stored = localStorage.getItem(SESSION_STORAGE_KEY);
       return stored ? JSON.parse(stored) : null;
     } catch {
       return null;
     }
   };
 
-    const getStoredRequestToken = (): RequestTokenData | null => {
-    try {
-      const stored = localStorage.getItem(REQUEST_TOKEN_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
+    const storeRequestToken = (data: string) => {
+      try {
+        localStorage.setItem(REQUEST_TOKEN_STORAGE_KEY, JSON.stringify(data));
+      } catch (error) {
+        console.error('Failed to store request token:', error);
+      }
+    };
 
-  const storeGuestSession = (data: GuestSessionData) => {
+  const storeSession = (data: SessionData) => {
     try {
-      localStorage.setItem(GUEST_SESSION_STORAGE_KEY, JSON.stringify(data));
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(data));
     } catch (error) {
-      console.error('Failed to store guest session:', error);
+      console.error("Failed to store session:", error);
     }
   };
 
-  const storeRequestToken = (data: RequestTokenData) => {
+  const doRequestToken = async (): Promise<string | null> => {
     try {
-      localStorage.setItem(REQUEST_TOKEN_STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-      console.error('Failed to get request token:', error);
-    }
-  };
-
-  const doRequestToken = async (): Promise<boolean> => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Check if we already have a valid request token
-      const storedSession = getStoredRequestToken();
-      if (storedSession && storedSession.success && !isTokenExpired(storedSession.expires_at)) {
-        console.log('Using existing request token:', storedSession.request_token);
-        setHasToken(true);
-        setRequestToken(storedSession.request_token);
-        setLoading(false);
-        return true;
-      }
-
-      // Create new request token
-      console.log('Creating new request token...');
-      const response = await fetch('/api/tmdb/authentication/token/new');
-      if (!response.ok) {
-        throw new Error('Failed to get request token');
-      }
-      const data: RequestTokenData = await response.json();
-      console.log('Request token response:', data);
-      if (data.success) {
-        storeRequestToken(data);
-        setHasToken(true);
-        setRequestToken(data.request_token);
-        return true;
-      } else {
-        setHasToken(false);
-        setError('Failed to get request token');
-        return false;
-      }
+      const res = await fetch("/api/tmdb/authentication/token/new");
+      const data = await res.json();
+      storeRequestToken(data.request_token);
+      return data.request_token;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      setError(errorMessage);
-      setHasToken(false);
-      console.error('Getting request token failed:', err);
-      return false;
-    } finally {
-      setLoading(false);
+      console.error("Failed to get request token", err);
+      return null;
     }
-  }
+  };
 
-  const doAuthentication = async (): Promise<boolean> => {
+  // const doRequestToken = async (): Promise<RequestTokenData | null> => {
+  //   try {
+  //     setLoading(true);
+  //     setError(null);
+
+  //     // Check if we already have a valid request token
+  //     const storedSession = getStoredRequestToken();
+  //     if (storedSession && storedSession.success && !isTokenExpired(storedSession.expires_at)) {
+  //       console.log('Using existing request token:', storedSession.request_token);
+  //       setHasToken(true);
+  //       setRequestToken(storedSession.request_token);
+  //       setLoading(false);
+  //       // return true;
+  //       return storedSession;
+  //     }
+
+  //     // Create new request token
+  //     console.log('Creating new request token...');
+  //     const response = await fetch('/api/tmdb/authentication/token/new');
+  //     if (!response.ok) {
+  //       throw new Error('Failed to get request token');
+  //     }
+  //     const data: RequestTokenData = await response.json();
+  //     console.log('Request token response:', data);
+
+  //     if (data.success) {
+  //       storeRequestToken(data);
+  //       setHasToken(true);
+  //       setRequestToken(data.request_token);
+  //       // return true;
+  //       return data;
+  //     } else {
+  //       setHasToken(false);
+  //       setError('Failed to get request token');
+  //       // return false;
+  //       return null;
+  //     }
+  //   } catch (err) {
+  //     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+  //     setError(errorMessage);
+  //     setHasToken(false);
+  //     console.error('Getting request token failed:', err);
+  //     // return false;
+  //     return null;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
+  const createSession = async (): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
+      const requestToken = getStoredRequestToken();
 
-      // Check if we already have a valid stored guest session
-      const storedSession = getStoredGuestSession();
+      // Check if we already have a valid stored session
+      const storedSession = getStoredSession();
       if (storedSession && storedSession.success && !isSessionExpired(storedSession.expires_at)) {
-        console.log('Using existing guest session:', storedSession.guest_session_id);
+        console.log('Using existing sessionId:', storedSession.session_id);
         setIsAuthenticated(true);
-        setGuestSessionId(storedSession.guest_session_id);
+        setSessionId(storedSession.session_id);
         setLoading(false);
         return true;
       }
 
-      // Create new guest session
-      console.log('Creating new guest session...');
-      const response = await fetch('/api/tmdb/guest-session');
+      // Create new session
+      console.log("Creating new session...");
+      const response = await fetch("/api/tmdb/session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ request_token: requestToken }),
+      });
+
+      // const response = await fetch("/api/tmdb/session");
       if (!response.ok) {
-        throw new Error('Failed to create guest session');
+        throw new Error("Failed to create session");
       }
 
-      const data: GuestSessionData = await response.json();
-      console.log('Guest session response:', data);
+      const data: SessionData = await response.json();
+      console.log("Session response:", data);
 
       if (data.success) {
-        storeGuestSession(data);
+        storeSession(data);
         setIsAuthenticated(true);
-        setGuestSessionId(data.guest_session_id);
+        setSessionId(data.session_id);
         return true;
       } else {
         setIsAuthenticated(false);
-        setError('Failed to create guest session');
+        setError("Failed to create session");
         return false;
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);
       setIsAuthenticated(false);
-      console.error('Guest session error:', err);
+      console.error("Session error:", err);
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  // Run authentication on component mount
-  useEffect(() => {
-    // doAuthentication();
-    doRequestToken();
-  }, []);
+  //   const doAuthentication = async (): Promise<boolean> => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
 
-  const clearGuestSession = () => {
+  //       // Check if we already have a valid stored guest session
+  //       const storedSession = getStoredGuestSession();
+  //       if (storedSession && storedSession.success && !isSessionExpired(storedSession.expires_at)) {
+  //         console.log('Using existing guest session:', storedSession.guest_session_id);
+  //         setIsAuthenticated(true);
+  //         setGuestSessionId(storedSession.guest_session_id);
+  //         setLoading(false);
+  //         return true;
+  //       }
+
+  //       // Create new guest session
+  //       console.log('Creating new guest session...');
+  //       const response = await fetch('/api/tmdb/guest-session');
+  //       if (!response.ok) {
+  //         throw new Error('Failed to create guest session');
+  //       }
+
+  //       const data: GuestSessionData = await response.json();
+  //       console.log('Guest session response:', data);
+
+  //       if (data.success) {
+  //         storeGuestSession(data);
+  //         setIsAuthenticated(true);
+  //         setGuestSessionId(data.guest_session_id);
+  //         return true;
+  //       } else {
+  //         setIsAuthenticated(false);
+  //         setError('Failed to create guest session');
+  //         return false;
+  //       }
+  //     } catch (err) {
+  //       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+  //       setError(errorMessage);
+  //       setIsAuthenticated(false);
+  //       console.error('Guest session error:', err);
+  //       return false;
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   // Run authentication on component mount
+  //   useEffect(() => {
+  //     // doAuthentication();
+  //     doRequestToken();
+  //   }, []);
+
+  //   const clearGuestSession = () => {
+  //     try {
+  //       localStorage.removeItem(GUEST_SESSION_STORAGE_KEY);
+  //       setIsAuthenticated(false);
+  //       setGuestSessionId(null);
+  //     } catch (error) {
+  //       console.error('Failed to clear guest session:', error);
+  //     }
+  //   };
+  const clearSession = () => {
     try {
-      localStorage.removeItem(GUEST_SESSION_STORAGE_KEY);
-      setIsAuthenticated(false);
-      setGuestSessionId(null);
+      localStorage.removeItem(SESSION_STORAGE_KEY);
+      // setIsAuthenticated(false);
+      // setSessionId(null);
     } catch (error) {
       console.error('Failed to clear guest session:', error);
     }
   };
 
-  const refreshGuestSession = () => {
-    clearGuestSession();
-    return doAuthentication();
+  //   const refreshGuestSession = () => {
+  //     clearGuestSession();
+  //     return doAuthentication();
+  //   };
+  const refreshSession = () => {
+    clearSession();
+    return doRequestToken();
   };
 
   return {
-    isAuthenticated,
-    hasToken,
-    loading,
-    error,
-    guestSessionId,
-    requestToken,
-    doAuthentication,
+    //     isAuthenticated,
+    //     hasToken,
+    //     loading,
+    //     error,
+    //     guestSessionId,
+    getStoredSession,
+    //     doAuthentication,
     doRequestToken,
-    clearGuestSession,
-    refreshGuestSession,
+    //     clearGuestSession,
+    refreshSession,
+    createSession,
+    getStoredRequestToken
   };
-}; 
+};
