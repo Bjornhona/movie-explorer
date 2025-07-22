@@ -6,15 +6,30 @@ interface GuestSessionData {
   expires_at: string;
 }
 
+interface RequestTokenData {
+  success: boolean;
+  request_token: string;
+  expires_at: string;
+}
+
 const GUEST_SESSION_STORAGE_KEY = 'tmdb_guest_session';
+const REQUEST_TOKEN_STORAGE_KEY = 'tmdb_request_token';
 
 export const useAuthentication = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [hasToken, setHasToken] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [guestSessionId, setGuestSessionId] = useState<string | null>(null);
+  const [requestToken, setRequestToken] = useState<string | null>(null);
 
   const isSessionExpired = (expiresAt: string): boolean => {
+    const expiryDate = new Date(expiresAt);
+    const now = new Date();
+    return now >= expiryDate;
+  };
+
+  const isTokenExpired = (expiresAt: string): boolean => {
     const expiryDate = new Date(expiresAt);
     const now = new Date();
     return now >= expiryDate;
@@ -29,6 +44,15 @@ export const useAuthentication = () => {
     }
   };
 
+    const getStoredRequestToken = (): RequestTokenData | null => {
+    try {
+      const stored = localStorage.getItem(REQUEST_TOKEN_STORAGE_KEY);
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
   const storeGuestSession = (data: GuestSessionData) => {
     try {
       localStorage.setItem(GUEST_SESSION_STORAGE_KEY, JSON.stringify(data));
@@ -36,6 +60,58 @@ export const useAuthentication = () => {
       console.error('Failed to store guest session:', error);
     }
   };
+
+  const storeRequestToken = (data: RequestTokenData) => {
+    try {
+      localStorage.setItem(REQUEST_TOKEN_STORAGE_KEY, JSON.stringify(data));
+    } catch (error) {
+      console.error('Failed to get request token:', error);
+    }
+  };
+
+  const doRequestToken = async (): Promise<boolean> => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Check if we already have a valid request token
+      const storedSession = getStoredRequestToken();
+      if (storedSession && storedSession.success && !isTokenExpired(storedSession.expires_at)) {
+        console.log('Using existing request token:', storedSession.request_token);
+        setHasToken(true);
+        setRequestToken(storedSession.request_token);
+        setLoading(false);
+        return true;
+      }
+
+      // Create new request token
+      console.log('Creating new request token...');
+      const response = await fetch('/api/tmdb/authentication/token/new');
+      if (!response.ok) {
+        throw new Error('Failed to get request token');
+      }
+      const data: RequestTokenData = await response.json();
+      console.log('Request token response:', data);
+      if (data.success) {
+        storeRequestToken(data);
+        setHasToken(true);
+        setRequestToken(data.request_token);
+        return true;
+      } else {
+        setHasToken(false);
+        setError('Failed to get request token');
+        return false;
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(errorMessage);
+      setHasToken(false);
+      console.error('Getting request token failed:', err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const doAuthentication = async (): Promise<boolean> => {
     try {
@@ -85,7 +161,8 @@ export const useAuthentication = () => {
 
   // Run authentication on component mount
   useEffect(() => {
-    doAuthentication();
+    // doAuthentication();
+    doRequestToken();
   }, []);
 
   const clearGuestSession = () => {
@@ -105,10 +182,13 @@ export const useAuthentication = () => {
 
   return {
     isAuthenticated,
+    hasToken,
     loading,
     error,
     guestSessionId,
+    requestToken,
     doAuthentication,
+    doRequestToken,
     clearGuestSession,
     refreshGuestSession,
   };

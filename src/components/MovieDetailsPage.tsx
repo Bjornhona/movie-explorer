@@ -5,12 +5,15 @@ import StarIcon from './icons/StarIcon.tsx';
 import HeartIcon from './icons/HeartIcon.tsx';
 import BookmarkIcon from "./icons/BookmarkIcon.tsx";
 import { getBackgroundColor } from "../functions.ts";
+import { useAuthentication } from '../hooks/useAuthentication.ts';
+import { BASE_URL } from '../constants.ts';
 
 const MovieDetailsPage = ({
   movieId,
   initialMovie,
   category,
 }: MovieDetailsProps) => {
+  const { requestToken } = useAuthentication();
   const [movie, setMovie] = useState(initialMovie || null);
   const [loading, setLoading] = useState(!initialMovie);
 
@@ -44,9 +47,11 @@ const MovieDetailsPage = ({
     <div data-testid={'movie-details'} style={{ backgroundColor: getBackgroundColor(category) }}>
       <h1>{movie?.title}</h1>
       <p>{category}</p>
-      <button aria-label="Add to wishlist">
-        {getWishlistIcon()}
-      </button>
+      <a href={`https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=${BASE_URL}/approved`}>
+        <button aria-label="Add to wishlist">
+          {getWishlistIcon()}
+        </button>
+      </a>
     </div>
   );
 };
