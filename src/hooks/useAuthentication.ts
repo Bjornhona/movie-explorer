@@ -243,25 +243,16 @@ export const useAuthentication = () => {
   //   };
 
   //   // Run authentication on component mount
-  //   useEffect(() => {
-  //     // doAuthentication();
-  //     doRequestToken();
-  //   }, []);
+  useEffect(() => {
+    // doAuthentication();
+    doRequestToken();
+  }, []);
 
-  //   const clearGuestSession = () => {
-  //     try {
-  //       localStorage.removeItem(GUEST_SESSION_STORAGE_KEY);
-  //       setIsAuthenticated(false);
-  //       setGuestSessionId(null);
-  //     } catch (error) {
-  //       console.error('Failed to clear guest session:', error);
-  //     }
-  //   };
   const clearSession = () => {
     try {
       localStorage.removeItem(SESSION_STORAGE_KEY);
-      // setIsAuthenticated(false);
-      // setSessionId(null);
+      setIsAuthenticated(false);
+      setSessionId(null);
     } catch (error) {
       console.error('Failed to clear guest session:', error);
     }
@@ -277,17 +268,17 @@ export const useAuthentication = () => {
   };
 
   return {
-    //     isAuthenticated,
-    //     hasToken,
-    //     loading,
-    //     error,
-    //     guestSessionId,
+    isAuthenticated,
+    hasToken, 
+    loading,
+    error,
     getStoredSession,
-    //     doAuthentication,
+        // doAuthentication,
     doRequestToken,
-    //     clearGuestSession,
+    clearSession,
     refreshSession,
     createSession,
-    getStoredRequestToken
+    getStoredRequestToken,
+    sessionId
   };
 };

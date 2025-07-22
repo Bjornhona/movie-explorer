@@ -4,7 +4,7 @@ import "@/styles/main.scss";
 import MoviesListPage from "./components/MoviesListPage.tsx";
 import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
 import NotFoundPage from "./components/NotFoundPage.tsx";
-import { useAuthentication } from "./hooks/useAuthentication.ts";
+// import { useAuthentication } from "./hooks/useAuthentication.ts";
 
 interface AppProps {
   initialUrl: string;
@@ -13,11 +13,11 @@ interface AppProps {
 
 const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
   const [url, setUrl] = useState(initialUrl);
-  const {refreshSession} = useAuthentication();
+  // const {refreshSession} = useAuthentication();
 
-  useEffect(() => {
-    // refreshSession();
-  }, []);
+  // useEffect(() => {
+  //   refreshSession();
+  // }, []);
 
  useEffect(() => {
     const onPopState = () => {
