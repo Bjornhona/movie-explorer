@@ -1,69 +1,89 @@
-import { useState } from 'react';
-import { MovieDetailsProps } from "../types.ts";
-import { useEffect } from "react";
-import StarIcon from './icons/StarIcon.tsx';
-import HeartIcon from './icons/HeartIcon.tsx';
-import BookmarkIcon from "./icons/BookmarkIcon.tsx";
+import { useState } from "react";
+import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { getBackgroundColor } from "../functions.ts";
-import { useAuthentication } from '../hooks/useAuthentication.ts';
-import { useMovieById } from '../hooks/useMovieById.ts';
-import { BASE_URL } from '../constants.ts';
+import StarIcon from "./icons/StarIcon.tsx";
+import HeartIcon from "./icons/HeartIcon.tsx";
+import BookmarkIcon from "./icons/BookmarkIcon.tsx";
+import { useMovieById } from "../hooks/useMovieById.ts";
+import { useWatchlist } from "../hooks/useWatchlist.ts";
+import { useWatchlistMovies } from "../hooks/useWatchlistMovies.ts";
 
-interface SessionTypes {
-  success: boolean;
-  session_id: string;
-  expires_at: string;
+interface MovieDetailsPageProps {
+  movieId: string;
+  category: string;
 }
 
-const MovieDetailsPage = ({
-  movieId,
-  category,
-}: MovieDetailsProps) => {
-  const { movieById, getMovieById, loading } = useMovieById();
-  const { doRequestToken, createSession, getStoredSession } = useAuthentication();
+const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
+  const { movieById } = useMovieById(movieId);
+  const {
+    sessionId,
+    accountId,
+    loading: authLoading,
+    error: authError,
+    getRequestToken,
+    redirectToTmdbApproval,
+  } = useAuthentication();
+  const {
+    addToWatchlist,
+    loading: watchlistLoading,
+    error: watchlistError,
+    success: watchlistSuccess,
+  } = useWatchlist();
+  const [watchlistReloadKey, setWatchlistReloadKey] = useState(0);
+  const { movies: watchlistMovies } = useWatchlistMovies(accountId, sessionId, watchlistReloadKey);
 
-  const sessionData = getStoredSession();
-  console.log(sessionData);
+  // Check if this movie is in the watchlist
+  const isInWatchlist = watchlistMovies.some(m => String(m.id) === String(movieId));
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-      const isApproved = params.get('approved');
-      isApproved && createSession();
-  }, []);
-
-  useEffect(() => {
-    getMovieById(movieId);
-  }, [movieId]);
-
-  const handleAddToWishlist = async () => {
-    const token = await doRequestToken();
-    if (!token) {
-      alert('Could not get a valid request token. Try again.');
-      return;
+  const handleLogin = async () => {
+    const requestToken = await getRequestToken();
+    if (requestToken) {
+      const redirectUrl = window.location.origin + window.location.pathname + window.location.search;
+      redirectToTmdbApproval(requestToken, redirectUrl);
     }
-    window.location.href = `https://www.themoviedb.org/authenticate/${token}?redirect_to=${BASE_URL}/${category}/${movieId}`;
+  };
+
+  const handleAddToWatchlist = async () => {
+    if (!accountId || !sessionId) return;
+    await addToWatchlist({ accountId, sessionId, movieId, addToWatchlist: true });
+    setWatchlistReloadKey(k => k + 1);
   };
 
   const getWishlistIcon = () => {
+    const color = isInWatchlist
+      ? category === "upcoming"
+        ? "red"
+        : category === "popular"
+        ? "gold"
+        : "teal"
+      : "grey";
     switch (category) {
-      case 'upcoming':
-        return <HeartIcon color={'red'} />;
-      case 'popular':
-        return <StarIcon color={'gold'} />;
+      case "upcoming":
+        return <HeartIcon color={color} />;
+      case "popular":
+        return <StarIcon color={color} />;
       default:
-        return <BookmarkIcon color={'teal'} />;
+        return <BookmarkIcon color={color} />;
     }
-  }
-
-  if (loading && !movieById) return <p>Loading...</p>;
+  };
 
   return (
-    <div data-testid={'movie-details'} style={{ backgroundColor: getBackgroundColor(category) }}>
+    <div
+      data-testid={"movie-details"}
+      style={{ backgroundColor: getBackgroundColor(category) }}
+    >
       <h1>{movieById?.title}</h1>
       <p>{category}</p>
-        <button aria-label="Add to wishlist" onClick={handleAddToWishlist}>
-          {getWishlistIcon()}
-        </button>
+      <button
+        aria-label="Add to wishlist"
+        onClick={!sessionId || !accountId ? handleLogin : handleAddToWatchlist}
+        disabled={authLoading || watchlistLoading}
+      >
+        {getWishlistIcon()}
+      </button>
+      {watchlistSuccess && <div style={{ color: 'green' }}>Movie added to watchlist!</div>}
+      {watchlistError && <div style={{ color: 'red' }}>Failed to add to watchlist: {watchlistError}</div>}
+      {authError && <div style={{ color: 'red' }}>Auth error: {authError}</div>}
     </div>
   );
 };

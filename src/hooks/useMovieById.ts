@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Movie } from '../types.ts';
 
-export const useMovieById = () => {
+export const useMovieById = (movieId: string) => {
   const [movieById, setMovieById] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +27,10 @@ export const useMovieById = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getMovieById(movieId);
+  }, [movieId]);
 
   return { movieById, loading, error, getMovieById };
 }; 

@@ -3,6 +3,7 @@ import { useMovies } from "../hooks/useMovies.ts";
 import { Movie } from "../types.ts";
 import MovieCard from "./MovieCard.tsx";
 import Loading from "./Loading.tsx";
+import { handleMovieSelection } from "../functions.ts";
 
 const MovieCarousel = ({
   title,
@@ -33,13 +34,12 @@ const MovieCarousel = ({
   );
 
   // const handleCardClick = (movieId: number) => {
-  //   window.history.pushState({}, "", `/${movieId}`);
+  //   window.history.pushState({}, "", `/${category}/${movieId}`);
   //   window.dispatchEvent(new PopStateEvent("popstate"));
   // };
   const handleCardClick = (movieId: number) => {
-    window.history.pushState({}, "", `/${category}/${movieId}`);
-    window.dispatchEvent(new PopStateEvent("popstate"));
-  };
+    handleMovieSelection(movieId, category);
+  }
 
   return (
     <div data-testid={`carousel-${category}`} style={{ padding: 16 }}>

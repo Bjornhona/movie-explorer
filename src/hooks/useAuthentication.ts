@@ -1,284 +1,137 @@
 import { useState, useEffect } from "react";
 
-interface SessionData {
-  success: boolean;
-  session_id: string;
-  expires_at: string;
-}
-
-// interface GuestSessionData {
-//   success: boolean;
-//   guest_session_id: string;
-//   expires_at: string;
-// }
-
-interface RequestTokenData {
-  success: boolean;
-  request_token: string;
-  expires_at: string;
-}
-
-interface SessionTypes {
-  success: boolean;
-  session_id: string;
-  expires_at: string;
-}
-
-const SESSION_STORAGE_KEY = 'tmdb_session';
-const REQUEST_TOKEN_STORAGE_KEY = "tmdb_request_token";
+const REQUEST_TOKEN_KEY = "tmdb_request_token";
+const SESSION_ID_KEY = "tmdb_session_id";
+const ACCOUNT_ID_KEY = "tmdb_account_id";
 
 export const useAuthentication = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [hasToken, setHasToken] = useState<boolean | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [accountId, setAccountId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const isSessionExpired = (expiresAt: string): boolean => {
-      const expiryDate = new Date(expiresAt);
-      const now = new Date();
-      return now >= expiryDate;
-    };
+  // Check if any previous sessionId or AccountId
+  useEffect(() => {
+    const getStoredSessionId = () => localStorage.getItem(SESSION_ID_KEY);
+    const storedSessionId = getStoredSessionId();
+    storedSessionId && setSessionId(storedSessionId);
+  }, []);
 
-  // const isTokenExpired = (expiresAt: string): boolean => {
-  //   const expiryDate = new Date(expiresAt);
-  //   const now = new Date();
-  //   return now >= expiryDate;
-  // };
+  useEffect(() => {
+    const getStoredAccountId = () => localStorage.getItem(ACCOUNT_ID_KEY);
+    const storedAccountId = getStoredAccountId();
+    storedAccountId && setAccountId(storedAccountId);
+  }, []);
 
-    const getStoredRequestToken = (): string | null => {
-      try {
-        const stored = localStorage.getItem(REQUEST_TOKEN_STORAGE_KEY);
-        return stored ? JSON.parse(stored) : null;
-      } catch {
-        return null;
-      }
-    };
+  console.log(sessionId);
+  console.log(accountId);
 
-  const getStoredSession = (): SessionData | null => {
-    try {
-      const stored = localStorage.getItem(SESSION_STORAGE_KEY);
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  };
-
-    const storeRequestToken = (data: string) => {
-      try {
-        localStorage.setItem(REQUEST_TOKEN_STORAGE_KEY, JSON.stringify(data));
-      } catch (error) {
-        console.error('Failed to store request token:', error);
-      }
-    };
-
-  const storeSession = (data: SessionData) => {
-    try {
-      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-      console.error("Failed to store session:", error);
-    }
-  };
-
-  const doRequestToken = async (): Promise<string | null> => {
+  // Step 1: Get request token
+  const getRequestToken = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/tmdb/authentication/token/new");
       const data = await res.json();
-      storeRequestToken(data.request_token);
-      return data.request_token;
-    } catch (err) {
-      console.error("Failed to get request token", err);
-      return null;
-    }
-  };
-
-  // const doRequestToken = async (): Promise<RequestTokenData | null> => {
-  //   try {
-  //     setLoading(true);
-  //     setError(null);
-
-  //     // Check if we already have a valid request token
-  //     const storedSession = getStoredRequestToken();
-  //     if (storedSession && storedSession.success && !isTokenExpired(storedSession.expires_at)) {
-  //       console.log('Using existing request token:', storedSession.request_token);
-  //       setHasToken(true);
-  //       setRequestToken(storedSession.request_token);
-  //       setLoading(false);
-  //       // return true;
-  //       return storedSession;
-  //     }
-
-  //     // Create new request token
-  //     console.log('Creating new request token...');
-  //     const response = await fetch('/api/tmdb/authentication/token/new');
-  //     if (!response.ok) {
-  //       throw new Error('Failed to get request token');
-  //     }
-  //     const data: RequestTokenData = await response.json();
-  //     console.log('Request token response:', data);
-
-  //     if (data.success) {
-  //       storeRequestToken(data);
-  //       setHasToken(true);
-  //       setRequestToken(data.request_token);
-  //       // return true;
-  //       return data;
-  //     } else {
-  //       setHasToken(false);
-  //       setError('Failed to get request token');
-  //       // return false;
-  //       return null;
-  //     }
-  //   } catch (err) {
-  //     const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-  //     setError(errorMessage);
-  //     setHasToken(false);
-  //     console.error('Getting request token failed:', err);
-  //     // return false;
-  //     return null;
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
-
-  const createSession = async (): Promise<boolean> => {
-    try {
-      setLoading(true);
-      setError(null);
-      const requestToken = getStoredRequestToken();
-
-      // Check if we already have a valid stored session
-      const storedSession = getStoredSession();
-      if (storedSession && storedSession.success && !isSessionExpired(storedSession.expires_at)) {
-        console.log('Using existing sessionId:', storedSession.session_id);
-        setIsAuthenticated(true);
-        setSessionId(storedSession.session_id);
-        setLoading(false);
-        return true;
-      }
-
-      // Create new session
-      console.log("Creating new session...");
-      const response = await fetch("/api/tmdb/session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ request_token: requestToken }),
-      });
-
-      // const response = await fetch("/api/tmdb/session");
-      if (!response.ok) {
-        throw new Error("Failed to create session");
-      }
-
-      const data: SessionData = await response.json();
-      console.log("Session response:", data);
-
-      if (data.success) {
-        storeSession(data);
-        setIsAuthenticated(true);
-        setSessionId(data.session_id);
-        return true;
+      if (data.success && data.request_token) {
+        localStorage.setItem(REQUEST_TOKEN_KEY, data.request_token);
+        return data.request_token;
       } else {
-        setIsAuthenticated(false);
-        setError("Failed to create session");
-        return false;
+        throw new Error("Failed to get request token");
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Unknown error";
-      setError(errorMessage);
-      setIsAuthenticated(false);
-      console.error("Session error:", err);
-      return false;
+      setError((err as Error).message);
+      return null;
     } finally {
       setLoading(false);
     }
   };
 
-  //   const doAuthentication = async (): Promise<boolean> => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
+  // Step 2: Redirect user to TMDB approval page
+  const redirectToTmdbApproval = (requestToken: string, redirectUrl: string) => {
+    window.location.href = `https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=${encodeURIComponent(redirectUrl)}`;
+  };
 
-  //       // Check if we already have a valid stored guest session
-  //       const storedSession = getStoredGuestSession();
-  //       if (storedSession && storedSession.success && !isSessionExpired(storedSession.expires_at)) {
-  //         console.log('Using existing guest session:', storedSession.guest_session_id);
-  //         setIsAuthenticated(true);
-  //         setGuestSessionId(storedSession.guest_session_id);
-  //         setLoading(false);
-  //         return true;
-  //       }
-
-  //       // Create new guest session
-  //       console.log('Creating new guest session...');
-  //       const response = await fetch('/api/tmdb/guest-session');
-  //       if (!response.ok) {
-  //         throw new Error('Failed to create guest session');
-  //       }
-
-  //       const data: GuestSessionData = await response.json();
-  //       console.log('Guest session response:', data);
-
-  //       if (data.success) {
-  //         storeGuestSession(data);
-  //         setIsAuthenticated(true);
-  //         setGuestSessionId(data.guest_session_id);
-  //         return true;
-  //       } else {
-  //         setIsAuthenticated(false);
-  //         setError('Failed to create guest session');
-  //         return false;
-  //       }
-  //     } catch (err) {
-  //       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-  //       setError(errorMessage);
-  //       setIsAuthenticated(false);
-  //       console.error('Guest session error:', err);
-  //       return false;
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   // Run authentication on component mount
-  useEffect(() => {
-    // doAuthentication();
-    doRequestToken();
-  }, []);
-
-  const clearSession = () => {
+  // Step 3: Exchange request token for session ID
+  const createSession = async (requestToken: string) => {
+    setLoading(true);
+    setError(null);
     try {
-      localStorage.removeItem(SESSION_STORAGE_KEY);
-      setIsAuthenticated(false);
-      setSessionId(null);
-    } catch (error) {
-      console.error('Failed to clear guest session:', error);
+      const res = await fetch("/api/tmdb/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ request_token: requestToken }),
+      });
+      const data = await res.json();
+      if (data.success && data.session_id) {
+        setSessionId(data.session_id);
+        localStorage.setItem(SESSION_ID_KEY, data.session_id);
+        return data.session_id;
+      } else {
+        throw new Error("Failed to create session");
+      }
+    } catch (err) {
+      setError((err as Error).message);
+      return null;
+    } finally {
+      setLoading(false);
     }
   };
 
-  //   const refreshGuestSession = () => {
-  //     clearGuestSession();
-  //     return doAuthentication();
-  //   };
-  const refreshSession = () => {
-    clearSession();
-    return doRequestToken();
+  // Step 4: Get account ID
+  const fetchAccountId = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/tmdb/account");
+      const data = await res.json();
+      if (data.id) {
+        setAccountId(data.id);
+        localStorage.setItem(ACCOUNT_ID_KEY, data.id);
+        return data.id;
+      } else {
+        throw new Error("Failed to get account ID");
+      }
+    } catch (err) {
+      setError((err as Error).message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Step 5: Handle redirect back from TMDB
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const approved = urlParams.get("approved");
+    const requestToken = urlParams.get("request_token") || localStorage.getItem(REQUEST_TOKEN_KEY);
+
+    if (approved === "true" && requestToken && !sessionId) {
+      (async () => {
+        const newSessionId = await createSession(requestToken);
+        if (newSessionId) {
+          await fetchAccountId();
+        }
+      })();
+    }
+  }, []);
+
+  // Step 6: Logout/clear
+  const logout = () => {
+    setSessionId(null);
+    setAccountId(null);
+    localStorage.removeItem(SESSION_ID_KEY);
+    localStorage.removeItem(ACCOUNT_ID_KEY);
+    localStorage.removeItem(REQUEST_TOKEN_KEY);
   };
 
   return {
-    isAuthenticated,
-    hasToken, 
+    sessionId,
+    accountId,
     loading,
     error,
-    getStoredSession,
-        // doAuthentication,
-    doRequestToken,
-    clearSession,
-    refreshSession,
-    createSession,
-    getStoredRequestToken,
-    sessionId
+    getRequestToken,
+    redirectToTmdbApproval,
+    logout,
   };
 };

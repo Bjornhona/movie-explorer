@@ -4,7 +4,7 @@ import "@/styles/main.scss";
 import MoviesListPage from "./components/MoviesListPage.tsx";
 import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
 import NotFoundPage from "./components/NotFoundPage.tsx";
-// import { useAuthentication } from "./hooks/useAuthentication.ts";
+import WishlistedMoviePage from "./components/WishlistedMoviePage.tsx";
 
 interface AppProps {
   initialUrl: string;
@@ -13,11 +13,6 @@ interface AppProps {
 
 const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
   const [url, setUrl] = useState(initialUrl);
-  // const {refreshSession} = useAuthentication();
-
-  // useEffect(() => {
-  //   refreshSession();
-  // }, []);
 
  useEffect(() => {
     const onPopState = () => {
@@ -31,6 +26,7 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
   const pathname = new URL(url, "http://localhost").pathname;
 
   if (pathname === "/") return <MoviesListPage />;
+  if (pathname === "/wishlist") return <WishlistedMoviePage />;
 
   const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
 

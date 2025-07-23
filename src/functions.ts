@@ -8,3 +8,8 @@ export const getBackgroundColor = (category: string) => {
       return 'light-orange'
   }
 }
+
+export const handleMovieSelection = (movieId: number, category: string) => {
+  window.history.pushState({}, "", `/${category}/${movieId}`);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+};

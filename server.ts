@@ -158,6 +158,102 @@ async function startServer() {
     }
   });
 
+  app.get('/api/tmdb/account', async (req: Request, res: Response) => {
+    try {
+      const accessToken = process.env.TMDB_ACCESS_TOKEN;
+      if (!accessToken) {
+        return res.status(500).json({ error: 'TMDB access token not configured' });
+      }
+      const response = await fetch('https://api.themoviedb.org/3/account', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'accept': 'application/json',
+        }
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return res.status(response.status).json({ error: 'Failed to get account data', details: errorText });
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("TMDB Account Error:", error);
+      res.status(500).json({ error: 'Internal server error'});
+    }
+  });
+
+  app.post('/api/tmdb/watchlist', async (req: Request, res: Response) => {
+    try {
+      const accessToken = process.env.TMDB_ACCESS_TOKEN;
+      const { accountId, sessionId, addToWatchlist = true, movieId } = req.body;
+
+      if (!accessToken) {
+        return res.status(500).json({ error: 'TMDB access token not configured' });
+      }
+      if (!accountId) {
+        return res.status(400).json({ error: 'Missing accountId in request body' });
+      }
+      if (!movieId) {
+        return res.status(400).json({ error: 'Missing movieId in request body' });
+      }
+      // const response = await fetch(`https://api.themoviedb.org/3/account/${accountId}/watchlist`, {
+      const response = await fetch(`https://api.themoviedb.org/3/account/${accountId}/watchlist?session_id=${sessionId}`, {
+
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+        },
+        body: JSON.stringify({
+          media_type: "movie",
+          media_id: movieId,
+          watchlist: addToWatchlist  // true to add, false to remove
+        })
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return res.status(response.status).json({ error: 'Failed to add to watchlist', details: errorText });
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("TMDB Watchlist Error:", error);
+    }
+  });
+
+  // TMDB get user's watchlist movies proxy endpoint
+  app.get('/api/tmdb/watchlist', async (req: Request, res: Response) => {
+    try {
+      const accessToken = process.env.TMDB_ACCESS_TOKEN;
+      const { accountId, sessionId, page = 1 } = req.query;
+      if (!accessToken) {
+        return res.status(500).json({ error: 'TMDB access token not configured' });
+      }
+      if (!accountId || !sessionId) {
+        return res.status(400).json({ error: 'Missing accountId or sessionId' });
+      }
+      const url = `https://api.themoviedb.org/3/account/${accountId}/watchlist/movies?session_id=${sessionId}&page=${page}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'accept': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return res.status(response.status).json({ error: 'Failed to fetch watchlist', details: errorText });
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("TMDB Watchlist Fetch Error:", error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "custom",
