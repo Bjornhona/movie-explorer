@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { getBackgroundColor } from "../functions.ts";
 import StarIcon from "./icons/StarIcon.tsx";
@@ -7,6 +7,7 @@ import BookmarkIcon from "./icons/BookmarkIcon.tsx";
 import { useMovieById } from "../hooks/useMovieById.ts";
 import { useWishlist } from "../hooks/useWishlist.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
+import Toast from "./Toast.tsx";
 
 interface MovieDetailsPageProps {
   movieId: string;
@@ -14,7 +15,7 @@ interface MovieDetailsPageProps {
 }
 
 const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
-  const { movieById } = useMovieById(movieId);
+  const { movieById, loading: movieLoading, error: movieError } = useMovieById(movieId);
   const {
     sessionId,
     accountId,
@@ -31,6 +32,34 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
   } = useWishlist();
   const [wishlistReloadKey, setWishlistReloadKey] = useState(0);
   const { movies: wishlistMovies } = useWishlistMovies(accountId, sessionId, wishlistReloadKey);
+
+  // Toast state
+  const [showWishlistToast, setShowWishlistToast] = useState(false);
+  const [showAuthToast, setShowAuthToast] = useState(false);
+
+  useEffect(() => {
+    if (wishlistSuccess) {
+      setShowWishlistToast(true);
+      const timeout = setTimeout(() => setShowWishlistToast(false), 2500);
+      return () => clearTimeout(timeout);
+    }
+  }, [wishlistSuccess]);
+
+  useEffect(() => {
+    if (wishlistError) {
+      setShowWishlistToast(true);
+      const timeout = setTimeout(() => setShowWishlistToast(false), 2500);
+      return () => clearTimeout(timeout);
+    }
+  }, [wishlistError]);
+
+  useEffect(() => {
+    if (authError) {
+      setShowAuthToast(true);
+      const timeout = setTimeout(() => setShowAuthToast(false), 2500);
+      return () => clearTimeout(timeout);
+    }
+  }, [authError]);
 
   // Check if this movie is in the wishlist
   const isInWishlist = wishlistMovies.some(m => String(m.id) === String(movieId));
@@ -67,12 +96,25 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     }
   };
 
+  if (movieLoading) return <div>Loading movie details...</div>;
+  if (movieError) return <div style={{ color: 'red' }}>Error: {movieError}</div>;
+  if (!movieById) return <div>Movie not found.</div>;
+
+  const imageUrl = `https://image.tmdb.org/t/p/w500${movieById.backdrop_path}`;
+
   return (
     <div
       data-testid={"movie-details"}
       style={{ backgroundColor: getBackgroundColor(category) }}
     >
-      <h1>{movieById?.title}</h1>
+      <h1>{movieById.title}</h1>
+      <div>
+        <img
+          src={imageUrl}
+          alt={movieById.title}
+          style={{ width: "150px" }}
+        />
+      </div>
       <p>{category}</p>
       <button
         aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
@@ -81,13 +123,26 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
       >
         {getWishlistIcon()}
       </button>
-      {wishlistSuccess && (
-        <div style={{ color: 'green' }}>
-          {isInWishlist ? "Movie added to wishlist!" : "Movie removed from wishlist!"}
-        </div>
+      {showWishlistToast && (wishlistSuccess ? (
+        <Toast
+          message={isInWishlist ? "Movie added to wishlist!" : "Movie removed from wishlist!"}
+          color="green"
+          onClose={() => setShowWishlistToast(false)}
+        />
+      ) : wishlistError ? (
+        <Toast
+          message={`Failed to update wishlist: ${wishlistError}`}
+          color="red"
+          onClose={() => setShowWishlistToast(false)}
+        />
+      ) : null)}
+      {showAuthToast && authError && (
+        <Toast
+          message={`Auth error: ${authError}`}
+          color="red"
+          onClose={() => setShowAuthToast(false)}
+        />
       )}
-      {wishlistError && <div style={{ color: 'red' }}>Failed to update wishlist: {wishlistError}</div>}
-      {authError && <div style={{ color: 'red' }}>Auth error: {authError}</div>}
     </div>
   );
 };
