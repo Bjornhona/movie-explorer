@@ -5,6 +5,7 @@ import MoviesListPage from "./components/MoviesListPage.tsx";
 import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
 import NotFoundPage from "./components/NotFoundPage.tsx";
 import WishlistedMoviePage from "./components/WishlistedMoviePage.tsx";
+import NavBar from "./components/NavBar.tsx";
 
 interface AppProps {
   initialUrl: string;
@@ -25,18 +26,23 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
 
   const pathname = new URL(url, "http://localhost").pathname;
 
-  if (pathname === "/") return <MoviesListPage />;
-  if (pathname === "/wishlist") return <WishlistedMoviePage />;
-
-  const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
-
-  if (movieMatch) {
-    const category = movieMatch[1];
-    const movieId = movieMatch[2];
-    return <MovieDetailsPage movieId={movieId} category={category} />;
-  }
-
-  return <NotFoundPage />;
+  return (
+    <>
+      <NavBar />
+      {pathname === "/" && <MoviesListPage />}
+      {pathname === "/watchlist" && <WishlistedMoviePage />}
+      {/^\/([^/]+)\/(\d+)$/.test(pathname) && (() => {
+        const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
+        if (movieMatch) {
+          const category = movieMatch[1];
+          const movieId = movieMatch[2];
+          return <MovieDetailsPage movieId={movieId} category={category} />;
+        }
+        return null;
+      })()}
+      {!['/', '/watchlist'].includes(pathname) && !/^\/([^/]+)\/(\d+)$/.test(pathname) && <NotFoundPage />}
+    </>
+  );
 };
 
 export default App;

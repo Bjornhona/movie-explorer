@@ -23,9 +23,6 @@ export const useAuthentication = () => {
     storedAccountId && setAccountId(storedAccountId);
   }, []);
 
-  console.log(sessionId);
-  console.log(accountId);
-
   // Step 1: Get request token
   const getRequestToken = async () => {
     setLoading(true);
