@@ -1,35 +1,35 @@
 import { useState } from 'react';
 
-interface AddToWatchlistParams {
+interface AddToWishlistParams {
   accountId: string;
   sessionId: string;
   movieId: string;
-  addToWatchlist?: boolean;
+  addToWishlist?: boolean;
 }
 
-export const useWatchlist = () => {
+export const useWishlist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean | null>(null);
 
-  const addToWatchlist = async ({ accountId, sessionId, movieId, addToWatchlist = true }: AddToWatchlistParams) => {
+  const addToWishlist = async ({ accountId, sessionId, movieId, addToWishlist = true }: AddToWishlistParams) => {
     setLoading(true);
     setError(null);
     setSuccess(null);
     try {
-      const res = await fetch("/api/tmdb/watchlist", {
+      const res = await fetch("/api/tmdb/wishlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           accountId,
           sessionId,
           movieId,
-          addToWatchlist,
+          addToWishlist,
         }),
       });
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || 'Failed to update watchlist');
+        setError(data.error || 'Failed to update wishlist');
         setSuccess(false);
         return;
       }
@@ -42,5 +42,5 @@ export const useWatchlist = () => {
     }
   };
 
-  return { addToWatchlist, loading, error, success };
+  return { addToWishlist, loading, error, success };
 };

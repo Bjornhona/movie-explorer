@@ -14,31 +14,6 @@ async function startServer() {
   const app = express();
   app.use(express.json());
 
-  // TMDB guest session authentication proxy endpoint
-  // app.get('/api/tmdb/guest-session', async (req: Request, res: Response) => {
-  //   try {
-  //     const accessToken = process.env.TMDB_ACCESS_TOKEN;
-  //     if (!accessToken) {
-  //       return res.status(500).json({ error: 'TMDB access token not configured' });
-  //     }
-  //     const response = await fetch('https://api.themoviedb.org/3/authentication/guest_session/new', {
-  //       method: 'GET',
-  //       headers: {
-  //         'Authorization': `Bearer ${accessToken}`,
-  //         'accept': 'application/json',
-  //       },
-  //     });
-  //     if (!response.ok) {
-  //       return res.status(response.status).json({ error: 'Failed to create guest session' });
-  //     }
-  //     const data = await response.json();
-  //     res.json(data);
-  //   } catch (error) {
-  //     console.error("TMDB Guest Session Error:", error);
-  //     res.status(500).json({ error: 'Internal server error' });
-  //   }
-  // });
-
   // TMDB movies list proxy endpoint (supports category)
   app.get('/api/tmdb/movie/list', async (req: Request, res: Response) => {
     try {
@@ -183,10 +158,10 @@ async function startServer() {
     }
   });
 
-  app.post('/api/tmdb/watchlist', async (req: Request, res: Response) => {
+  app.post('/api/tmdb/wishlist', async (req: Request, res: Response) => {
     try {
       const accessToken = process.env.TMDB_ACCESS_TOKEN;
-      const { accountId, sessionId, addToWatchlist = true, movieId } = req.body;
+      const { accountId, sessionId, addToWishlist = true, movieId } = req.body;
 
       if (!accessToken) {
         return res.status(500).json({ error: 'TMDB access token not configured' });
@@ -209,12 +184,12 @@ async function startServer() {
         body: JSON.stringify({
           media_type: "movie",
           media_id: movieId,
-          watchlist: addToWatchlist  // true to add, false to remove
+          watchlist: addToWishlist
         })
       });
       if (!response.ok) {
         const errorText = await response.text();
-        return res.status(response.status).json({ error: 'Failed to add to watchlist', details: errorText });
+        return res.status(response.status).json({ error: 'Failed to add to wishlist', details: errorText });
       }
       const data = await response.json();
       res.json(data);
@@ -223,8 +198,8 @@ async function startServer() {
     }
   });
 
-  // TMDB get user's watchlist movies proxy endpoint
-  app.get('/api/tmdb/watchlist', async (req: Request, res: Response) => {
+  // TMDB get user's wishlist movies proxy endpoint
+  app.get('/api/tmdb/wishlist', async (req: Request, res: Response) => {
     try {
       const accessToken = process.env.TMDB_ACCESS_TOKEN;
       const { accountId, sessionId, page = 1 } = req.query;
@@ -244,7 +219,7 @@ async function startServer() {
       });
       if (!response.ok) {
         const errorText = await response.text();
-        return res.status(response.status).json({ error: 'Failed to fetch watchlist', details: errorText });
+        return res.status(response.status).json({ error: 'Failed to fetch wishlist', details: errorText });
       }
       const data = await response.json();
       res.json(data);

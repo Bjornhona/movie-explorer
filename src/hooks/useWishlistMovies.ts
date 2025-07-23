@@ -8,7 +8,7 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export const useWatchlistMovies = (accountId: string | null, sessionId: string | null, reloadKey: number = 0) => {
+export const useWishlistMovies = (accountId: string | null, sessionId: string | null, reloadKey: number = 0) => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
@@ -20,8 +20,8 @@ export const useWatchlistMovies = (accountId: string | null, sessionId: string |
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/tmdb/watchlist?accountId=${accountId}&sessionId=${sessionId}&page=${pageToFetch}`);
-      if (!response.ok) throw new Error('Failed to fetch watchlist movies');
+      const response = await fetch(`/api/tmdb/wishlist?accountId=${accountId}&sessionId=${sessionId}&page=${pageToFetch}`);
+      if (!response.ok) throw new Error('Failed to fetch wishlist movies');
       const data: MoviesResponse = await response.json();
       setMovies(prev => {
         if (pageToFetch === 1) return data.results;

@@ -1,12 +1,12 @@
 import { useRef, useCallback } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
-import { useWatchlistMovies } from "../hooks/useWatchlistMovies.ts";
+import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { handleMovieSelection } from '../functions.ts';
 import { Movie } from '../types.ts';
 
 const WishlistedMoviePage = () => {
   const { accountId, sessionId } = useAuthentication();
-  const { movies, loading, error, loadMore, hasMore } = useWatchlistMovies(accountId, sessionId);
+  const { movies, loading, error, loadMore, hasMore } = useWishlistMovies(accountId, sessionId);
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastMovieRef = useCallback(
@@ -32,8 +32,8 @@ const WishlistedMoviePage = () => {
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: 16 }}>
-      <h1>My Watchlist</h1>
-      {movies.length === 0 && !loading && <div>No movies in your watchlist.</div>}
+      <h1>My Wishlist</h1>
+      {movies.length === 0 && !loading && <div>No movies in your wishlist.</div>}
       {movies.map((movie: Movie, idx: number) => {
         const imageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
         return (

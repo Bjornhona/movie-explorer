@@ -5,8 +5,8 @@ import StarIcon from "./icons/StarIcon.tsx";
 import HeartIcon from "./icons/HeartIcon.tsx";
 import BookmarkIcon from "./icons/BookmarkIcon.tsx";
 import { useMovieById } from "../hooks/useMovieById.ts";
-import { useWatchlist } from "../hooks/useWatchlist.ts";
-import { useWatchlistMovies } from "../hooks/useWatchlistMovies.ts";
+import { useWishlist } from "../hooks/useWishlist.ts";
+import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 
 interface MovieDetailsPageProps {
   movieId: string;
@@ -24,16 +24,16 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     redirectToTmdbApproval,
   } = useAuthentication();
   const {
-    addToWatchlist,
-    loading: watchlistLoading,
-    error: watchlistError,
-    success: watchlistSuccess,
-  } = useWatchlist();
-  const [watchlistReloadKey, setWatchlistReloadKey] = useState(0);
-  const { movies: watchlistMovies } = useWatchlistMovies(accountId, sessionId, watchlistReloadKey);
+    addToWishlist,
+    loading: wishlistLoading,
+    error: wishlistError,
+    success: wishlistSuccess,
+  } = useWishlist();
+  const [wishlistReloadKey, setWishlistReloadKey] = useState(0);
+  const { movies: wishlistMovies } = useWishlistMovies(accountId, sessionId, wishlistReloadKey);
 
-  // Check if this movie is in the watchlist
-  const isInWatchlist = watchlistMovies.some(m => String(m.id) === String(movieId));
+  // Check if this movie is in the wishlist
+  const isInWishlist = wishlistMovies.some(m => String(m.id) === String(movieId));
 
   const handleLogin = async () => {
     const requestToken = await getRequestToken();
@@ -43,14 +43,14 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     }
   };
 
-  const handleAddToWatchlist = async () => {
+  const handleWishlistToggle = async () => {
     if (!accountId || !sessionId) return;
-    await addToWatchlist({ accountId, sessionId, movieId, addToWatchlist: true });
-    setWatchlistReloadKey(k => k + 1);
+    await addToWishlist({ accountId, sessionId, movieId, addToWishlist: !isInWishlist });
+    setWishlistReloadKey(k => k + 1);
   };
 
   const getWishlistIcon = () => {
-    const color = isInWatchlist
+    const color = isInWishlist
       ? category === "upcoming"
         ? "red"
         : category === "popular"
@@ -75,14 +75,18 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
       <h1>{movieById?.title}</h1>
       <p>{category}</p>
       <button
-        aria-label="Add to wishlist"
-        onClick={!sessionId || !accountId ? handleLogin : handleAddToWatchlist}
-        disabled={authLoading || watchlistLoading}
+        aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
+        disabled={authLoading || wishlistLoading}
       >
         {getWishlistIcon()}
       </button>
-      {watchlistSuccess && <div style={{ color: 'green' }}>Movie added to watchlist!</div>}
-      {watchlistError && <div style={{ color: 'red' }}>Failed to add to watchlist: {watchlistError}</div>}
+      {wishlistSuccess && (
+        <div style={{ color: 'green' }}>
+          {isInWishlist ? "Movie added to wishlist!" : "Movie removed from wishlist!"}
+        </div>
+      )}
+      {wishlistError && <div style={{ color: 'red' }}>Failed to update wishlist: {wishlistError}</div>}
       {authError && <div style={{ color: 'red' }}>Auth error: {authError}</div>}
     </div>
   );
