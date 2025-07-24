@@ -21,6 +21,8 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     error: movieError,
   } = useMovieById(movieId);
 
+  console.log(movieById);
+
   const {
     sessionId,
     accountId,
@@ -29,7 +31,7 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     getRequestToken,
     redirectToTmdbApproval,
   } = useAuthentication();
-  
+
   const {
     addToWishlist,
     loading: wishlistLoading,
@@ -115,16 +117,25 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
 
   const imageUrl = `https://image.tmdb.org/t/p/w500${movieById.backdrop_path}`;
 
+  const fontMap: Record<string, string> = {
+    upcoming: 'Raleway, sans-serif',
+    popular: 'Poppins, sans-serif',
+    top_rated: '"Playfair Display", serif'
+  };
+  const fontClass = fontMap[category] || 'Poppins, sans-serif';
+
   return (
     <div
       data-testid={"movie-details"}
       style={{ backgroundColor: getBackgroundColor(category) }}
     >
-      <h1>{movieById.title}</h1>
+      <h1 className={fontClass}>{movieById.title}</h1>
+      <p>{movieById.tagline}</p>
       <div>
         <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />
       </div>
       <p>{category}</p>
+      <p>{movieById.overview}</p>
       <button
         aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
         onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
@@ -157,6 +168,10 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
           onClose={() => setShowAuthToast(false)}
         />
       )}
+      <div aria-label={'info-area'}>
+        <a href={movieById.homepage}>Go to homepage</a>
+        <p>Release date: {movieById.release_date}</p>
+      </div>
     </div>
   );
 };

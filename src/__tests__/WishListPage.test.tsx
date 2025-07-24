@@ -19,7 +19,7 @@ vi.mock("../hooks/useWishlistMovies", () => ({
   useWishlistMovies: vi.fn()
 }));
 
-describe("Testing WishListPage", () => {
+describe("Testing WishlistPage", () => {
   const wishlist: Movie[] | null = [
     {
       id: 123,
@@ -28,7 +28,8 @@ describe("Testing WishListPage", () => {
       poster_path: '/poster1.jpg',
       tagline: '',
       backdrop_path: '/backdrop1.jpg',
-      release_date: new Date('2023-01-01'),
+      release_date: '2023-01-01',
+      homepage: 'https://link.to.some.movies.page.com'
     },
     {
       id: 234,
@@ -37,7 +38,8 @@ describe("Testing WishListPage", () => {
       poster_path: '/poster2.jpg',
       tagline: '',
       backdrop_path: '/backdrop2.jpg',
-      release_date: new Date('2023-01-02'),
+      release_date: '2023-01-02',
+      homepage: ''
     },
   ];
 

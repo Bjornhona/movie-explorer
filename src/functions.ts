@@ -1,11 +1,11 @@
 export const getBackgroundColor = (category: string) => {
   switch (category) {
     case 'upcoming':
-      return 'light-pink';
+      return 'pink';
     case 'popular':
-      return 'light-blue';
+      return 'blue';
     default:
-      return 'light-orange'
+      return 'orange'
   }
 }
 

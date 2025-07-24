@@ -7,7 +7,8 @@ export interface Movie {
   poster_path: string;
   tagline: string;
   backdrop_path: string;
-  release_date: Date;
+  release_date: string;
+  homepage: string;
 }
 
 export interface MovieCardProps {
