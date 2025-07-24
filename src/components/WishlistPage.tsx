@@ -1,13 +1,16 @@
 import { useRef, useCallback } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
-import { handleMovieSelection } from '../functions.ts';
+import { handleMovieSelection } from "../functions.ts";
 import MovieWishlistCard from "./MovieWishlistCard.tsx";
-import { Movie } from '../types.ts';
+import { Movie } from "../types.ts";
 
 const WishlistedMoviePage = () => {
   const { accountId, sessionId } = useAuthentication();
-  const { movies, loading, error, loadMore, hasMore } = useWishlistMovies(accountId, sessionId);
+  const { movies, loading, error, loadMore, hasMore } = useWishlistMovies(
+    accountId,
+    sessionId
+  );
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastMovieRef = useCallback(
@@ -15,7 +18,7 @@ const WishlistedMoviePage = () => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver(
-        entries => {
+        (entries) => {
           if (entries[0].isIntersecting && hasMore && !loading) {
             loadMore();
           }
@@ -28,19 +31,30 @@ const WishlistedMoviePage = () => {
   );
 
   const handleCardClick = (movieId: number) => {
-    handleMovieSelection(movieId, 'popular');
-  }
+    handleMovieSelection(movieId, "popular");
+  };
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 16 }}>
+    <div style={{ maxWidth: 600, margin: "0 auto", padding: 16 }}>
       <h1>My Wishlist</h1>
-      {movies.length === 0 && !loading && <div>No movies in your wishlist.</div>}
-      {movies.map((movie: Movie, idx: number) => <MovieWishlistCard key={movie.id} movie={movie} ref={idx === movies.length - 1 ? lastMovieRef : undefined} onClick={handleCardClick} />)}
+      {movies.length === 0 && !loading && (
+        <div>No movies in your wishlist yet.</div>
+      )}
+      {movies.map((movie: Movie, idx: number) => {
+        const movieRef = idx === movies.length - 1 ? lastMovieRef : undefined;
+        return (
+        <MovieWishlistCard
+          key={movie.id}
+          movie={movie}
+          ref={movieRef}
+          onClick={handleCardClick}
+        />);
+      })}
       {loading && <div>Loading more movies...</div>}
-      {error && <div style={{ color: 'red' }}>Error: {error}</div>}
+      {error && <div style={{ color: "red" }}>Error: {error}</div>}
       {!hasMore && <div>No more movies.</div>}
     </div>
   );
 };
 
-export default WishlistedMoviePage; 
+export default WishlistedMoviePage;

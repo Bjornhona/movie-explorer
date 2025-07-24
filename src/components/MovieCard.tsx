@@ -1,6 +1,7 @@
+import { forwardRef } from 'react';
 import { MovieCardProps } from '../types.ts';
 
-const MovieCard = ({movie, ref, onClick}: MovieCardProps) => {
+const MovieCard = forwardRef<HTMLDivElement, MovieCardProps>(({ movie, onClick }, ref) => {
   const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
   return (
@@ -21,7 +22,7 @@ const MovieCard = ({movie, ref, onClick}: MovieCardProps) => {
         style={{ width: "150px" }}
       />
     </div>
-  )
-}
+  );
+});
 
 export default MovieCard;

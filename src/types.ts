@@ -12,7 +12,6 @@ export interface Movie {
 
 export interface MovieCardProps {
   movie: Movie;
-  ref: Ref<HTMLDivElement> | undefined;
   onClick: (movieId: number) => void;
 }
 

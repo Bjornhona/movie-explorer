@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import MoviesListPage from '../components/MoviesListPage.tsx';
-import { describe, it, vi, expect } from 'vitest';
+// import { describe, it, vi, expect } from 'vitest';
 
 describe('Testing MovieListPage', () => {
   let systemUnderTest;

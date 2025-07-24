@@ -15,7 +15,12 @@ interface MovieDetailsPageProps {
 }
 
 const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
-  const { movieById, loading: movieLoading, error: movieError } = useMovieById(movieId);
+  const {
+    movieById,
+    loading: movieLoading,
+    error: movieError,
+  } = useMovieById(movieId);
+
   const {
     sessionId,
     accountId,
@@ -24,16 +29,20 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     getRequestToken,
     redirectToTmdbApproval,
   } = useAuthentication();
+  
   const {
     addToWishlist,
     loading: wishlistLoading,
     error: wishlistError,
     success: wishlistSuccess,
   } = useWishlist();
-  const [wishlistReloadKey, setWishlistReloadKey] = useState(0);
-  const { movies: wishlistMovies } = useWishlistMovies(accountId, sessionId, wishlistReloadKey);
 
-  // Toast state
+  const [wishlistReloadKey, setWishlistReloadKey] = useState(0);
+  const { movies: wishlistMovies } = useWishlistMovies(
+    accountId,
+    sessionId,
+    wishlistReloadKey
+  );
   const [showWishlistToast, setShowWishlistToast] = useState(false);
   const [showAuthToast, setShowAuthToast] = useState(false);
 
@@ -62,42 +71,46 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
   }, [authError]);
 
   // Check if this movie is in the wishlist
-  const isInWishlist = wishlistMovies.some(m => String(m.id) === String(movieId));
+  const isInWishlist = wishlistMovies.some(
+    (m) => String(m.id) === String(movieId)
+  );
 
   const handleLogin = async () => {
     const requestToken = await getRequestToken();
     if (requestToken) {
-      const redirectUrl = window.location.origin + window.location.pathname + window.location.search;
+      const redirectUrl =
+        window.location.origin +
+        window.location.pathname +
+        window.location.search;
       redirectToTmdbApproval(requestToken, redirectUrl);
     }
   };
 
   const handleWishlistToggle = async () => {
     if (!accountId || !sessionId) return;
-    await addToWishlist({ accountId, sessionId, movieId, addToWishlist: !isInWishlist });
-    setWishlistReloadKey(k => k + 1);
+    await addToWishlist({
+      accountId,
+      sessionId,
+      movieId,
+      addToWishlist: !isInWishlist,
+    });
+    setWishlistReloadKey((k) => k + 1);
   };
 
   const getWishlistIcon = () => {
-    const color = isInWishlist
-      ? category === "upcoming"
-        ? "red"
-        : category === "popular"
-        ? "gold"
-        : "teal"
-      : "grey";
     switch (category) {
       case "upcoming":
-        return <HeartIcon color={color} />;
+        return <HeartIcon color={isInWishlist ? "red" : "gray"} />;
       case "popular":
-        return <StarIcon color={color} />;
+        return <StarIcon color={isInWishlist ? "gold" : "gray"} />;
       default:
-        return <BookmarkIcon color={color} />;
+        return <BookmarkIcon color={isInWishlist ? "teal" : "gray"} />;
     }
   };
 
   if (movieLoading) return <div>Loading movie details...</div>;
-  if (movieError) return <div style={{ color: 'red' }}>Error: {movieError}</div>;
+  if (movieError)
+    return <div style={{ color: "red" }}>Error: {movieError}</div>;
   if (!movieById) return <div>Movie not found.</div>;
 
   const imageUrl = `https://image.tmdb.org/t/p/w500${movieById.backdrop_path}`;
@@ -109,11 +122,7 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     >
       <h1>{movieById.title}</h1>
       <div>
-        <img
-          src={imageUrl}
-          alt={movieById.title}
-          style={{ width: "150px" }}
-        />
+        <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />
       </div>
       <p>{category}</p>
       <button
@@ -123,19 +132,24 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
       >
         {getWishlistIcon()}
       </button>
-      {showWishlistToast && (wishlistSuccess ? (
-        <Toast
-          message={isInWishlist ? "Movie added to wishlist!" : "Movie removed from wishlist!"}
-          color="green"
-          onClose={() => setShowWishlistToast(false)}
-        />
-      ) : wishlistError ? (
-        <Toast
-          message={`Failed to update wishlist: ${wishlistError}`}
-          color="red"
-          onClose={() => setShowWishlistToast(false)}
-        />
-      ) : null)}
+      {showWishlistToast &&
+        (wishlistSuccess ? (
+          <Toast
+            message={
+              isInWishlist
+                ? "Movie added to wishlist!"
+                : "Movie removed from wishlist!"
+            }
+            color="green"
+            onClose={() => setShowWishlistToast(false)}
+          />
+        ) : wishlistError ? (
+          <Toast
+            message={`Failed to update wishlist: ${wishlistError}`}
+            color="red"
+            onClose={() => setShowWishlistToast(false)}
+          />
+        ) : null)}
       {showAuthToast && authError && (
         <Toast
           message={`Auth error: ${authError}`}

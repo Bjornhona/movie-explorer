@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import MovieCard from "../components/MovieCard.tsx";
-import { describe, it, vi, expect } from "vitest";
+// import { describe, it, vi, expect } from "vitest";
 import { Movie } from "../types.ts";
 
 describe("Testing MovieCard Component", () => {

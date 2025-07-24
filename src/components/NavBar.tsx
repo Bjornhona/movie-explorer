@@ -26,9 +26,9 @@ const NavBar = () => {
       </span>
       <span
         style={{ cursor: "pointer", fontWeight: 600 }}
-        onClick={() => handleNav("/watchlist")}
+        onClick={() => handleNav("/wishlist")}
       >
-        My Watchlist
+        My Wishlist
       </span>
     </nav>
   );
