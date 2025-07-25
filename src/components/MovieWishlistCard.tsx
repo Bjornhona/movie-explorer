@@ -10,7 +10,7 @@ const MovieWishlistCard = forwardRef<HTMLDivElement, MovieCardProps>(({ movie, o
       ref={ref}
       onClick={() => onClick(movie.id)}
     >
-      <img src={imageUrl} alt={movie.title} style={{ width: "150px" }} />
+      <img src={imageUrl} alt={movie.title} style={{ width: "150px" }} loading="lazy" />
       <p data-testid={'movie-wishlist-title'}>{movie.title}</p>
     </div>
   );

@@ -2,6 +2,7 @@ import { Category } from './types.ts';
 import StarIcon from "./components/icons/StarIcon.tsx";
 import HeartIcon from "./components/icons/HeartIcon.tsx";
 import BookmarkIcon from "./components/icons/BookmarkIcon.tsx";
+import { NavigationLink } from './types.ts';
 
 export const BASE_URL = 'http://localhost:3000';
 
@@ -34,4 +35,15 @@ export const CATEGORIES: Category[] = [
     bgColor: 'orange',
     fontFamily: 'Playfair Display, serif',
   }
+];
+
+export const NAVIGATION_LINKS: NavigationLink[] = [
+  {
+    name: "Movies",
+    route: "/",
+  },
+  {
+    name: "My Wishlist",
+    route: "/wishlist",
+  },
 ];

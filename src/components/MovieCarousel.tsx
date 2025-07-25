@@ -15,7 +15,7 @@ const MovieCarousel = ({
   const { movies, loading, error, loadMore, hasMore } = useMovies(categoryId);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // Attach observer to the last movie card (rightmost)
+  // Attach observer to the last movie card
   const lastMovieRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading) return;
@@ -35,7 +35,7 @@ const MovieCarousel = ({
 
   const handleCardClick = (movieId: number) => {
     handleMovieSelection(movieId, categoryId);
-  }
+  };
 
   return (
     <div data-testid={`carousel-${categoryId}`} style={{ padding: 16 }}>
@@ -55,7 +55,12 @@ const MovieCarousel = ({
           const imageRef = idx === movies.length - 1 ? lastMovieRef : undefined;
 
           return (
-            <MovieCard key={movie.id} movie={movie} ref={imageRef} onClick={handleCardClick} />
+            <MovieCard
+              key={movie.id}
+              movie={movie}
+              ref={imageRef}
+              onClick={handleCardClick}
+            />
           );
         })}
         {loading && movies.length > 0 && <Loading />}

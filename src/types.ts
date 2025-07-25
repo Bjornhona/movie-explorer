@@ -35,3 +35,8 @@ export interface Category {
   bgColor: string;
   fontFamily: string;
 }
+
+export interface NavigationLink {
+  name: string;
+  route: string;
+}
