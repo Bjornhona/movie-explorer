@@ -21,7 +21,8 @@ describe('MovieCarousel', () => {
       poster_path: '/poster1.jpg',
       tagline: 'Some test 1 tagline',
       backdrop_path: '/backdrop1.jpg',
-      release_date: new Date('2023-01-01'),
+      release_date: '2023-01-01',
+      homepage: 'https://some-test-homepage-path.com'
     },
     {
       id: 234,
@@ -30,7 +31,8 @@ describe('MovieCarousel', () => {
       poster_path: '/poster2.jpg',
       tagline: 'Some test 2 tagline',
       backdrop_path: '/backdrop2.jpg',
-      release_date: new Date('2023-01-02'),
+      release_date: '2023-01-02',
+      homepage: 'https://some-other-test-homepage-path.com'
     },
   ];
 

@@ -11,7 +11,8 @@ describe("Testing MovieCard Component", () => {
     overview: "",
     poster_path: "/test.jpg",
     backdrop_path: "/test.jpg",
-    release_date: new Date()
+    release_date: '24-12-1975',
+    homepage: 'https://some-homepage-path.com'
   };
 
   const handleClick = vi.fn();
