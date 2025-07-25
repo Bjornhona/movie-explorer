@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import MovieDetailsPage from "../components/MovieDetailsPage.tsx";
 import { Movie, MovieDetailsProps } from "../types.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
+import { CATEGORIES } from "../constants.ts";
+import { Category } from '../types.ts';
 
 const mockedMovie: Movie = {
   id: 123,
@@ -48,7 +50,7 @@ vi.mock("../hooks/useWishlistMovies", () => ({
 
 describe("Testing MovieListPage", () => {
   const moviesDetailsProps: MovieDetailsProps = {
-    category: "upcoming",
+    categoryId: "upcoming",
     movieId: "123",
   };
 
@@ -64,6 +66,8 @@ describe("Testing MovieListPage", () => {
     ...emptyWishlistMoviesReturnValue,
     movies: [mockedMovie]
   }
+
+  const infoAreaCategory = CATEGORIES.find((c: Category) => c.id === moviesDetailsProps.categoryId) || CATEGORIES[0];
 
   afterEach(() => vi.restoreAllMocks());
 
@@ -121,7 +125,7 @@ describe("Testing MovieListPage", () => {
     });
 
     it("GIVEN a category WHEN component renders THEN the category should show in the additional info area", () => {
-      const movieCategory = screen.getByText(moviesDetailsProps.category);
+      const movieCategory = screen.getByText(infoAreaCategory.name);
       expect(movieCategory).toBeInTheDocument();
     });
 
@@ -144,7 +148,7 @@ describe("Testing MovieListPage", () => {
   describe("with Popular as category and initialMovie given", () => {
     const moviesDetailsPropsPopular: MovieDetailsProps = {
       ...moviesDetailsProps,
-      category: "popular",
+      categoryId: "popular",
     };
 
     beforeEach(() => {

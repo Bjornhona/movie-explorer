@@ -8,7 +8,7 @@ interface MoviesResponse {
   total_results: number;
 }
 
-export const useMovies = (category: string = 'upcoming') => {
+export const useMovies = (categoryId: string = 'upcoming') => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
@@ -19,7 +19,7 @@ export const useMovies = (category: string = 'upcoming') => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/tmdb/movie/list?category=${category}&page=${pageToFetch}`);
+      const response = await fetch(`/api/tmdb/movie/list?category=${categoryId}&page=${pageToFetch}`);
       if (!response.ok) throw new Error('Failed to fetch movies');
       const data: MoviesResponse = await response.json();
       setMovies(prev => {
@@ -35,11 +35,11 @@ export const useMovies = (category: string = 'upcoming') => {
     } finally {
       setLoading(false);
     }
-  }, [category]);
+  }, [categoryId]);
 
   // Initial load
   useEffect(() => {
-    setMovies([]); // Reset movies when category changes
+    setMovies([]); // Reset movies when categoryId changes
     setPage(1);
     setTotalPages(null);
     fetchMovies(1);

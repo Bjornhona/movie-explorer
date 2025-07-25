@@ -18,11 +18,20 @@ export interface MovieCardProps {
 
 export interface MovieDetailsProps {
   movieId: string;
-  category: string;
+  categoryId: string;
 }
 
 export interface IconProps {
   color?: string;
   size?: number;
   strokeWidth?: number;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  iconColor: string;
+  bgColor: string;
+  fontFamily: string;
 }

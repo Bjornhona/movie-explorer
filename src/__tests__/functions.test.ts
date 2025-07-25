@@ -1,17 +1,4 @@
-import { getBackgroundColor, handleMovieSelection } from '../functions.ts';
-
-describe('Testing getBackgroundColor function', () => {
-  it('returns pink for categoryupcoming', () => {
-    expect(getBackgroundColor('upcoming')).toBe('pink');
-  });
-  it('returns blue for category popular', () => {
-    expect(getBackgroundColor('popular')).toBe('blue');
-  });
-  it('returns orange for any other category', () => {
-    expect(getBackgroundColor('top_rated')).toBe('orange');
-    expect(getBackgroundColor('anything')).toBe('orange');
-  });
-});
+import { handleMovieSelection } from '../functions.ts';
 
 describe('Testing handleMovieSelection function', () => {
   beforeEach(() => {

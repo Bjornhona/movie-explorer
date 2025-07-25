@@ -7,12 +7,12 @@ import { handleMovieSelection } from "../functions.ts";
 
 const MovieCarousel = ({
   title,
-  category,
+  categoryId,
 }: {
   title: string;
-  category: string;
+  categoryId: string;
 }) => {
-  const { movies, loading, error, loadMore, hasMore } = useMovies(category);
+  const { movies, loading, error, loadMore, hasMore } = useMovies(categoryId);
   const observer = useRef<IntersectionObserver | null>(null);
 
   // Attach observer to the last movie card (rightmost)
@@ -34,11 +34,11 @@ const MovieCarousel = ({
   );
 
   const handleCardClick = (movieId: number) => {
-    handleMovieSelection(movieId, category);
+    handleMovieSelection(movieId, categoryId);
   }
 
   return (
-    <div data-testid={`carousel-${category}`} style={{ padding: 16 }}>
+    <div data-testid={`carousel-${categoryId}`} style={{ padding: 16 }}>
       <h4>{title}</h4>
       <div
         style={{

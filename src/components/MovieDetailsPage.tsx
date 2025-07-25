@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
-import { getBackgroundColor } from "../functions.ts";
+// import { getBackgroundColor } from "../functions.ts";
 import StarIcon from "./icons/StarIcon.tsx";
 import HeartIcon from "./icons/HeartIcon.tsx";
 import BookmarkIcon from "./icons/BookmarkIcon.tsx";
@@ -8,13 +8,15 @@ import { useMovieById } from "../hooks/useMovieById.ts";
 import { useWishlist } from "../hooks/useWishlist.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import Toast from "./Toast.tsx";
+import { CATEGORIES } from '../constants.ts';
+import { Category } from "../types.ts";
 
 interface MovieDetailsPageProps {
   movieId: string;
-  category: string;
+  categoryId: string;
 }
 
-const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
+const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
   const {
     movieById,
     loading: movieLoading,
@@ -99,16 +101,16 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
     setWishlistReloadKey((k) => k + 1);
   };
 
-  const getWishlistIcon = () => {
-    switch (category) {
-      case "upcoming":
-        return <HeartIcon color={isInWishlist ? "red" : "gray"} />;
-      case "popular":
-        return <StarIcon color={isInWishlist ? "gold" : "gray"} />;
-      default:
-        return <BookmarkIcon color={isInWishlist ? "teal" : "gray"} />;
-    }
-  };
+  // const getWishlistIcon = () => {
+  //   switch (category) {
+  //     case "upcoming":
+  //       return <HeartIcon color={isInWishlist ? "red" : "gray"} />;
+  //     case "popular":
+  //       return <StarIcon color={isInWishlist ? "gold" : "gray"} />;
+  //     default:
+  //       return <BookmarkIcon color={isInWishlist ? "teal" : "gray"} />;
+  //   }
+  // };
 
   if (movieLoading) return <div>Loading movie details...</div>;
   if (movieError)
@@ -117,31 +119,28 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
 
   const imageUrl = `https://image.tmdb.org/t/p/w500${movieById.backdrop_path}`;
 
-  const fontMap: Record<string, string> = {
-    upcoming: 'Raleway, sans-serif',
-    popular: 'Poppins, sans-serif',
-    top_rated: 'Playfair Display, serif'
-  };
-  const fontFamily = fontMap[category] || 'Poppins, sans-serif';
+  const currentCategory = CATEGORIES.find((c: Category) => c.id === categoryId) || CATEGORIES[0];
+  const backgroundColor = currentCategory.bgColor;
+  const fontFamily = currentCategory?.fontFamily;
 
   return (
     <div
       data-testid={"movie-details"}
-      style={{ backgroundColor: getBackgroundColor(category) }}
+      style={{ backgroundColor: backgroundColor }}
     >
       <h1 style={{ fontFamily }}>{movieById.title}</h1>
       <p>{movieById.tagline}</p>
       <div>
         <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />
       </div>
-      <p>{category}</p>
+      <p>{currentCategory.name}</p>
       <p>{movieById.overview}</p>
       <button
         aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
         onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
         disabled={authLoading || wishlistLoading}
       >
-        {getWishlistIcon()}
+        {/* {getWishlistIcon()} */}
       </button>
       {showWishlistToast &&
         (wishlistSuccess ? (

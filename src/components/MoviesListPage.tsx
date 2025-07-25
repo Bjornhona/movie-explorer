@@ -1,12 +1,13 @@
 import MovieCarousel from "./MovieCarousel.tsx";
+import {CATEGORIES} from '../constants.ts';
 
 const MoviesListPage = () => {
   return (
     <div style={{ padding: 16 }}>
       <h2>Movies</h2>
-      <MovieCarousel title={"Upcoming"} category={"upcoming"} />
-      <MovieCarousel title={"Popular"} category={"popular"} />
-      <MovieCarousel title={"Top Rated"} category={"top_rated"} />
+      {CATEGORIES.map((category) => (
+        <MovieCarousel title={category.name} categoryId={category.id} />
+      ))}
     </div>
   );
 };
