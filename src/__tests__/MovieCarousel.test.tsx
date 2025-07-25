@@ -46,7 +46,7 @@ describe('MovieCarousel', () => {
 
   const movieCarouselProps = {
     title: 'Popular',
-    category: 'popular'
+    categoryId: 'popular'
   }
   describe('with movie list and no errors', () => {
     beforeEach(() => {
@@ -77,7 +77,7 @@ describe('MovieCarousel', () => {
       const cards = screen.getAllByTestId('movie-card');
       fireEvent.click(cards[0]);
       expect(functions.handleMovieSelection).toHaveBeenCalled();
-      expect(functions.handleMovieSelection).toHaveBeenCalledWith(mockedMovies[0].id, movieCarouselProps.category);
+      expect(functions.handleMovieSelection).toHaveBeenCalledWith(mockedMovies[0].id, movieCarouselProps.categoryId);
     });
 
     it("GIVEN a movies list WHEN component renders and no more movies in list THEN a message should show", () => {

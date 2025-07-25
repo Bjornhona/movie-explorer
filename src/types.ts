@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import type { JSX, SVGProps } from "react";
 
 export interface Movie {
   id: number;
@@ -30,7 +30,7 @@ export interface IconProps {
 export interface Category {
   id: string;
   name: string;
-  icon: string;
+  icon: (props: IconProps) => JSX.Element;
   iconColor: string;
   bgColor: string;
   fontFamily: string;

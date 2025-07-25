@@ -34,9 +34,9 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
       {/^\/([^/]+)\/(\d+)$/.test(pathname) && (() => {
         const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
         if (movieMatch) {
-          const category = movieMatch[1];
+          const categoryId = movieMatch[1];
           const movieId = movieMatch[2];
-          return <MovieDetailsPage movieId={movieId} category={category} />;
+          return <MovieDetailsPage movieId={movieId} categoryId={categoryId} />;
         }
         return null;
       })()}

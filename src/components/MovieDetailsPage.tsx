@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
-// import { getBackgroundColor } from "../functions.ts";
-import StarIcon from "./icons/StarIcon.tsx";
-import HeartIcon from "./icons/HeartIcon.tsx";
-import BookmarkIcon from "./icons/BookmarkIcon.tsx";
 import { useMovieById } from "../hooks/useMovieById.ts";
 import { useWishlist } from "../hooks/useWishlist.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
@@ -101,17 +97,6 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
     setWishlistReloadKey((k) => k + 1);
   };
 
-  // const getWishlistIcon = () => {
-  //   switch (category) {
-  //     case "upcoming":
-  //       return <HeartIcon color={isInWishlist ? "red" : "gray"} />;
-  //     case "popular":
-  //       return <StarIcon color={isInWishlist ? "gold" : "gray"} />;
-  //     default:
-  //       return <BookmarkIcon color={isInWishlist ? "teal" : "gray"} />;
-  //   }
-  // };
-
   if (movieLoading) return <div>Loading movie details...</div>;
   if (movieError)
     return <div style={{ color: "red" }}>Error: {movieError}</div>;
@@ -121,27 +106,33 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
 
   const currentCategory = CATEGORIES.find((c: Category) => c.id === categoryId) || CATEGORIES[0];
   const backgroundColor = currentCategory.bgColor;
-  const fontFamily = currentCategory?.fontFamily;
+  const fontFamily = currentCategory.fontFamily;
+  const getWishlistIcon = ({ icon: Icon }: Category) => <Icon size={24} color={isInWishlist ? currentCategory.iconColor : 'gray'} />
 
   return (
     <div
       data-testid={"movie-details"}
       style={{ backgroundColor: backgroundColor }}
     >
-      <h1 style={{ fontFamily }}>{movieById.title}</h1>
-      <p>{movieById.tagline}</p>
-      <div>
-        <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />
+      <div className={'header'}>
+        <h1 style={{ fontFamily }}>{movieById.title}</h1>
+        <p>{movieById.tagline}</p>
       </div>
-      <p>{currentCategory.name}</p>
-      <p>{movieById.overview}</p>
-      <button
-        aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
-        onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
-        disabled={authLoading || wishlistLoading}
-      >
-        {/* {getWishlistIcon()} */}
-      </button>
+      <div className={'content'}>
+        <div className={'image'}>
+          <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />
+        </div>
+        <div className={'description'}>
+          <p>{movieById.overview}</p>
+          <button
+            aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
+            disabled={authLoading || wishlistLoading}
+          >
+            {getWishlistIcon(currentCategory)}
+          </button>
+        </div>
+      </div>
       {showWishlistToast &&
         (wishlistSuccess ? (
           <Toast
@@ -167,9 +158,10 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
           onClose={() => setShowAuthToast(false)}
         />
       )}
-      <div aria-label={'info-area'}>
+      <div className={'info-area'} aria-label={'info-area'}>
         <a href={movieById.homepage}>Go to homepage</a>
         <p>Release date: {movieById.release_date}</p>
+        <p>{currentCategory.name}</p>
       </div>
     </div>
   );
