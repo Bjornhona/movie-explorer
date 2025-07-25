@@ -6,6 +6,7 @@ import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
 import NotFoundPage from "./components/NotFoundPage.tsx";
 import WishlistedMoviePage from "./components/WishlistPage.tsx";
 import NavBar from "./components/NavBar.tsx";
+import LogoutPage from "./components/LogoutPage.tsx";
 
 interface AppProps {
   initialUrl: string;
@@ -31,6 +32,7 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
       <NavBar />
       {pathname === "/" && <MoviesListPage />}
       {pathname === "/wishlist" && <WishlistedMoviePage />}
+      {pathname === "/logout" && <LogoutPage />}
       {/^\/([^/]+)\/(\d+)$/.test(pathname) && (() => {
         const movieMatch = pathname.match(/^\/([^/]+)\/(\d+)$/);
         if (movieMatch) {
@@ -40,7 +42,7 @@ const App: FC<AppProps> = ({ initialUrl, initialMovie }) => {
         }
         return null;
       })()}
-      {!['/', '/wishlist'].includes(pathname) && !/^\/([^/]+)\/(\d+)$/.test(pathname) && <NotFoundPage />}
+      {!['/', '/wishlist', '/logout'].includes(pathname) && !/^\/([^/]+)\/(\d+)$/.test(pathname) && <NotFoundPage />}
     </>
   );
 };
