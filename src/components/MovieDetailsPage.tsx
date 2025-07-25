@@ -120,16 +120,16 @@ const MovieDetailsPage = ({ movieId, category }: MovieDetailsPageProps) => {
   const fontMap: Record<string, string> = {
     upcoming: 'Raleway, sans-serif',
     popular: 'Poppins, sans-serif',
-    top_rated: '"Playfair Display", serif'
+    top_rated: 'Playfair Display, serif'
   };
-  const fontClass = fontMap[category] || 'Poppins, sans-serif';
+  const fontFamily = fontMap[category] || 'Poppins, sans-serif';
 
   return (
     <div
       data-testid={"movie-details"}
       style={{ backgroundColor: getBackgroundColor(category) }}
     >
-      <h1 className={fontClass}>{movieById.title}</h1>
+      <h1 style={{ fontFamily }}>{movieById.title}</h1>
       <p>{movieById.tagline}</p>
       <div>
         <img src={imageUrl} alt={movieById.title} style={{ width: "150px" }} />

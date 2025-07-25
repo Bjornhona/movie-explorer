@@ -3,16 +3,16 @@ import MovieDetailsPage from "../components/MovieDetailsPage.tsx";
 import { Movie, MovieDetailsProps } from "../types.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 
-  const mockedMovie: Movie = {
-    id: 123,
-    title: "Movie One",
-    overview: "Test description text",
-    tagline: "When masters unite a new legacy begins.",
-    poster_path: "/test-poster.jpg",
-    backdrop_path: "/test-backdrop.jpg",
-    release_date: '1974-12-20',
-    homepage: 'https://link.to.some.movies.page.com'
-  };
+const mockedMovie: Movie = {
+  id: 123,
+  title: "Movie One",
+  overview: "Test description text",
+  tagline: "When masters unite a new legacy begins.",
+  poster_path: "/test-poster.jpg",
+  backdrop_path: "/test-backdrop.jpg",
+  release_date: '1974-12-20',
+  homepage: 'https://link.to.some.movies.page.com'
+};
 
 vi.mock('../hooks/useAuthentication', () => ({
   useAuthentication: () => ({
@@ -128,7 +128,7 @@ describe("Testing MovieListPage", () => {
     it("GIVEN the Upcoming movie category WHEN component renders THEN a specific font should show", () => {
       const title = screen.getByText(mockedMovie.title);
       const style = window.getComputedStyle(title);
-      expect(style.fontFamily).toMatch(/Impact/i);
+      expect(style.fontFamily).toMatch(/Raleway/i);
     });
 
     it("GIVEN the Upcoming movie category WHEN component renders THEN the heart icon button should show", () => {

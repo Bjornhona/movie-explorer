@@ -1,10 +1,16 @@
-import React from "react";
-
 const NavBar = () => {
   const handleNav = (path: string) => {
     window.history.pushState({}, "", path);
     window.dispatchEvent(new PopStateEvent("popstate"));
   };
+
+  const navigationLinks = [{
+    name: 'Movies',
+    route: '/'
+  }, {
+    name: 'My Wishlist',
+    route: '/wishlist'
+  }];
 
   return (
     <nav style={{
@@ -18,18 +24,15 @@ const NavBar = () => {
       marginBottom: 24,
       boxShadow: "0 2px 8px rgba(0,0,0,0.07)"
     }}>
-      <span
-        style={{ cursor: "pointer", fontWeight: 600 }}
-        onClick={() => handleNav("/")}
-      >
-        Movies
-      </span>
-      <span
-        style={{ cursor: "pointer", fontWeight: 600 }}
-        onClick={() => handleNav("/wishlist")}
-      >
-        My Wishlist
-      </span>
+      {navigationLinks.map((navLink, index) => 
+        <span
+          key={index}
+          style={{ cursor: "pointer", fontWeight: 600 }}
+          onClick={() => handleNav(navLink.route)}
+        >
+          {navLink.name}
+        </span>
+      )}
     </nav>
   );
 };
