@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-
-const REQUEST_TOKEN_KEY = "tmdb_request_token";
-const SESSION_ID_KEY = "tmdb_session_id";
-const ACCOUNT_ID_KEY = "tmdb_account_id";
+import { REQUEST_TOKEN_KEY, SESSION_ID_KEY, ACCOUNT_ID_KEY } from "../constants.ts";
 
 export const useAuthentication = () => {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -130,5 +127,7 @@ export const useAuthentication = () => {
     getRequestToken,
     redirectToTmdbApproval,
     logout,
+    createSession,
+    fetchAccountId,
   };
 };
