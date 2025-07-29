@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Design System Variables
 // Colors
 $primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -149,24 +151,24 @@ $z-index: (
 
 // Mixins
 @mixin respond-to($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (min-width: map-get($breakpoints, $breakpoint)) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
     @warn "No value could be retrieved from `#{$breakpoint}`. "
-        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+        + "Available breakpoints are: #{map.keys($breakpoints)}.";
   }
 }
 
 @mixin respond-to-max($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
     @warn "No value could be retrieved from `#{$breakpoint}`. "
-        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+        + "Available breakpoints are: #{map.keys($breakpoints)}.";
   }
 }
 
@@ -183,11 +185,11 @@ $z-index: (
 }
 
 @mixin card-hover {
-  transition: transform map-get($transitions, normal), box-shadow map-get($transitions, normal);
+  transition: transform map.get($transitions, normal), box-shadow map.get($transitions, normal);
   
   &:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: map-get($shadows, xl);
+    box-shadow: map.get($shadows, xl);
   }
 }
 

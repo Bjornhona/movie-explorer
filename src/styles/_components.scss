@@ -1,3 +1,4 @@
+@use "sass:map";
 @import './variables';
 
 // Shared Component Styles
@@ -5,7 +6,7 @@
 // Hero Section
 .hero-section {
   background: $primary-gradient-overlay;
-  padding: map-get($spacing, 16) map-get($spacing, 8) map-get($spacing, 12);
+  padding: map.get($spacing, 16) map.get($spacing, 8) map.get($spacing, 12);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -28,29 +29,29 @@
     margin: 0 auto;
 
     h1 {
-      font-size: map-get($font-sizes, '7xl');
-      font-weight: map-get($font-weights, extrabold);
-      color: map-get($colors, white);
-      margin: 0 0 map-get($spacing, 4);
+      font-size: map.get($font-sizes, '7xl');
+      font-weight: map.get($font-weights, extrabold);
+      color: map.get($colors, white);
+      margin: 0 0 map.get($spacing, 4);
       text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       letter-spacing: -0.02em;
 
       @include respond-to-max(md) {
-        font-size: map-get($font-sizes, '5xl');
+        font-size: map.get($font-sizes, '5xl');
       }
     }
 
     .hero-subtitle {
-      font-size: map-get($font-sizes, xl);
+      font-size: map.get($font-sizes, xl);
       color: rgba(255, 255, 255, 0.9);
       margin: 0;
-      font-weight: map-get($font-weights, normal);
-      line-height: map-get($line-heights, relaxed);
+      font-weight: map.get($font-weights, normal);
+      line-height: map.get($line-heights, relaxed);
       max-width: 600px;
       margin: 0 auto;
 
       @include respond-to-max(md) {
-        font-size: map-get($font-sizes, lg);
+        font-size: map.get($font-sizes, lg);
       }
     }
   }
@@ -58,12 +59,12 @@
 
 // Main Content Container
 .main-content {
-  background: map-get($colors, gray-50);
-  padding: map-get($spacing, 12) map-get($spacing, 8);
+  background: map.get($colors, gray-50);
+  padding: map.get($spacing, 12) map.get($spacing, 8);
   min-height: calc(100vh - 200px);
 
   @include respond-to-max(md) {
-    padding: map-get($spacing, 8) map-get($spacing, 4);
+    padding: map.get($spacing, 8) map.get($spacing, 4);
   }
 
   .content-wrapper {
@@ -74,78 +75,78 @@
 
 // Card Section
 .card-section {
-  margin-bottom: map-get($spacing, 16);
-  background: map-get($colors, white);
-  border-radius: map-get($border-radius, '2xl');
-  box-shadow: map-get($shadows, md);
+  margin-bottom: map.get($spacing, 16);
+  background: map.get($colors, white);
+  border-radius: map.get($border-radius, '2xl');
+  box-shadow: map.get($shadows, md);
   overflow: hidden;
-  transition: transform map-get($transitions, normal), box-shadow map-get($transitions, normal);
+  transition: transform map.get($transitions, normal), box-shadow map.get($transitions, normal);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: map-get($shadows, lg);
+    box-shadow: map.get($shadows, lg);
   }
 
   .card-header {
-    padding: map-get($spacing, 8) map-get($spacing, 8) map-get($spacing, 4);
-    border-bottom: 1px solid map-get($colors, gray-200);
+    padding: map.get($spacing, 8) map.get($spacing, 8) map.get($spacing, 4);
+    border-bottom: 1px solid map.get($colors, gray-200);
     background: $primary-gradient;
-    color: map-get($colors, white);
+    color: map.get($colors, white);
 
     h2 {
-      font-size: map-get($font-sizes, '3xl');
-      font-weight: map-get($font-weights, bold);
+      font-size: map.get($font-sizes, '3xl');
+      font-weight: map.get($font-weights, bold);
       margin: 0;
       @include flex-center;
-      gap: map-get($spacing, 3);
+      gap: map.get($spacing, 3);
 
       .card-icon {
         width: 32px;
         height: 32px;
         @include flex-center;
         @include glass-effect;
-        border-radius: map-get($border-radius, lg);
+        border-radius: map.get($border-radius, lg);
       }
     }
 
     .card-description {
-      margin: map-get($spacing, 2) 0 0;
+      margin: map.get($spacing, 2) 0 0;
       opacity: 0.9;
-      font-size: map-get($font-sizes, sm);
-      font-weight: map-get($font-weights, normal);
+      font-size: map.get($font-sizes, sm);
+      font-weight: map.get($font-weights, normal);
     }
   }
 
   .card-content {
-    padding: map-get($spacing, 6) map-get($spacing, 8) map-get($spacing, 8);
+    padding: map.get($spacing, 6) map.get($spacing, 8) map.get($spacing, 8);
   }
 }
 
 // Grid Layout
 .grid-container {
   display: flex;
-  gap: map-get($spacing, 6);
+  gap: map.get($spacing, 6);
   overflow-x: auto;
-  padding: map-get($spacing, 2) 0;
+  padding: map.get($spacing, 2) 0;
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: map-get($colors, gray-300) map-get($colors, gray-100);
+  scrollbar-color: map.get($colors, gray-300) map.get($colors, gray-100);
 
   &::-webkit-scrollbar {
     height: 6px;
   }
 
   &::-webkit-scrollbar-track {
-    background: map-get($colors, gray-100);
+    background: map.get($colors, gray-100);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: map-get($colors, gray-300);
+    background: map.get($colors, gray-300);
     border-radius: 3px;
 
     &:hover {
-      background: map-get($colors, gray-400);
+      background: map.get($colors, gray-400);
     }
   }
 }
@@ -154,12 +155,12 @@
 .item-card {
   flex: 0 0 auto;
   width: 200px;
-  border-radius: map-get($border-radius, xl);
+  border-radius: map.get($border-radius, xl);
   overflow: hidden;
-  box-shadow: map-get($shadows, md);
-  transition: all map-get($transitions, normal);
+  box-shadow: map.get($shadows, md);
+  transition: all map.get($transitions, normal);
   cursor: pointer;
-  background: map-get($colors, white);
+  background: map.get($colors, white);
 
   @include card-hover;
 
@@ -167,33 +168,32 @@
     width: 100%;
     height: 300px;
     object-fit: cover;
-    transition: transform map-get($transitions, normal);
+    transition: transform map.get($transitions, normal);
   }
 
   .item-info {
-    padding: map-get($spacing, 4);
-    background: map-get($colors, white);
+    padding: map.get($spacing, 4);
+    background: map.get($colors, white);
 
     .item-title {
-      font-size: map-get($font-sizes, sm);
-      font-weight: map-get($font-weights, semibold);
-      color: map-get($colors, gray-800);
-      margin: 0 0 map-get($spacing, 2);
-      line-height: map-get($line-heights, tight);
+      font-size: map.get($font-sizes, sm);
+      font-weight: map.get($font-weights, semibold);
+      color: map.get($colors, gray-800);
+      margin: 0 0 map.get($spacing, 2);
+      line-height: map.get($line-heights, tight);
       display: -webkit-box;
-      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
     .item-meta {
       @include flex-center;
-      gap: map-get($spacing, 1);
-      font-size: map-get($font-sizes, xs);
-      color: map-get($colors, gray-500);
+      gap: map.get($spacing, 1);
+      font-size: map.get($font-sizes, xs);
+      color: map.get($colors, gray-500);
 
       .star {
-        color: map-get($colors, gold);
+        color: map.get($colors, gold);
       }
     }
   }
@@ -210,10 +210,10 @@
     }
 
     .item-info {
-      padding: map-get($spacing, 3);
+      padding: map.get($spacing, 3);
 
       .item-title {
-        font-size: map-get($font-sizes, xs);
+        font-size: map.get($font-sizes, xs);
       }
     }
   }
@@ -222,42 +222,42 @@
 // Loading States
 .loading-state {
   @include flex-center;
-  padding: map-get($spacing, 8);
-  color: map-get($colors, gray-500);
-  font-size: map-get($font-sizes, sm);
+  padding: map.get($spacing, 8);
+  color: map.get($colors, gray-500);
+  font-size: map.get($font-sizes, sm);
 }
 
 // Error States
 .error-state {
-  padding: map-get($spacing, 8);
+  padding: map.get($spacing, 8);
   text-align: center;
-  color: map-get($colors, error);
+  color: map.get($colors, error);
   background: #fef2f2;
-  border-radius: map-get($border-radius, lg);
-  margin: map-get($spacing, 4) 0;
+  border-radius: map.get($border-radius, lg);
+  margin: map.get($spacing, 4) 0;
 }
 
 // Empty States
 .empty-state {
   text-align: center;
-  padding: map-get($spacing, 4);
-  color: map-get($colors, gray-500);
-  font-size: map-get($font-sizes, sm);
+  padding: map.get($spacing, 4);
+  color: map.get($colors, gray-500);
+  font-size: map.get($font-sizes, sm);
   font-style: italic;
 }
 
 // Toast Container
 .toast-container {
   position: fixed;
-  top: map-get($spacing, 8);
-  right: map-get($spacing, 8);
-  z-index: map-get($z-index, dropdown);
+  top: map.get($spacing, 8);
+  right: map.get($spacing, 8);
+  z-index: map.get($z-index, dropdown);
   max-width: 400px;
 
   @include respond-to-max(md) {
-    top: map-get($spacing, 4);
-    right: map-get($spacing, 4);
-    left: map-get($spacing, 4);
+    top: map.get($spacing, 4);
+    right: map.get($spacing, 4);
+    left: map.get($spacing, 4);
     max-width: none;
   }
 }
@@ -267,24 +267,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: map-get($spacing, 3) map-get($spacing, 6);
-  font-size: map-get($font-sizes, base);
-  font-weight: map-get($font-weights, medium);
-  border-radius: map-get($border-radius, lg);
+  padding: map.get($spacing, 3) map.get($spacing, 6);
+  font-size: map.get($font-sizes, base);
+  font-weight: map.get($font-weights, medium);
+  border-radius: map.get($border-radius, lg);
   border: none;
   cursor: pointer;
-  transition: all map-get($transitions, normal);
+  transition: all map.get($transitions, normal);
   text-decoration: none;
-  gap: map-get($spacing, 2);
+  gap: map.get($spacing, 2);
 
   &-primary {
     background: $primary-gradient;
-    color: map-get($colors, white);
-    box-shadow: map-get($shadows, md);
+    color: map.get($colors, white);
+    box-shadow: map.get($shadows, md);
 
     &:hover {
       transform: translateY(-1px);
-      box-shadow: map-get($shadows, lg);
+      box-shadow: map.get($shadows, lg);
     }
 
     &:disabled {
@@ -295,22 +295,22 @@
   }
 
   &-secondary {
-    background: map-get($colors, gray-100);
-    color: map-get($colors, gray-700);
-    border: 1px solid map-get($colors, gray-200);
+    background: map.get($colors, gray-100);
+    color: map.get($colors, gray-700);
+    border: 1px solid map.get($colors, gray-200);
 
     &:hover {
-      background: map-get($colors, gray-200);
+      background: map.get($colors, gray-200);
     }
   }
 
   &-ghost {
     background: transparent;
-    color: map-get($colors, gray-600);
-    border: 1px solid map-get($colors, gray-200);
+    color: map.get($colors, gray-600);
+    border: 1px solid map.get($colors, gray-200);
 
     &:hover {
-      background: map-get($colors, gray-50);
+      background: map.get($colors, gray-50);
     }
   }
 }
@@ -347,32 +347,32 @@
 // Responsive Utilities
 @include respond-to-max(lg) {
   .grid-container {
-    gap: map-get($spacing, 4);
+    gap: map.get($spacing, 4);
   }
 }
 
 @include respond-to-max(md) {
   .hero-section {
-    padding: map-get($spacing, 12) map-get($spacing, 4) map-get($spacing, 8);
+    padding: map.get($spacing, 12) map.get($spacing, 4) map.get($spacing, 8);
   }
 
   .card-section {
-    margin-bottom: map-get($spacing, 8);
+    margin-bottom: map.get($spacing, 8);
 
     .card-header {
-      padding: map-get($spacing, 6) map-get($spacing, 6) map-get($spacing, 4);
+      padding: map.get($spacing, 6) map.get($spacing, 6) map.get($spacing, 4);
 
       h2 {
-        font-size: map-get($font-sizes, '2xl');
+        font-size: map.get($font-sizes, '2xl');
       }
     }
 
     .card-content {
-      padding: map-get($spacing, 4) map-get($spacing, 6) map-get($spacing, 6);
+      padding: map.get($spacing, 4) map.get($spacing, 6) map.get($spacing, 6);
     }
   }
 
   .grid-container {
-    gap: map-get($spacing, 3);
+    gap: map.get($spacing, 3);
   }
 }

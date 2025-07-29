@@ -1,3 +1,4 @@
+@use "sass:map";
 @import './variables';
 @import './components';
 
@@ -50,28 +51,28 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      padding: map-get($spacing, 16) map-get($spacing, 8) map-get($spacing, 12);
-      color: map-get($colors, white);
+      padding: map.get($spacing, 16) map.get($spacing, 8) map.get($spacing, 12);
+      color: map.get($colors, white);
 
       .movie-header {
         max-width: 1400px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: 300px 1fr;
-        gap: map-get($spacing, 12);
+        gap: map.get($spacing, 12);
         align-items: end;
 
         @include respond-to-max(lg) {
           grid-template-columns: 1fr;
-          gap: map-get($spacing, 8);
+          gap: map.get($spacing, 8);
         }
 
         .movie-poster {
           position: relative;
-          border-radius: map-get($border-radius, xl);
+          border-radius: map.get($border-radius, xl);
           overflow: hidden;
-          box-shadow: map-get($shadows, '2xl');
-          background: map-get($colors, gray-800);
+          box-shadow: map.get($shadows, '2xl');
+          background: map.get($colors, gray-800);
 
           img {
             width: 100%;
@@ -88,40 +89,40 @@
 
         .movie-info {
           .movie-title {
-            font-size: map-get($font-sizes, '6xl');
-            font-weight: map-get($font-weights, extrabold);
-            margin: 0 0 map-get($spacing, 4);
-            line-height: map-get($line-heights, tight);
+            font-size: map.get($font-sizes, '6xl');
+            font-weight: map.get($font-weights, extrabold);
+            margin: 0 0 map.get($spacing, 4);
+            line-height: map.get($line-heights, tight);
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 
             @include respond-to-max(md) {
-              font-size: map-get($font-sizes, '4xl');
+              font-size: map.get($font-sizes, '4xl');
             }
           }
 
           .movie-tagline {
-            font-size: map-get($font-sizes, xl);
-            font-weight: map-get($font-weights, medium);
-            margin: 0 0 map-get($spacing, 6);
+            font-size: map.get($font-sizes, xl);
+            font-weight: map.get($font-weights, medium);
+            margin: 0 0 map.get($spacing, 6);
             opacity: 0.9;
             font-style: italic;
 
             @include respond-to-max(md) {
-              font-size: map-get($font-sizes, lg);
+              font-size: map.get($font-sizes, lg);
             }
           }
 
           .movie-meta {
             display: flex;
-            gap: map-get($spacing, 6);
-            margin-bottom: map-get($spacing, 6);
+            gap: map.get($spacing, 6);
+            margin-bottom: map.get($spacing, 6);
             flex-wrap: wrap;
 
             .meta-item {
               display: flex;
               align-items: center;
-              gap: map-get($spacing, 2);
-              font-size: map-get($font-sizes, base);
+              gap: map.get($spacing, 2);
+              font-size: map.get($font-sizes, base);
               opacity: 0.9;
 
               .meta-icon {
@@ -134,16 +135,16 @@
 
           .movie-actions {
             display: flex;
-            gap: map-get($spacing, 4);
+            gap: map.get($spacing, 4);
             align-items: center;
             flex-wrap: wrap;
 
             .wishlist-button {
               @extend .btn;
               @extend .btn-primary;
-              padding: map-get($spacing, 4) map-get($spacing, 6);
-              font-size: map-get($font-sizes, lg);
-              gap: map-get($spacing, 3);
+              padding: map.get($spacing, 4) map.get($spacing, 6);
+              font-size: map.get($font-sizes, lg);
+              gap: map.get($spacing, 3);
 
               &:disabled {
                 opacity: 0.6;
@@ -159,9 +160,9 @@
             .homepage-button {
               @extend .btn;
               @extend .btn-secondary;
-              padding: map-get($spacing, 4) map-get($spacing, 6);
-              font-size: map-get($font-sizes, lg);
-              gap: map-get($spacing, 3);
+              padding: map.get($spacing, 4) map.get($spacing, 6);
+              font-size: map.get($font-sizes, lg);
+              gap: map.get($spacing, 3);
             }
           }
         }
@@ -171,12 +172,12 @@
 
   // Main Content
   .movie-content {
-    background: map-get($colors, gray-50);
-    padding: map-get($spacing, 16) map-get($spacing, 8);
+    background: map.get($colors, gray-50);
+    padding: map.get($spacing, 16) map.get($spacing, 8);
     min-height: 40vh;
 
     @include respond-to-max(md) {
-      padding: map-get($spacing, 8) map-get($spacing, 4);
+      padding: map.get($spacing, 8) map.get($spacing, 4);
     }
 
     .content-wrapper {
@@ -184,17 +185,17 @@
       margin: 0 auto;
       display: grid;
       grid-template-columns: 2fr 1fr;
-      gap: map-get($spacing, 12);
+      gap: map.get($spacing, 12);
 
       @include respond-to-max(lg) {
         grid-template-columns: 1fr;
-        gap: map-get($spacing, 8);
+        gap: map.get($spacing, 8);
       }
 
       .main-section {
         .overview-section {
           @extend .card-section;
-          margin-bottom: map-get($spacing, 8);
+          margin-bottom: map.get($spacing, 8);
 
           .card-header {
             h2 {
@@ -204,9 +205,9 @@
 
           .card-content {
             .overview-text {
-              font-size: map-get($font-sizes, lg);
-              line-height: map-get($line-heights, relaxed);
-              color: map-get($colors, gray-700);
+              font-size: map.get($font-sizes, lg);
+              line-height: map.get($line-heights, relaxed);
+              color: map.get($colors, gray-700);
               margin: 0;
               text-align: justify;
             }
@@ -226,28 +227,28 @@
             .category-info {
               display: flex;
               align-items: center;
-              gap: map-get($spacing, 4);
+              gap: map.get($spacing, 4);
 
               .category-icon {
                 width: 48px;
                 height: 48px;
                 @include flex-center;
                 background: $primary-gradient;
-                border-radius: map-get($border-radius, xl);
-                color: map-get($colors, white);
+                border-radius: map.get($border-radius, xl);
+                color: map.get($colors, white);
               }
 
               .category-details {
                 .category-name {
-                  font-size: map-get($font-sizes, xl);
-                  font-weight: map-get($font-weights, semibold);
-                  color: map-get($colors, gray-800);
-                  margin: 0 0 map-get($spacing, 1);
+                  font-size: map.get($font-sizes, xl);
+                  font-weight: map.get($font-weights, semibold);
+                  color: map.get($colors, gray-800);
+                  margin: 0 0 map.get($spacing, 1);
                 }
 
                 .category-description {
-                  font-size: map-get($font-sizes, base);
-                  color: map-get($colors, gray-600);
+                  font-size: map.get($font-sizes, base);
+                  color: map.get($colors, gray-600);
                   margin: 0;
                 }
               }
@@ -260,7 +261,7 @@
         .movie-details-card {
           @extend .card-section;
           position: sticky;
-          top: map-get($spacing, 8);
+          top: map.get($spacing, 8);
 
           .card-header {
             h2 {
@@ -278,23 +279,23 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: map-get($spacing, 3) 0;
-                border-bottom: 1px solid map-get($colors, gray-200);
+                padding: map.get($spacing, 3) 0;
+                border-bottom: 1px solid map.get($colors, gray-200);
 
                 &:last-child {
                   border-bottom: none;
                 }
 
                 .detail-label {
-                  font-weight: map-get($font-weights, medium);
-                  color: map-get($colors, gray-600);
-                  font-size: map-get($font-sizes, sm);
+                  font-weight: map.get($font-weights, medium);
+                  color: map.get($colors, gray-600);
+                  font-size: map.get($font-sizes, sm);
                 }
 
                 .detail-value {
-                  font-weight: map-get($font-weights, semibold);
-                  color: map-get($colors, gray-800);
-                  font-size: map-get($font-sizes, sm);
+                  font-weight: map.get($font-weights, semibold);
+                  color: map.get($colors, gray-800);
+                  font-size: map.get($font-sizes, sm);
                 }
               }
             }
@@ -308,18 +309,18 @@
   .movie-loading {
     @extend .card-section;
     text-align: center;
-    margin: map-get($spacing, 8);
+    margin: map.get($spacing, 8);
 
     .card-content {
-      padding: map-get($spacing, 12) map-get($spacing, 8);
+      padding: map.get($spacing, 12) map.get($spacing, 8);
 
       .loading-spinner {
-        margin-bottom: map-get($spacing, 4);
+        margin-bottom: map.get($spacing, 4);
       }
 
       .loading-text {
-        font-size: map-get($font-sizes, lg);
-        color: map-get($colors, gray-600);
+        font-size: map.get($font-sizes, lg);
+        color: map.get($colors, gray-600);
       }
     }
   }
@@ -328,28 +329,28 @@
   .movie-error {
     @extend .card-section;
     text-align: center;
-    margin: map-get($spacing, 8);
+    margin: map.get($spacing, 8);
 
     .card-content {
-      padding: map-get($spacing, 8);
+      padding: map.get($spacing, 8);
 
       .error-icon {
-        font-size: map-get($font-sizes, '4xl');
-        color: map-get($colors, error);
-        margin-bottom: map-get($spacing, 4);
+        font-size: map.get($font-sizes, '4xl');
+        color: map.get($colors, error);
+        margin-bottom: map.get($spacing, 4);
       }
 
       .error-title {
-        font-size: map-get($font-sizes, xl);
-        font-weight: map-get($font-weights, semibold);
-        color: map-get($colors, error);
-        margin-bottom: map-get($spacing, 2);
+        font-size: map.get($font-sizes, xl);
+        font-weight: map.get($font-weights, semibold);
+        color: map.get($colors, error);
+        margin-bottom: map.get($spacing, 2);
       }
 
       .error-description {
-        font-size: map-get($font-sizes, base);
-        color: map-get($colors, gray-600);
-        margin-bottom: map-get($spacing, 6);
+        font-size: map.get($font-sizes, base);
+        color: map.get($colors, gray-600);
+        margin-bottom: map.get($spacing, 6);
       }
 
       .retry-button {
@@ -362,15 +363,15 @@
   // Toast Container
   .toast-container {
     position: fixed;
-    top: map-get($spacing, 8);
-    right: map-get($spacing, 8);
-    z-index: map-get($z-index, dropdown);
+    top: map.get($spacing, 8);
+    right: map.get($spacing, 8);
+    z-index: map.get($z-index, dropdown);
     max-width: 400px;
 
     @include respond-to-max(md) {
-      top: map-get($spacing, 4);
-      right: map-get($spacing, 4);
-      left: map-get($spacing, 4);
+      top: map.get($spacing, 4);
+      right: map.get($spacing, 4);
+      left: map.get($spacing, 4);
       max-width: none;
     }
   }

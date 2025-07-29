@@ -1,3 +1,4 @@
+@use "sass:map";
 @import './variables';
 @import './components';
 
@@ -14,7 +15,7 @@
     .hero-content {
       h1 {
         @include gradient-text;
-        -webkit-text-fill-color: map-get($colors, white);
+        -webkit-text-fill-color: map.get($colors, white);
         text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       }
     }
@@ -32,34 +33,34 @@
 
     .wishlist-stats {
       display: flex;
-      gap: map-get($spacing, 6);
-      margin-bottom: map-get($spacing, 6);
-      padding: map-get($spacing, 4);
-      background: map-get($colors, gray-50);
-      border-radius: map-get($border-radius, lg);
-      border: 1px solid map-get($colors, gray-200);
+      gap: map.get($spacing, 6);
+      margin-bottom: map.get($spacing, 6);
+      padding: map.get($spacing, 4);
+      background: map.get($colors, gray-50);
+      border-radius: map.get($border-radius, lg);
+      border: 1px solid map.get($colors, gray-200);
 
       .stat-item {
         text-align: center;
         flex: 1;
 
         .stat-number {
-          font-size: map-get($font-sizes, '3xl');
-          font-weight: map-get($font-weights, bold);
-          color: map-get($colors, primary);
+          font-size: map.get($font-sizes, '3xl');
+          font-weight: map.get($font-weights, bold);
+          color: map.get($colors, primary);
           display: block;
         }
 
         .stat-label {
-          font-size: map-get($font-sizes, sm);
-          color: map-get($colors, gray-600);
-          margin-top: map-get($spacing, 1);
+          font-size: map.get($font-sizes, sm);
+          color: map.get($colors, gray-600);
+          margin-top: map.get($spacing, 1);
         }
       }
 
       @include respond-to-max(md) {
         flex-direction: column;
-        gap: map-get($spacing, 4);
+        gap: map.get($spacing, 4);
       }
     }
   }
@@ -82,23 +83,23 @@
   .auth-section {
     @extend .card-section;
     text-align: center;
-    margin-bottom: map-get($spacing, 8);
+    margin-bottom: map.get($spacing, 8);
 
     .card-content {
-      padding: map-get($spacing, 12) map-get($spacing, 8);
+      padding: map.get($spacing, 12) map.get($spacing, 8);
 
       .auth-message {
-        font-size: map-get($font-sizes, lg);
-        color: map-get($colors, gray-600);
-        margin-bottom: map-get($spacing, 6);
-        line-height: map-get($line-heights, relaxed);
+        font-size: map.get($font-sizes, lg);
+        color: map.get($colors, gray-600);
+        margin-bottom: map.get($spacing, 6);
+        line-height: map.get($line-heights, relaxed);
       }
 
       .auth-button {
         @extend .btn;
         @extend .btn-primary;
-        font-size: map-get($font-sizes, lg);
-        padding: map-get($spacing, 4) map-get($spacing, 8);
+        font-size: map.get($font-sizes, lg);
+        padding: map.get($spacing, 4) map.get($spacing, 8);
       }
     }
   }
@@ -109,26 +110,26 @@
     text-align: center;
 
     .card-content {
-      padding: map-get($spacing, 12) map-get($spacing, 8);
+      padding: map.get($spacing, 12) map.get($spacing, 8);
 
       .empty-icon {
-        font-size: map-get($font-sizes, '6xl');
-        color: map-get($colors, gray-300);
-        margin-bottom: map-get($spacing, 4);
+        font-size: map.get($font-sizes, '6xl');
+        color: map.get($colors, gray-300);
+        margin-bottom: map.get($spacing, 4);
       }
 
       .empty-title {
-        font-size: map-get($font-sizes, '2xl');
-        font-weight: map-get($font-weights, semibold);
-        color: map-get($colors, gray-700);
-        margin-bottom: map-get($spacing, 2);
+        font-size: map.get($font-sizes, '2xl');
+        font-weight: map.get($font-weights, semibold);
+        color: map.get($colors, gray-700);
+        margin-bottom: map.get($spacing, 2);
       }
 
       .empty-description {
-        font-size: map-get($font-sizes, base);
-        color: map-get($colors, gray-500);
-        margin-bottom: map-get($spacing, 6);
-        line-height: map-get($line-heights, relaxed);
+        font-size: map.get($font-sizes, base);
+        color: map.get($colors, gray-500);
+        margin-bottom: map.get($spacing, 6);
+        line-height: map.get($line-heights, relaxed);
       }
 
       .browse-button {
@@ -143,16 +144,16 @@
     @extend .card-section;
     
     .card-content {
-      padding: map-get($spacing, 12) map-get($spacing, 8);
+      padding: map.get($spacing, 12) map.get($spacing, 8);
       text-align: center;
 
       .loading-spinner {
-        margin-bottom: map-get($spacing, 4);
+        margin-bottom: map.get($spacing, 4);
       }
 
       .loading-text {
-        font-size: map-get($font-sizes, base);
-        color: map-get($colors, gray-500);
+        font-size: map.get($font-sizes, base);
+        color: map.get($colors, gray-500);
       }
     }
   }
@@ -162,26 +163,26 @@
     @extend .card-section;
     
     .card-content {
-      padding: map-get($spacing, 8);
+      padding: map.get($spacing, 8);
       text-align: center;
 
       .error-icon {
-        font-size: map-get($font-sizes, '4xl');
-        color: map-get($colors, error);
-        margin-bottom: map-get($spacing, 4);
+        font-size: map.get($font-sizes, '4xl');
+        color: map.get($colors, error);
+        margin-bottom: map.get($spacing, 4);
       }
 
       .error-title {
-        font-size: map-get($font-sizes, xl);
-        font-weight: map-get($font-weights, semibold);
-        color: map-get($colors, error);
-        margin-bottom: map-get($spacing, 2);
+        font-size: map.get($font-sizes, xl);
+        font-weight: map.get($font-weights, semibold);
+        color: map.get($colors, error);
+        margin-bottom: map.get($spacing, 2);
       }
 
       .error-description {
-        font-size: map-get($font-sizes, base);
-        color: map-get($colors, gray-600);
-        margin-bottom: map-get($spacing, 6);
+        font-size: map.get($font-sizes, base);
+        color: map.get($colors, gray-600);
+        margin-bottom: map.get($spacing, 6);
       }
 
       .retry-button {
