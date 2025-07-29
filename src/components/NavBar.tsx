@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NAVIGATION_LINKS } from "../constants.ts";
 import { NavigationLink } from "../types.ts";
-import "../styles/NavBar.scss";
+import "../styles/components/NavBar.scss";
 
 const NavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

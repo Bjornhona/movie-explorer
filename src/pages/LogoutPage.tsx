@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
-import Toast from "./Toast.tsx";
+import '../styles/pages/LogoutPage.scss';
+import Toast from "../components/Toast.tsx";
 
 const LogoutPage = () => {
   const { accountId, logout } = useAuthentication();
@@ -24,25 +25,20 @@ const LogoutPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: 64 }}>
+    <div className="logout-component">
       <h2>Logout</h2>
       <button
-        style={{
-          background: '#fff',
-          color: '#222',
-          border: '1px solid #ccc',
-          borderRadius: 4,
-          padding: '10px 28px',
-          fontWeight: 600,
-          cursor: 'pointer',
-          marginTop: 24,
-        }}
+        className="logout-button"
         onClick={handleLogout}
       >
         Logout
       </button>
       {showToast && (
-        <Toast message="Logout successful!" color="green" onClose={() => setShowToast(false)} />
+        <Toast
+          message="Logout successful!"
+          color="green"
+          onClose={() => setShowToast(false)}
+        />
       )}
     </div>
   );

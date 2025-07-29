@@ -1,6 +1,6 @@
 @use "sass:map";
-@use "./variables" as *;
-@use "./components" as *;
+@use "../variables" as *;
+@use "../components" as *;
 
 // WishlistPage Specific Styles
 .wishlist-page {
@@ -45,7 +45,7 @@
         flex: 1;
 
         .stat-number {
-          font-size: map.get($font-sizes, '3xl');
+          font-size: map.get($font-sizes, 3xl);
           font-weight: map.get($font-weights, bold);
           color: map.get($colors, primary);
           display: block;
@@ -113,13 +113,13 @@
       padding: map.get($spacing, 12) map.get($spacing, 8);
 
       .empty-icon {
-        font-size: map.get($font-sizes, '6xl');
+        font-size: map.get($font-sizes, 6xl);
         color: map.get($colors, gray-300);
         margin-bottom: map.get($spacing, 4);
       }
 
       .empty-title {
-        font-size: map.get($font-sizes, '2xl');
+        font-size: map.get($font-sizes, 2xl);
         font-weight: map.get($font-weights, semibold);
         color: map.get($colors, gray-700);
         margin-bottom: map.get($spacing, 2);
@@ -167,7 +167,7 @@
       text-align: center;
 
       .error-icon {
-        font-size: map.get($font-sizes, '4xl');
+        font-size: map.get($font-sizes, 4xl);
         color: map.get($colors, error);
         margin-bottom: map.get($spacing, 4);
       }

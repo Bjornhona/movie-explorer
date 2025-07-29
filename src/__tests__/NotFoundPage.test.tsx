@@ -1,4 +1,4 @@
-import NotFoundPage from "../components/NotFoundPage.tsx";
+import NotFoundPage from "../pages/NotFoundPage.tsx";
 import { render, screen } from "@testing-library/react";
 
 describe('Testing NotFoundPage', () => {

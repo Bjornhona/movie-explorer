@@ -1,4 +1,4 @@
-import WishlistPage from "../components/WishlistPage.tsx";
+import WishlistPage from "../pages/WishlistPage.tsx";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { Movie } from "../types.ts";

@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useMovieById } from "../hooks/useMovieById.ts";
 import { useWishlist } from "../hooks/useWishlist.ts";
-import Toast from "./Toast.tsx";
+import Toast from "../components/Toast.tsx";
 import { CATEGORIES } from "../constants.ts";
 import { Category } from "../types.ts";
 import { useAccountStates } from "../hooks/useAccountStates.ts";
-import "../styles/MovieDetailsPage.scss";
+import "../styles/pages/MovieDetailsPage.scss";
 
 interface MovieDetailsPageProps {
   movieId: string;

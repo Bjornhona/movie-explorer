@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { MovieCardProps } from '../types.ts';
 
 const MovieWishlistCard = forwardRef<HTMLDivElement, MovieCardProps>(({ movie, onClick }, ref) => {
-  const imageUrl = `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`;
+  const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 
   return (
     <div

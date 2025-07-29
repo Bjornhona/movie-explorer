@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "./variables" as *;
+@use "../variables" as *;
 
 // Footer Specific Styles
 .footer {
@@ -44,7 +44,7 @@
           border-radius: map.get($border-radius, xl);
           @include flex-center;
           color: map.get($colors, white);
-          font-size: map.get($font-sizes, '3xl');
+          font-size: map.get($font-sizes, 3xl);
           font-weight: map.get($font-weights, bold);
           box-shadow: map.get($shadows, lg);
           transition: transform map.get($transitions, normal);
@@ -56,7 +56,7 @@
 
         .brand-info {
           .brand-name {
-            font-size: map.get($font-sizes, '2xl');
+            font-size: map.get($font-sizes, 2xl);
             font-weight: map.get($font-weights, bold);
             color: map.get($colors, white);
             margin: 0 0 map.get($spacing, 2);

@@ -2,9 +2,9 @@ import { useRef, useCallback } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { handleMovieSelection } from "../functions.ts";
-import MovieWishlistCard from "./MovieWishlistCard.tsx";
+import MovieWishlistCard from "../components/MovieWishlistCard.tsx";
 import { Movie } from "../types.ts";
-import "../styles/WishlistPage.scss";
+import "../styles/pages/WishlistPage.scss";
 
 const WishlistedMoviePage = () => {
   const {

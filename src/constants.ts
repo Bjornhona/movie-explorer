@@ -16,24 +16,21 @@ export const CATEGORIES: Category[] = [
     name: 'Upcoming',
     icon: HeartIcon,
     iconColor: 'hotpink',
-    bgColor: 'lavenderblush',
-    fontFamily: 'Raleway, sans-serif',
+    bgColor: 'lavenderblush'
   },
   {
     id: 'popular',
     name: 'Popular',
     icon: StarIcon,
     iconColor: 'gold',
-    bgColor: 'ivory',
-    fontFamily: 'Poppins, sans-serif',
+    bgColor: 'ivory'
   },
   {
     id: 'top_rated',
     name: 'Top Rated',
     icon: BookmarkIcon,
     iconColor: 'aquamarine',
-    bgColor: 'honeydue',
-    fontFamily: 'Playfair Display, serif',
+    bgColor: 'honeydue'
   }
 ];
 

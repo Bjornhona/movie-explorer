@@ -1,12 +1,12 @@
 import { useState, useEffect, FC } from "react";
 import "@/styles/main.scss";
-import MoviesListPage from "./components/MoviesListPage.tsx";
-import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
-import NotFoundPage from "./components/NotFoundPage.tsx";
-import WishlistedMoviePage from "./components/WishlistPage.tsx";
+import MoviesListPage from "./pages/MoviesListPage.tsx";
+import MovieDetailsPage from "./pages/MovieDetailsPage.tsx";
+import NotFoundPage from "./pages/NotFoundPage.tsx";
+import WishlistedMoviePage from "./pages/WishlistPage.tsx";
 import NavBar from "./components/NavBar.tsx";
 import Footer from './components/Footer.tsx';
-import LogoutPage from "./components/LogoutPage.tsx";
+import LogoutPage from "./pages/LogoutPage.tsx";
 
 interface AppProps {
   initialUrl: string;

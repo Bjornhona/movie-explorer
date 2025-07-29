@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import MovieDetailsPage from "../components/MovieDetailsPage.tsx";
+import MovieDetailsPage from "../pages/MovieDetailsPage.tsx";
 import { Movie, MovieDetailsProps } from "../types.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { CATEGORIES } from "../constants.ts";

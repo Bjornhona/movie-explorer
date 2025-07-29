@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import MovieCarousel from "./MovieCarousel.tsx";
+import MovieCarousel from "../components/MovieCarousel.tsx";
 import { CATEGORIES } from "../constants.ts";
-import Toast from "./Toast.tsx";
-import "../styles/MoviesListPage.scss";
+import Toast from "../components/Toast.tsx";
+import "../styles/pages/MoviesListPage.scss";
 
 const MoviesListPage = () => {
   const [showLogoutToast, setShowLogoutToast] = useState(false);

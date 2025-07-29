@@ -1,6 +1,6 @@
 @use "sass:map";
-@use "./variables" as *;
-@use "./components" as *;
+@use "../variables" as *;
+@use "../components" as *;
 
 // MoviesListPage Specific Styles
 .movies-list-page {

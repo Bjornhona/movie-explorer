@@ -34,7 +34,6 @@ export interface Category {
   icon: (props: IconProps) => JSX.Element;
   iconColor: string;
   bgColor: string;
-  fontFamily: string;
 }
 
 export interface NavigationLink {

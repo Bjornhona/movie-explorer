@@ -1,0 +1,21 @@
+@use "sass:map";
+@use "../variables" as *;
+
+.logout-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: map.get($spacing, 64);
+  margin-bottom: map.get($spacing, 64);
+}
+
+.logout-button {
+    background: map.get($colors, white);
+    color: map.get($colors, gray-900);
+    border: 1px solid map.get($colors, gray-900);
+    border-radius: map.get($border-radius, 2xl);
+    padding: map.get($spacing, 2) map.get($spacing, 6);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: map.get($spacing, 64);
+}
