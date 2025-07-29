@@ -6,29 +6,42 @@ import "../styles/NavBar.scss";
 const NavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState("/");
+  const [isClient, setIsClient] = useState(false);
+
+  // Initialize client-side state
+  useEffect(() => {
+    setIsClient(true);
+    setCurrentPath(window.location.pathname);
+  }, []);
 
   // Handle scroll effect
   useEffect(() => {
+    if (!isClient) return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isClient]);
 
   // Handle path changes
   useEffect(() => {
+    if (!isClient) return;
+
     const handlePopState = () => {
       setCurrentPath(window.location.pathname);
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [isClient]);
 
   const handleNav = (path: string) => {
+    if (!isClient) return;
+
     window.history.pushState({}, "", path);
     window.dispatchEvent(new PopStateEvent("popstate"));
     setCurrentPath(path);
@@ -41,29 +54,21 @@ const NavBar = () => {
 
   const getNavIcon = (route: string) => {
     switch (route) {
-      case '/':
-        return '🎬';
-      case '/wishlist':
-        return '❤️';
+      case "/":
+        return "🎬";
+      case "/wishlist":
+        return "❤️";
       default:
-        return '📱';
+        return "📱";
     }
   };
 
-  const getWishlistCount = () => {
-    // This could be connected to your wishlist state
-    // For now, returning a placeholder
-    return 0;
-  };
-
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
         {/* Brand/Logo */}
-        <div className="navbar-brand" onClick={() => handleNav('/')}>
-          <div className="brand-logo">
-            🎬
-          </div>
+        <div className="navbar-brand" onClick={() => handleNav("/")}>
+          <div className="brand-logo">🎬</div>
           <span className="brand-text">MovieNight</span>
         </div>
 
@@ -72,28 +77,21 @@ const NavBar = () => {
           {NAVIGATION_LINKS.map((navLink: NavigationLink, index: number) => (
             <li key={index} className="nav-item">
               <div
-                className={`nav-link ${currentPath === navLink.route ? 'active' : ''}`}
+                className={`nav-link ${
+                  currentPath === navLink.route ? "active" : ""
+                }`}
                 onClick={() => handleNav(navLink.route)}
               >
-                <span className="nav-icon">
-                  {getNavIcon(navLink.route)}
-                </span>
-                <span className="nav-text">
-                  {navLink.name}
-                </span>
-                {navLink.route === '/wishlist' && getWishlistCount() > 0 && (
-                  <span className="nav-badge">
-                    {getWishlistCount()}
-                  </span>
-                )}
+                <span className="nav-icon">{getNavIcon(navLink.route)}</span>
+                <span className="nav-text">{navLink.name}</span>
               </div>
             </li>
           ))}
         </ul>
 
         {/* Mobile Menu Toggle */}
-        <button 
-          className={`navbar-toggle ${isMobileMenuOpen ? 'active' : ''}`}
+        <button
+          className={`navbar-toggle ${isMobileMenuOpen ? "active" : ""}`}
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
         >
@@ -104,25 +102,17 @@ const NavBar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
+      <div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
         <ul className="mobile-nav">
           {NAVIGATION_LINKS.map((navLink: NavigationLink, index: number) => (
             <li key={index} className="nav-item">
               <div
-                className={`nav-link ${currentPath === navLink.route ? 'active' : ''}`}
+                className={`nav-link ${
+                  currentPath === navLink.route ? "active" : ""
+                }`}
                 onClick={() => handleNav(navLink.route)}
               >
-                <span className="nav-icon">
-                  {getNavIcon(navLink.route)}
-                </span>
-                <span className="nav-text">
-                  {navLink.name}
-                </span>
-                {navLink.route === '/wishlist' && getWishlistCount() > 0 && (
-                  <span className="nav-badge">
-                    {getWishlistCount()}
-                  </span>
-                )}
+                <span className="nav-icon">{getNavIcon(navLink.route)}</span>
               </div>
             </li>
           ))}
