@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useMovieById } from "../hooks/useMovieById.ts";
 import { useWishlist } from "../hooks/useWishlist.ts";
-import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import Toast from "./Toast.tsx";
 import { CATEGORIES } from "../constants.ts";
 import { Category } from "../types.ts";
+import { useAccountStates } from "../hooks/useAccountStates.ts";
 
 interface MovieDetailsPageProps {
   movieId: string;
@@ -29,21 +29,33 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
   } = useAuthentication();
 
   const {
-    isMovieInWishlist,
     addToWishlist,
     loading: wishlistLoading,
     error: wishlistError,
     success: wishlistSuccess,
   } = useWishlist();
-
-  const [wishlistReloadKey, setWishlistReloadKey] = useState(0);
-  const { movies: wishlistMovies } = useWishlistMovies(
-    accountId,
-    sessionId,
-    wishlistReloadKey
-  );
+  const { isMovieInWishlist, loading: accountStatesLoading } =
+    useAccountStates();
   const [showWishlistToast, setShowWishlistToast] = useState(false);
   const [showAuthToast, setShowAuthToast] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(false);
+
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (!sessionId || !movieId) {
+        setIsInWishlist(false);
+        return;
+      }
+      try {
+        const inWishlist = await isMovieInWishlist({ movieId, sessionId });
+        setIsInWishlist(inWishlist);
+      } catch (error) {
+        console.error("Error checking wishlist status:", error);
+        setIsInWishlist(false);
+      }
+    };
+    checkWishlistStatus();
+  }, [movieId, sessionId]);
 
   useEffect(() => {
     if (wishlistSuccess) {
@@ -75,24 +87,6 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
     );
   }, [categoryId]);
 
-  // Memoize wishlistIdSet, check if movie is in wishlist
-  const wishlistIdSet = useMemo(
-    () => new Set(wishlistMovies.map((m) => m.id)),
-    [wishlistMovies]
-  );
-  const isInWishlist = wishlistIdSet.has(Number(movieId));
-
-  // let isInWishlist = false;
-  // // let some = {};
-  // useEffect(() => {
-  //   const getWishlisted = async () => {
-  //     const some = await isMovieInWishlist(movieId);
-  //     // const isInWishlist = getWishlisted();
-  //     console.log(some);
-  //   };
-  //   getWishlisted();
-  // });
-
   const handleLogin = async () => {
     const requestToken = await getRequestToken();
     if (requestToken) {
@@ -112,7 +106,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
       movieId,
       addToWishlist: !isInWishlist,
     });
-    // setWishlistReloadKey((k) => k + 1);
+    setIsInWishlist(!isInWishlist);
   };
 
   if (movieLoading) return <div>Loading movie details...</div>;
@@ -154,7 +148,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
             onClick={
               !sessionId || !accountId ? handleLogin : handleWishlistToggle
             }
-            disabled={authLoading || wishlistLoading}
+            disabled={authLoading || wishlistLoading || accountStatesLoading}
           >
             <Icon size={24} color={isInWishlist ? iconColor : "gray"} />
           </button>

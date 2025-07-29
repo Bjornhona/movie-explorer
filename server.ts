@@ -297,7 +297,7 @@ async function startServer() {
   });
 
   app.get("/api/tmdb/account_states", async (req: Request, res: Response) => {
-    const { movieId } = req.query;
+    const { movieId, session_id } = req.query;
     try {
       const accessToken = process.env.TMDB_ACCESS_TOKEN;
       if (!accessToken) {
@@ -305,7 +305,17 @@ async function startServer() {
           .status(500)
           .json({ error: "TMDB access token not configured" });
       }
-      const url = `https://api.themoviedb.org/3/movie/${movieId}/account_states`;
+      if (!movieId) {
+        return res
+          .status(400)
+          .json({ error: "Missing movieId parameter" });
+      }
+      if (!session_id) {
+        return res
+          .status(400)
+          .json({ error: "Missing session_id parameter" });
+      }
+      const url = `https://api.themoviedb.org/3/movie/${movieId}/account_states?session_id=${session_id}`;
       const response = await fetch(url, {
         method: "GET",
         headers: {
