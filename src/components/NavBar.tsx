@@ -69,7 +69,7 @@ const NavBar = () => {
         {/* Brand/Logo */}
         <div className="navbar-brand" onClick={() => handleNav("/")}>
           <div className="brand-logo">🎬</div>
-          <span className="brand-text">MovieNight</span>
+          <span className="brand-text">MovieExplorer</span>
         </div>
 
         {/* Desktop Navigation */}
