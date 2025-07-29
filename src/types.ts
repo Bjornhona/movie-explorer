@@ -9,6 +9,7 @@ export interface Movie {
   backdrop_path: string;
   release_date: string;
   homepage: string;
+  vote_average: number;
 }
 
 export interface MovieCardProps {

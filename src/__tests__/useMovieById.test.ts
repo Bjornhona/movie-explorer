@@ -14,6 +14,7 @@ describe('useMovieById', () => {
     backdrop_path: '/backdrop.jpg',
     release_date: '2023-01-01',
     homepage: 'https://example.com',
+    vote_average: 3.246
   };
 
   beforeEach(() => {

@@ -11,7 +11,8 @@ describe('Testing MovieWishlistCard', () => {
     poster_path: "/test-poster.jpg",
     backdrop_path: "/test-backdrop.jpg",
     release_date: '1974-12-20',
-    homepage: 'https://link.to.some.movies.page.com'
+    homepage: 'https://link.to.some.movies.page.com',
+    vote_average: 3.247
   };
 
   const MovieWishlistCardProps: MovieCardProps = {
