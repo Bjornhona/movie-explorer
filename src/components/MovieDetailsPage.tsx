@@ -29,6 +29,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
   } = useAuthentication();
 
   const {
+    isMovieInWishlist,
     addToWishlist,
     loading: wishlistLoading,
     error: wishlistError,
@@ -74,12 +75,23 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
     );
   }, [categoryId]);
 
-  // Memoize wishlistIdSet to check if movie is in wishlist
+  // Memoize wishlistIdSet, check if movie is in wishlist
   const wishlistIdSet = useMemo(
     () => new Set(wishlistMovies.map((m) => m.id)),
     [wishlistMovies]
   );
   const isInWishlist = wishlistIdSet.has(Number(movieId));
+
+  // let isInWishlist = false;
+  // // let some = {};
+  // useEffect(() => {
+  //   const getWishlisted = async () => {
+  //     const some = await isMovieInWishlist(movieId);
+  //     // const isInWishlist = getWishlisted();
+  //     console.log(some);
+  //   };
+  //   getWishlisted();
+  // });
 
   const handleLogin = async () => {
     const requestToken = await getRequestToken();
@@ -100,7 +112,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
       movieId,
       addToWishlist: !isInWishlist,
     });
-    setWishlistReloadKey((k) => k + 1);
+    // setWishlistReloadKey((k) => k + 1);
   };
 
   if (movieLoading) return <div>Loading movie details...</div>;

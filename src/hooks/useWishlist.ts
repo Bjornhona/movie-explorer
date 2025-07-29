@@ -42,5 +42,29 @@ export const useWishlist = () => {
     }
   };
 
-  return { addToWishlist, loading, error, success };
+  const isMovieInWishlist = async ({movieId}: string) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const res = await fetch(`/api/tmdb/account_states/${movieId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || 'Failed to update wishlist');
+        setSuccess(false);
+        return data;
+      }
+      setSuccess(true);
+    } catch (err) {
+      setError((err as Error).message);
+      setSuccess(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return { isMovieInWishlist, addToWishlist, loading, error, success };
 };

@@ -296,6 +296,37 @@ async function startServer() {
     }
   });
 
+  app.get("/api/tmdb/account_states", async (req: Request, res: Response) => {
+    const { movieId } = req.query;
+    try {
+      const accessToken = process.env.TMDB_ACCESS_TOKEN;
+      if (!accessToken) {
+        return res
+          .status(500)
+          .json({ error: "TMDB access token not configured" });
+      }
+      const url = `https://api.themoviedb.org/3/movie/${movieId}/account_states`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          accept: "application/json",
+        },
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        return res
+          .status(response.status)
+          .json({ error: "Failed to fetch account states", details: errorText });
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (error) {
+      console.error("TMDB Account states Fetch Error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  })
+
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "custom",
