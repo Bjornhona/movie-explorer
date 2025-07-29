@@ -1,5 +1,4 @@
 import { useState, useEffect, FC } from "react";
-import "@/styles/App.scss";
 import "@/styles/main.scss";
 import MoviesListPage from "./components/MoviesListPage.tsx";
 import MovieDetailsPage from "./components/MovieDetailsPage.tsx";
