@@ -128,6 +128,6 @@ export const useAuthentication = () => {
     redirectToTmdbApproval,
     logout,
     createSession,
-    fetchAccountId,
+    fetchAccountId
   };
 };

@@ -203,111 +203,84 @@
       }
 
       .main-section {
-        .overview-section {
-          @extend .card-section;
-          margin-bottom: map.get($spacing, 8);
+        margin-bottom: map.get($spacing, 8);
 
-          .card-header {
-            h2 {
-              justify-content: flex-start;
-            }
-          }
-
-          .card-content {
-            .overview-text {
-              font-size: map.get($font-sizes, lg);
-              line-height: map.get($line-heights, relaxed);
-              color: map.get($colors, gray-700);
-              margin: 0;
-              text-align: justify;
-            }
-          }
+        h2 {
+          justify-content: flex-start;
         }
 
-        .category-section {
-          @extend .card-section;
+        .overview-text {
+          font-size: map.get($font-sizes, lg);
+          line-height: map.get($line-heights, relaxed);
+          color: map.get($colors, gray-700);
+          margin: 0;
+          text-align: justify;
+        }
 
-          .card-header {
-            h2 {
-              justify-content: flex-start;
-            }
+        .category-info {
+          display: flex;
+          align-items: center;
+          gap: map.get($spacing, 4);
+
+          .category-icon {
+            width: 48px;
+            height: 48px;
+            @include flex-center;
+            background: $primary-gradient;
+            border-radius: map.get($border-radius, xl);
+            color: map.get($colors, white);
           }
 
-          .card-content {
-            .category-info {
-              display: flex;
-              align-items: center;
-              gap: map.get($spacing, 4);
+          .category-details {
+            text-align: left;
 
-              .category-icon {
-                width: 48px;
-                height: 48px;
-                @include flex-center;
-                background: $primary-gradient;
-                border-radius: map.get($border-radius, xl);
-                color: map.get($colors, white);
-              }
+            .category-name {
+              font-size: map.get($font-sizes, xl);
+              font-weight: map.get($font-weights, semibold);
+              color: map.get($colors, gray-800);
+              margin: 0 0 map.get($spacing, 1);
+            }
 
-              .category-details {
-                .category-name {
-                  font-size: map.get($font-sizes, xl);
-                  font-weight: map.get($font-weights, semibold);
-                  color: map.get($colors, gray-800);
-                  margin: 0 0 map.get($spacing, 1);
-                }
-
-                .category-description {
-                  font-size: map.get($font-sizes, base);
-                  color: map.get($colors, gray-600);
-                  margin: 0;
-                }
-              }
+            .category-description {
+              font-size: map.get($font-sizes, base);
+              color: map.get($colors, gray-600);
+              margin: 0;
             }
           }
         }
       }
 
       .sidebar {
-        .movie-details-card {
-          @extend .card-section;
-          position: sticky;
-          top: map.get($spacing, 8);
+        h2 {
+          justify-content: flex-start;
+        }
 
-          .card-header {
-            h2 {
-              justify-content: flex-start;
+        .details-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: map.get($spacing, 3) 0;
+            border-bottom: 1px solid map.get($colors, gray-200);
+
+            &:last-child {
+              border-bottom: none;
             }
-          }
 
-          .card-content {
-            .details-list {
-              list-style: none;
-              padding: 0;
-              margin: 0;
+            .detail-label {
+              font-weight: map.get($font-weights, medium);
+              color: map.get($colors, gray-600);
+              font-size: map.get($font-sizes, sm);
+            }
 
-              .detail-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: map.get($spacing, 3) 0;
-                border-bottom: 1px solid map.get($colors, gray-200);
-
-                &:last-child {
-                  border-bottom: none;
-                }
-
-                .detail-label {
-                  font-weight: map.get($font-weights, medium);
-                  color: map.get($colors, gray-600);
-                  font-size: map.get($font-sizes, sm);
-                }
-
-                .detail-value {
-                  font-weight: map.get($font-weights, semibold);
-                  color: map.get($colors, gray-800);
-                  font-size: map.get($font-sizes, sm);
-                }
-              }
+            .detail-value {
+              font-weight: map.get($font-weights, semibold);
+              color: map.get($colors, gray-800);
+              font-size: map.get($font-sizes, sm);
             }
           }
         }
@@ -323,26 +296,6 @@
   }
   .bg-top_rated {
     background-color: mintcream;
-  }
-
-  // Loading State
-  .movie-loading {
-    @extend .card-section;
-    text-align: center;
-    margin: map.get($spacing, 8);
-
-    .card-content {
-      padding: map.get($spacing, 12) map.get($spacing, 8);
-
-      .loading-spinner {
-        margin-bottom: map.get($spacing, 4);
-      }
-
-      .loading-text {
-        font-size: map.get($font-sizes, lg);
-        color: map.get($colors, gray-600);
-      }
-    }
   }
 
   // Error State

@@ -32,6 +32,7 @@ export interface IconProps {
 export interface Category {
   id: string;
   name: string;
+  description: string;
   icon: (props: IconProps) => JSX.Element;
   iconColor: string;
 }

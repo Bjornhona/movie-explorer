@@ -14,18 +14,21 @@ export const CATEGORIES: Category[] = [
   {
     id: 'upcoming',
     name: 'Upcoming',
+    description: 'Coming soon to theaters near you',
     icon: HeartIcon,
     iconColor: 'hotpink'
   },
   {
     id: 'popular',
     name: 'Popular',
+    description: 'Trending movies everyone is talking about',
     icon: StarIcon,
     iconColor: 'gold'
   },
   {
     id: 'top_rated',
     name: 'Top Rated',
+    description: 'Critically acclaimed masterpieces',
     icon: BookmarkIcon,
     iconColor: 'aquamarine'
   }
