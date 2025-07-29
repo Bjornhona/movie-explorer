@@ -15,22 +15,19 @@ export const CATEGORIES: Category[] = [
     id: 'upcoming',
     name: 'Upcoming',
     icon: HeartIcon,
-    iconColor: 'hotpink',
-    bgColor: 'lavenderblush'
+    iconColor: 'hotpink'
   },
   {
     id: 'popular',
     name: 'Popular',
     icon: StarIcon,
-    iconColor: 'gold',
-    bgColor: 'ivory'
+    iconColor: 'gold'
   },
   {
     id: 'top_rated',
     name: 'Top Rated',
     icon: BookmarkIcon,
-    iconColor: 'aquamarine',
-    bgColor: 'honeydue'
+    iconColor: 'aquamarine'
   }
 ];
 

@@ -29,11 +29,4 @@
       }
     }
   }
-
-  // Override item card for movies
-  .item-card {
-    &.movie-card {
-      scroll-snap-align: start;
-    }
-  }
 }

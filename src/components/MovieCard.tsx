@@ -1,9 +1,12 @@
 import { forwardRef } from "react";
 import { MovieCardProps } from "../types.ts";
+import '../styles/components/MovieCard.scss'
 
 const MovieCard = forwardRef<HTMLDivElement, MovieCardProps>(
   ({ movie, onClick }, ref) => {
     const imageUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+    const pathname = window.location.pathname;
+    const isWishlist = pathname === '/wishlist';
 
     return (
       <div
@@ -22,7 +25,8 @@ const MovieCard = forwardRef<HTMLDivElement, MovieCardProps>(
           <h3 className="item-title movie-title">{movie.title}</h3>
           <div className="item-meta movie-rating">
             <span className="star">★</span>
-            <span>{movie.vote_average.toFixed(1)}</span>
+            {!isWishlist && <span>{movie.vote_average.toFixed(1)}</span>}
+            {isWishlist && <span>{new Date(movie.release_date).getFullYear()}</span>}
           </div>
         </div>
       </div>

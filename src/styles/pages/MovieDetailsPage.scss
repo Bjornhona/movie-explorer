@@ -19,7 +19,7 @@
     overflow: hidden;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
@@ -170,7 +170,7 @@
             font-family: Raleway, sans-serif;
           }
           .popular {
-            font-family: Poppins, sans-serif
+            font-family: Poppins, sans-serif;
           }
           .top_rated {
             font-family: Playfair Display, serif;
@@ -313,6 +313,16 @@
         }
       }
     }
+  }
+
+  .bg-upcoming {
+    background-color: lavenderblush;
+  }
+  .bg-popular {
+    background-color: ivory;
+  }
+  .bg-top_rated {
+    background-color: mintcream;
   }
 
   // Loading State

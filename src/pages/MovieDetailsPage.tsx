@@ -226,7 +226,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
       </section>
 
       {/* Main Content */}
-      <main className="movie-content">
+      <main className={`movie-content bg-${currentCategory.id}`}>
         <div className="content-wrapper">
           <div className="main-section">
             {/* Overview Section */}

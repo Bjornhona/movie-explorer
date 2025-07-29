@@ -4,9 +4,10 @@ import Card from "../components/Card.tsx";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { handleMovieSelection } from "../functions.ts";
-import MovieWishlistCard from "../components/MovieWishlistCard.tsx";
+import MovieCard from "../components/MovieCard.tsx";
 import { Movie } from "../types.ts";
 import "../styles/pages/WishlistPage.scss";
+import { getStats } from "../functions.ts";
 
 const WishlistedMoviePage = () => {
   const {
@@ -16,7 +17,7 @@ const WishlistedMoviePage = () => {
     getRequestToken,
     redirectToTmdbApproval,
   } = useAuthentication();
-  const { movies, loading, error, loadMore, hasMore } = useWishlistMovies(
+  const { movies, error, loading, loadMore, hasMore } = useWishlistMovies(
     accountId,
     sessionId
   );
@@ -55,6 +56,8 @@ const WishlistedMoviePage = () => {
     handleMovieSelection(movieId, "popular");
   };
 
+  const stats = getStats(movies);
+
   return (
     <div className="wishlist-page">
       {/* Hero Section */}
@@ -87,116 +90,85 @@ const WishlistedMoviePage = () => {
 
           {/* Loading State */}
           {authLoading && (
-            <section className="wishlist-loading fade-in">
-              <div className="card-content">
-                <div className="loading-spinner">
-                  <div>Loading authentication...</div>
-                </div>
-                <p className="loading-text">
-                  Please wait while we connect to TMDB
-                </p>
+            <Card>
+              <div className="loading-spinner">
+                <div>Loading authentication...</div>
               </div>
-            </section>
+              <p className="loading-text">
+                Please wait while we connect to TMDB
+              </p>
+            </Card>
           )}
 
           {/* Error State */}
           {error && (
-            <section className="wishlist-error fade-in">
-              <div className="card-content">
-                <div className="error-icon">⚠️</div>
-                <h3 className="error-title">Error Loading Wishlist</h3>
-                <p className="error-description">{error}</p>
-                <Button text={'Try Again'} onClick={handleGetNewToken} type={'secondary'} />
-              </div>
-            </section>
+            <Card>
+              <div className="error-icon">⚠️</div>
+              <h3 className="error-title">Error Loading Wishlist</h3>
+              <p className="error-description">{error}</p>
+              <Button
+                text={"Try Again"}
+                onClick={handleGetNewToken}
+                type={"secondary"}
+              />
+            </Card>
           )}
 
           {/* Wishlist Content */}
           {sessionId && accountId && (
-            <section className="wishlist-section fade-in">
-              <div className="card-header">
-                <h2>
-                  <span className="card-icon">❤️</span>
-                  My Wishlist
-                </h2>
+            <Card title={"My Wishlist"} icon={"❤️"}>
+              <div className="wishlist-stats">
+                {stats.map((stat, index) => (
+                  <div key={index} className="stat-item">
+                    <span className="stat-number">{stat.number}</span>
+                    <span className="stat-label">{stat.name}</span>
+                  </div>
+                ))}
               </div>
-              <div className="card-content">
-                {/* Wishlist Stats */}
-                <div className="wishlist-stats">
-                  <div className="stat-item">
-                    <span className="stat-number">{movies.length}</span>
-                    <span className="stat-label">Movies</span>
-                  </div>
-                  <div className="stat-item">
-                    <span className="stat-number">
-                      {movies.length > 0
-                        ? new Set(
-                            movies.map((movie) =>
-                              new Date(movie.release_date).getFullYear()
-                            )
-                          ).size
-                        : "0"}
-                    </span>
-                    <span className="stat-label">Years</span>
-                  </div>
-                  <div className="stat-item">
-                    <span className="stat-number">
-                      {movies.length > 0
-                        ? new Set(
-                            movies.map(
-                              (movie) => movie.release_date.split("-")[0]
-                            )
-                          ).size
-                        : "0"}
-                    </span>
-                    <span className="stat-label">Decades</span>
+
+              {/* Empty Wishlist */}
+              {movies.length === 0 && !loading && (
+                <div className="empty-wishlist">
+                  <div className="card-content">
+                    <div className="empty-icon">📽️</div>
+                    <h3 className="empty-title">Your wishlist is empty</h3>
+                    <p className="empty-description">
+                      Start building your collection by browsing movies and
+                      adding them to your wishlist.
+                    </p>
+                    <button
+                      className="browse-button"
+                      onClick={() => (window.location.href = "/")}
+                    >
+                      Browse Movies
+                    </button>
                   </div>
                 </div>
+              )}
 
-                {/* Empty Wishlist */}
-                {movies.length === 0 && !loading && (
-                  <div className="empty-wishlist">
-                    <div className="card-content">
-                      <div className="empty-icon">📽️</div>
-                      <h3 className="empty-title">Your wishlist is empty</h3>
-                      <p className="empty-description">
-                        Start building your collection by browsing movies and
-                        adding them to your wishlist.
-                      </p>
-                      <button
-                        className="browse-button"
-                        onClick={() => (window.location.href = "/")}
-                      >
-                        Browse Movies
-                      </button>
+              {/* Movies Grid */}
+              {movies.length > 0 && (
+                <div className="grid-container wishlist-grid">
+                  {movies.map((movie: Movie, idx: number) => {
+                    const movieRef =
+                      idx === movies.length - 1 ? lastMovieRef : undefined;
+                    return (
+                      <MovieCard
+                        key={movie.id}
+                        movie={movie}
+                        ref={movieRef}
+                        onClick={handleCardClick}
+                      />
+                    );
+                  })}
+                  {loading && (
+                    <div className="loading-state">
+                      <div>Loading more movies...</div>
                     </div>
-                  </div>
-                )}
-
-                {/* Movies Grid */}
-                {movies.length > 0 && (
-                  <div className="grid-container wishlist-grid">
-                    {movies.map((movie: Movie, idx: number) => {
-                      const movieRef =
-                        idx === movies.length - 1 ? lastMovieRef : undefined;
-                      return (
-                        <MovieWishlistCard
-                          key={movie.id}
-                          movie={movie}
-                          ref={movieRef}
-                          onClick={handleCardClick}
-                        />
-                      );
-                    })}
-                    {loading && (
-                      <div className="loading-state">
-                        <div>Loading more movies...</div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </section>
+                  )}
+                </div>
+              )}
+            </Card>
           )}
         </div>
       </main>

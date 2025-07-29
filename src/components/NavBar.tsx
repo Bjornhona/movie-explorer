@@ -82,36 +82,7 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-
-        {/* Mobile Menu Toggle
-        <button
-          className={`navbar-toggle ${isMobileMenuOpen ? "active" : ""}`}
-          onClick={toggleMobileMenu}
-          aria-label="Toggle mobile menu"
-        >
-          <span className="toggle-line"></span>
-          <span className="toggle-line"></span>
-          <span className="toggle-line"></span>
-        </button> */}
       </div>
-
-      {/* Mobile Menu */}
-      {/* <div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
-        <ul className="mobile-nav">
-          {NAVIGATION_LINKS.map((navLink: NavigationLink, index: number) => (
-            <li key={index} className="nav-item">
-              <div
-                className={`nav-link ${
-                  currentPath === navLink.route ? "active" : ""
-                }`}
-                onClick={() => handleNav(navLink.route)}
-              >
-                <span className="nav-icon">{getNavIcon(navLink.route)}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div> */}
     </nav>
   );
 };
