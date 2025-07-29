@@ -181,8 +181,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
             </div>
             <div className="movie-info">
               <h1 
-                className="movie-title"
-                style={{ fontFamily: currentCategory.fontFamily }}
+                className={`movie-title ${currentCategory.id}`}
               >
                 {movieById.title}
               </h1>
