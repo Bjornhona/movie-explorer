@@ -4,6 +4,7 @@ import { Movie } from "../types.ts";
 import MovieCard from "./MovieCard.tsx";
 import Loading from "./Loading.tsx";
 import { handleMovieSelection } from "../functions.ts";
+import '../styles/components/MovieCarousel.scss';
 
 const MovieCarousel = ({
   title,

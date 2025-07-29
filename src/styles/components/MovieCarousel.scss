@@ -1,0 +1,6 @@
+  // Override grid container for movies
+  .grid-container {
+    &.movies-grid {
+      scroll-snap-type: x mandatory;
+    }
+  }

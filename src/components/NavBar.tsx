@@ -4,7 +4,6 @@ import { NavigationLink } from "../types.ts";
 import "../styles/components/NavBar.scss";
 
 const NavBar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentPath, setCurrentPath] = useState("/");
   const [isClient, setIsClient] = useState(false);
@@ -45,11 +44,6 @@ const NavBar = () => {
     window.history.pushState({}, "", path);
     window.dispatchEvent(new PopStateEvent("popstate"));
     setCurrentPath(path);
-    setIsMobileMenuOpen(false);
-  };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const getNavIcon = (route: string) => {
@@ -89,7 +83,7 @@ const NavBar = () => {
           ))}
         </ul>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Toggle
         <button
           className={`navbar-toggle ${isMobileMenuOpen ? "active" : ""}`}
           onClick={toggleMobileMenu}
@@ -98,11 +92,11 @@ const NavBar = () => {
           <span className="toggle-line"></span>
           <span className="toggle-line"></span>
           <span className="toggle-line"></span>
-        </button>
+        </button> */}
       </div>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
+      {/* <div className={`mobile-menu ${isMobileMenuOpen ? "active" : ""}`}>
         <ul className="mobile-nav">
           {NAVIGATION_LINKS.map((navLink: NavigationLink, index: number) => (
             <li key={index} className="nav-item">
@@ -117,7 +111,7 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </nav>
   );
 };
