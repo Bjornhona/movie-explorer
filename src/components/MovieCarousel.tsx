@@ -39,7 +39,7 @@ const MovieCarousel = ({
 
   return (
     <div data-testid={`carousel-${categoryId}`}>
-      <div className="movies-grid">
+      <div className="grid-container movies-grid">
         {movies.map((movie: Movie, idx: number) => {
           const imageRef = idx === movies.length - 1 ? lastMovieRef : undefined;
 
@@ -60,7 +60,7 @@ const MovieCarousel = ({
       </div>
       {error && <div className="error-state">Error: {error}</div>}
       {!hasMore && movies.length > 0 && (
-        <div className="no-more-movies">No more movies to load</div>
+        <div className="empty-state">No more movies to load</div>
       )}
     </div>
   );

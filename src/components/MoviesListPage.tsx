@@ -32,23 +32,23 @@ const MoviesListPage = () => {
           {CATEGORIES.map((category, index) => (
             <section 
               key={category.id} 
-              className="category-section fade-in"
+              className="card-section fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="category-header">
+              <div className="card-header">
                 <h2>
-                  <span className="category-icon">
+                  <span className="card-icon">
                     <category.icon size={20} color="white" />
                   </span>
                   {category.name}
                 </h2>
-                <p className="category-description">
+                <p className="card-description">
                   {category.id === 'upcoming' && 'Coming soon to theaters near you'}
                   {category.id === 'popular' && 'Trending movies everyone is talking about'}
                   {category.id === 'top_rated' && 'Critically acclaimed masterpieces'}
                 </p>
               </div>
-              <div className="category-content">
+              <div className="card-content">
                 <MovieCarousel
                   title={category.name}
                   categoryId={category.id}

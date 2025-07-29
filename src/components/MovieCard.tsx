@@ -9,18 +9,18 @@ const MovieCard = forwardRef<HTMLDivElement, MovieCardProps>(
       <div
         data-testid={"movie-card"}
         ref={ref}
-        className="movie-card"
+        className="item-card movie-card"
         onClick={() => onClick(movie.id)}
       >
         <img
           src={imageUrl}
           alt={movie.title}
-          className="movie-poster"
+          className="item-image movie-poster"
           loading="lazy"
         />
-        <div className="movie-info">
-          <h3 className="movie-title">{movie.title}</h3>
-          <div className="movie-rating">
+        <div className="item-info">
+          <h3 className="item-title movie-title">{movie.title}</h3>
+          <div className="item-meta movie-rating">
             <span className="star">★</span>
             <span>{movie.vote_average.toFixed(1)}</span>
           </div>

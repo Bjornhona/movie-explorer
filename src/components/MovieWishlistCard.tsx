@@ -8,10 +8,23 @@ const MovieWishlistCard = forwardRef<HTMLDivElement, MovieCardProps>(({ movie, o
     <div
       data-testid={'movie-wishlist-card'}
       ref={ref}
+      className="item-card wishlist-card"
       onClick={() => onClick(movie.id)}
     >
-      <img src={imageUrl} alt={movie.title} style={{ width: "150px" }} loading="lazy" />
-      <p data-testid={'movie-wishlist-title'}>{movie.title}</p>
+      <img 
+        src={imageUrl} 
+        alt={movie.title} 
+        className="item-image" 
+        loading="lazy" 
+      />
+      <div className="item-info">
+        <h3 className="item-title" data-testid={'movie-wishlist-title'}>
+          {movie.title}
+        </h3>
+        <div className="item-meta">
+          <span>{new Date(movie.release_date).getFullYear()}</span>
+        </div>
+      </div>
     </div>
   );
 });
