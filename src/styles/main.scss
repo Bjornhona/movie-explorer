@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "./variables" as *;
+@use "./components" as *;
 // @use "./pages/MoviesListPage.scss";
 // @use "./pages/WishlistPage.scss";
 // @use "./pages/MovieDetailsPage.scss";

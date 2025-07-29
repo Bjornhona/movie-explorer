@@ -1,4 +1,6 @@
 import { useRef, useCallback } from "react";
+import Button from "../components/Button.tsx";
+import Card from "../components/Card.tsx";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
 import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { handleMovieSelection } from "../functions.ts";
@@ -70,26 +72,17 @@ const WishlistedMoviePage = () => {
         <div className="content-wrapper">
           {/* Authentication Required */}
           {!sessionId && !accountId && (
-            <section className="auth-section fade-in">
-              <div className="card-header">
-                <h2>
-                  <span className="card-icon">🔐</span>
-                  Authentication Required
-                </h2>
-              </div>
-              <div className="card-content">
-                <p className="auth-message">
-                  To view your wishlist, you need to be logged in with your TMDB account.
-                </p>
-                <button
-                  className="auth-button"
-                  onClick={handleGetNewToken}
-                  disabled={authLoading}
-                >
-                  {authLoading ? "Connecting..." : "Login with TMDB"}
-                </button>
-              </div>
-            </section>
+            <Card icon={"🔐"} title={"Authentication Required"}>
+              <p className="auth-message">
+                To view your wishlist, you need to be logged in with your TMDB
+                account.
+              </p>
+              <Button
+                text={authLoading ? "Connecting..." : "Login with TMDB"}
+                disabled={authLoading}
+                onClick={handleGetNewToken}
+              />
+            </Card>
           )}
 
           {/* Loading State */}
@@ -99,7 +92,9 @@ const WishlistedMoviePage = () => {
                 <div className="loading-spinner">
                   <div>Loading authentication...</div>
                 </div>
-                <p className="loading-text">Please wait while we connect to TMDB</p>
+                <p className="loading-text">
+                  Please wait while we connect to TMDB
+                </p>
               </div>
             </section>
           )}
@@ -110,12 +105,8 @@ const WishlistedMoviePage = () => {
               <div className="card-content">
                 <div className="error-icon">⚠️</div>
                 <h3 className="error-title">Error Loading Wishlist</h3>
-                <p className="error-description">
-                  {error}
-                </p>
-                <button className="retry-button" onClick={handleGetNewToken}>
-                  Try Again
-                </button>
+                <p className="error-description">{error}</p>
+                <Button text={'Try Again'} onClick={handleGetNewToken} type={'secondary'} />
               </div>
             </section>
           )}
@@ -138,19 +129,25 @@ const WishlistedMoviePage = () => {
                   </div>
                   <div className="stat-item">
                     <span className="stat-number">
-                      {movies.length > 0 
-                        ? new Set(movies.map(movie => new Date(movie.release_date).getFullYear())).size
-                        : '0'
-                      }
+                      {movies.length > 0
+                        ? new Set(
+                            movies.map((movie) =>
+                              new Date(movie.release_date).getFullYear()
+                            )
+                          ).size
+                        : "0"}
                     </span>
                     <span className="stat-label">Years</span>
                   </div>
                   <div className="stat-item">
                     <span className="stat-number">
-                      {movies.length > 0 
-                        ? new Set(movies.map(movie => movie.release_date.split('-')[0])).size
-                        : '0'
-                      }
+                      {movies.length > 0
+                        ? new Set(
+                            movies.map(
+                              (movie) => movie.release_date.split("-")[0]
+                            )
+                          ).size
+                        : "0"}
                     </span>
                     <span className="stat-label">Decades</span>
                   </div>
@@ -163,11 +160,12 @@ const WishlistedMoviePage = () => {
                       <div className="empty-icon">📽️</div>
                       <h3 className="empty-title">Your wishlist is empty</h3>
                       <p className="empty-description">
-                        Start building your collection by browsing movies and adding them to your wishlist.
+                        Start building your collection by browsing movies and
+                        adding them to your wishlist.
                       </p>
-                      <button 
+                      <button
                         className="browse-button"
-                        onClick={() => window.location.href = '/'}
+                        onClick={() => (window.location.href = "/")}
                       >
                         Browse Movies
                       </button>
@@ -179,7 +177,8 @@ const WishlistedMoviePage = () => {
                 {movies.length > 0 && (
                   <div className="grid-container wishlist-grid">
                     {movies.map((movie: Movie, idx: number) => {
-                      const movieRef = idx === movies.length - 1 ? lastMovieRef : undefined;
+                      const movieRef =
+                        idx === movies.length - 1 ? lastMovieRef : undefined;
                       return (
                         <MovieWishlistCard
                           key={movie.id}

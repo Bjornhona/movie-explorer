@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuthentication } from "../hooks/useAuthentication.ts";
-import '../styles/pages/LogoutPage.scss';
+import "../styles/pages/LogoutPage.scss";
 import Toast from "../components/Toast.tsx";
+import Card from "../components/Card.tsx";
+import Button from "../components/Button.tsx";
 
 const LogoutPage = () => {
   const { accountId, logout } = useAuthentication();
@@ -26,13 +28,12 @@ const LogoutPage = () => {
 
   return (
     <div className="logout-component">
-      <h2>Logout</h2>
-      <button
-        className="logout-button"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
+      <Card icon={"🔐"} title={"Log out"}>
+        <p className="auth-message">
+          If you log out you will not be able to see your wishlist. You can login again at any moment by just navigating to My Wishlist.
+        </p>
+        <Button text={"Logout"} onClick={handleLogout} />
+      </Card>
       {showToast && (
         <Toast
           message="Logout successful!"

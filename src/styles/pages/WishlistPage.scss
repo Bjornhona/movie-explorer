@@ -94,13 +94,6 @@
         margin-bottom: map.get($spacing, 6);
         line-height: map.get($line-heights, relaxed);
       }
-
-      .auth-button {
-        @extend .btn;
-        @extend .btn-primary;
-        font-size: map.get($font-sizes, lg);
-        padding: map.get($spacing, 4) map.get($spacing, 8);
-      }
     }
   }
 
@@ -183,11 +176,6 @@
         font-size: map.get($font-sizes, base);
         color: map.get($colors, gray-600);
         margin-bottom: map.get($spacing, 6);
-      }
-
-      .retry-button {
-        @extend .btn;
-        @extend .btn-secondary;
       }
     }
   }

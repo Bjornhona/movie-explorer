@@ -1,0 +1,13 @@
+@use "sass:map";
+@use "../variables" as *;
+@use "../components" as *;
+
+.card-section {
+  @extend .card-section;
+    text-align: center;
+    margin-bottom: map.get($spacing, 8);
+
+    .card-content {
+      padding: map.get($spacing, 12) map.get($spacing, 8);
+    }
+}
