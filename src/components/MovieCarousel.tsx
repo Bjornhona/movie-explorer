@@ -38,19 +38,8 @@ const MovieCarousel = ({
   };
 
   return (
-    <div data-testid={`carousel-${categoryId}`} style={{ padding: 16 }}>
-      <h4>{title}</h4>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          overflowX: "auto",
-          gap: 16,
-          padding: "16px 0",
-          scrollSnapType: "x mandatory",
-          scrollbarWidth: "none",
-        }}
-      >
+    <div data-testid={`carousel-${categoryId}`}>
+      <div className="movies-grid">
         {movies.map((movie: Movie, idx: number) => {
           const imageRef = idx === movies.length - 1 ? lastMovieRef : undefined;
 
@@ -63,10 +52,16 @@ const MovieCarousel = ({
             />
           );
         })}
-        {loading && movies.length > 0 && <Loading />}
+        {loading && movies.length > 0 && (
+          <div className="loading-state">
+            <Loading />
+          </div>
+        )}
       </div>
-      {error && <div style={{ color: "red" }}>Error: {error}</div>}
-      {!hasMore && <div>No more movies.</div>}
+      {error && <div className="error-state">Error: {error}</div>}
+      {!hasMore && movies.length > 0 && (
+        <div className="no-more-movies">No more movies to load</div>
+      )}
     </div>
   );
 };
