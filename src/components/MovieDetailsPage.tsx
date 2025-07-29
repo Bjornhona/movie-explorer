@@ -180,7 +180,12 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
               <img src={posterUrl} alt={movieById.title} loading="lazy" />
             </div>
             <div className="movie-info">
-              <h1 className="movie-title">{movieById.title}</h1>
+              <h1 
+                className="movie-title"
+                style={{ fontFamily: currentCategory.fontFamily }}
+              >
+                {movieById.title}
+              </h1>
               {movieById.tagline && (
                 <p className="movie-tagline">"{movieById.tagline}"</p>
               )}

@@ -16,7 +16,7 @@ export const CATEGORIES: Category[] = [
     name: 'Upcoming',
     icon: HeartIcon,
     iconColor: 'hotpink',
-    bgColor: 'pink',
+    bgColor: 'lavenderblush',
     fontFamily: 'Raleway, sans-serif',
   },
   {
@@ -24,7 +24,7 @@ export const CATEGORIES: Category[] = [
     name: 'Popular',
     icon: StarIcon,
     iconColor: 'gold',
-    bgColor: 'blue',
+    bgColor: 'ivory',
     fontFamily: 'Poppins, sans-serif',
   },
   {
@@ -32,7 +32,7 @@ export const CATEGORIES: Category[] = [
     name: 'Top Rated',
     icon: BookmarkIcon,
     iconColor: 'aquamarine',
-    bgColor: 'orange',
+    bgColor: 'honeydue',
     fontFamily: 'Playfair Display, serif',
   }
 ];
