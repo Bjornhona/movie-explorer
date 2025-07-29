@@ -9,29 +9,20 @@
   justify-content: center;
 }
 
-.movie-details-page {
-  min-height: 100vh;
-  background: $primary-gradient;
-  padding: 0;
-  margin: 0;
+.movie-details-loading {
+  min-height: 50vh;
+  background-color: map.get($colors, gray-100);
   font-family: $font-family-primary;
+  text-align: center;
+  align-content: center;
+  padding: map.get($spacing, 12) map.get($spacing, 8);
 
-  // .movie-loading {
-  //   @extend .card-section;
-    // text-align: center;
-    // margin: map.get($spacing, 8);
+  .loading-spinner {
+    margin-bottom: map.get($spacing, 4);
+  }
 
-    // .card-content {
-    //   padding: map.get($spacing, 12) map.get($spacing, 8);
-
-      .loading-spinner {
-        margin-bottom: map.get($spacing, 4);
-      }
-
-      .loading-text {
-        font-size: map.get($font-sizes, lg);
-        color: map.get($colors, gray-600);
-      }
-    // }
-  // }
+  .loading-text {
+    font-size: map.get($font-sizes, lg);
+    color: map.get($colors, gray-600);
+  }
 }

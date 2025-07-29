@@ -115,7 +115,15 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
     setIsInWishlist(!isInWishlist);
   };
 
-  if (movieLoading) <Loading type={"loading-movie-details"} />;
+  if (movieLoading) {
+    return (
+      <Loading
+        type={"loading-state"}
+        spinnerText={"Loading movie details..."}
+        loadingText={"Please wait while we fetch the movie information"}
+      />
+    );
+  }
 
   if (movieError)
     <Error

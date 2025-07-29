@@ -167,13 +167,13 @@
           }
 
           .upcoming {
-            font-family: Raleway, sans-serif;
+            font-family: $font-family-tertiary;
           }
           .popular {
-            font-family: Poppins, sans-serif;
+            font-family: $font-family-secondary;
           }
           .top_rated {
-            font-family: Playfair Display, serif;
+            font-family: $font-family-display;
           }
         }
       }

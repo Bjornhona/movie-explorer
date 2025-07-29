@@ -7,7 +7,8 @@ import { handleMovieSelection } from "../functions.ts";
 import MovieCard from "../components/MovieCard.tsx";
 import { Movie } from "../types.ts";
 import "../styles/pages/WishlistPage.scss";
-import { getStats } from "../functions.ts";
+import Loading from "../components/Loading.tsx";
+import Error from "../components/Error.tsx";
 
 const WishlistedMoviePage = () => {
   const {
@@ -17,6 +18,7 @@ const WishlistedMoviePage = () => {
     getRequestToken,
     redirectToTmdbApproval,
   } = useAuthentication();
+
   const { movies, error, loading, loadMore, hasMore } = useWishlistMovies(
     accountId,
     sessionId
@@ -56,11 +58,8 @@ const WishlistedMoviePage = () => {
     handleMovieSelection(movieId, "popular");
   };
 
-  const stats = getStats(movies);
-
   return (
     <div className="wishlist-page">
-      {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
           <h1>My Wishlist</h1>
@@ -70,9 +69,9 @@ const WishlistedMoviePage = () => {
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="main-content">
         <div className="content-wrapper">
+
           {/* Authentication Required */}
           {!sessionId && !accountId && (
             <Card icon={"🔐"} title={"Authentication Required"}>
@@ -88,43 +87,27 @@ const WishlistedMoviePage = () => {
             </Card>
           )}
 
-          {/* Loading State */}
           {authLoading && (
-            <Card>
-              <div className="loading-spinner">
-                <div>Loading authentication...</div>
-              </div>
-              <p className="loading-text">
-                Please wait while we connect to TMDB
-              </p>
-            </Card>
+            <Loading
+              type={"loading-state"}
+              spinnerText={"Loading authentication..."}
+              loadingText={"Please wait while we connect to TMDB"}
+            />
           )}
 
-          {/* Error State */}
           {error && (
-            <Card>
-              <div className="error-icon">⚠️</div>
-              <h3 className="error-title">Error Loading Wishlist</h3>
-              <p className="error-description">{error}</p>
-              <Button
-                text={"Try Again"}
-                onClick={handleGetNewToken}
-                type={"secondary"}
-              />
-            </Card>
+            <Error
+              icon={"⚠️"}
+              title={"Error Loading Wishlist"}
+              error={error}
+              buttonText={"Try Again"}
+              buttonOnClick={handleGetNewToken}
+              buttonType={'secondary'}
+            />
           )}
 
-          {/* Wishlist Content */}
           {sessionId && accountId && (
             <Card title={"My Wishlist"} icon={"❤️"}>
-              <div className="wishlist-stats">
-                {stats.map((stat, index) => (
-                  <div key={index} className="stat-item">
-                    <span className="stat-number">{stat.number}</span>
-                    <span className="stat-label">{stat.name}</span>
-                  </div>
-                ))}
-              </div>
 
               {/* Empty Wishlist */}
               {movies.length === 0 && !loading && (
@@ -146,7 +129,6 @@ const WishlistedMoviePage = () => {
                 </div>
               )}
 
-              {/* Movies Grid */}
               {movies.length > 0 && (
                 <div className="grid-container wishlist-grid">
                   {movies.map((movie: Movie, idx: number) => {

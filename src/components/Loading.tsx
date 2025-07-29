@@ -3,9 +3,15 @@ import Card from "./Card.tsx";
 
 interface LoadingProps {
   type: string;
+  spinnerText?: string;
+  loadingText?: string;
 }
 
-const Loading = ({ type = "loading-more" }: LoadingProps) => {
+const Loading = ({
+  type = "loading-more",
+  spinnerText,
+  loadingText,
+}: LoadingProps) => {
   return (
     <>
       {type === "loading-more" && (
@@ -13,15 +19,13 @@ const Loading = ({ type = "loading-more" }: LoadingProps) => {
           Loading more movies...
         </div>
       )}
-      {type === "loading-movie-details" && (
-        <div className="movie-details-page">
+      {type === "loading-state" && (
+        <div className="movie-details-loading">
           <Card>
             <div className="loading-spinner">
-              <div>Loading movie details...</div>
+              <div>{spinnerText}</div>
             </div>
-            <p className="loading-text">
-              Please wait while we fetch the movie information
-            </p>
+            <p className="loading-text">{loadingText}</p>
           </Card>
         </div>
       )}

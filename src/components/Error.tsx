@@ -1,5 +1,5 @@
 import Card from "./Card.tsx";
-import Button from './Button.tsx';
+import Button from "./Button.tsx";
 
 interface ErrorProps {
   icon: string;
@@ -7,27 +7,25 @@ interface ErrorProps {
   error: string;
   buttonText: string;
   buttonOnClick: () => void;
+  buttonType?: "primary" | "secondary";
 }
 
-const Error = ({icon, title, error, buttonText, buttonOnClick}: ErrorProps) => {
+const Error = ({
+  icon,
+  title,
+  error,
+  buttonText,
+  buttonOnClick,
+  buttonType,
+}: ErrorProps) => {
   return (
     <Card icon={icon} title={title}>
-    {/* // <div className="movie-details-page">
-    //   <div className="movie-error fade-in">
-    //     <div className="card-content"> */}
-          {/* <div className="error-icon">{icon}</div>
-          <h3 className="error-title">{title}</h3> */}
-          <p className="error-description">{error}</p>
-          <Button text={buttonText} onClick={buttonOnClick} />
-          {/* <button
-            className="retry-button"
-            onClick={() => window.location.reload()}
-          >
-            Try Again
-          </button> */}
-    {/* //     </div>
-    //   </div>
-    // </div> */}
+      <p className="error-description">{error}</p>
+      <Button
+        text={buttonText}
+        onClick={buttonOnClick}
+        type={buttonType ? buttonType : "primary"}
+      />
     </Card>
   );
 };
