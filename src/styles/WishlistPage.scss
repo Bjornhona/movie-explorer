@@ -1,6 +1,6 @@
 @use "sass:map";
-@import './variables';
-@import './components';
+@use "./variables" as *;
+@use "./components" as *;
 
 // WishlistPage Specific Styles
 .wishlist-page {

@@ -1,3 +1,4 @@
-@import './MoviesListPage.scss';
-@import './WishlistPage.scss';
-@import './MovieDetailsPage.scss';
+// Import component-specific styles
+@use "./MoviesListPage.scss";
+@use "./WishlistPage.scss";
+@use "./MovieDetailsPage.scss";
