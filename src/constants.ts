@@ -15,7 +15,7 @@ export const CATEGORIES: Category[] = [
     id: 'upcoming',
     name: 'Upcoming',
     icon: HeartIcon,
-    iconColor: 'red',
+    iconColor: 'hotpink',
     bgColor: 'pink',
     fontFamily: 'Raleway, sans-serif',
   },
@@ -31,7 +31,7 @@ export const CATEGORIES: Category[] = [
     id: 'top_rated',
     name: 'Top Rated',
     icon: BookmarkIcon,
-    iconColor: 'green',
+    iconColor: 'aquamarine',
     bgColor: 'orange',
     fontFamily: 'Playfair Display, serif',
   }

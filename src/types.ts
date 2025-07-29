@@ -23,6 +23,7 @@ export interface MovieDetailsProps {
 
 export interface IconProps {
   color?: string;
+  border?: string;
   size?: number;
   strokeWidth?: number;
 }

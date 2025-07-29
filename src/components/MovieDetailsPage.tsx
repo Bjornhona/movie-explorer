@@ -201,7 +201,7 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
                   onClick={!sessionId || !accountId ? handleLogin : handleWishlistToggle}
                   disabled={authLoading || wishlistLoading || accountStatesLoading}
                 >
-                  <Icon size={24} color="white" />
+                  <Icon size={24} color={isInWishlist ? currentCategory.iconColor : 'none'} border={isInWishlist ? 'none' : 'white'} />
                   {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                 </button>
                 {movieById.homepage && (

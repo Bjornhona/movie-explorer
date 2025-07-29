@@ -1,6 +1,6 @@
 import { IconProps } from "../../types.ts";
 
-const StarIcon = ({color = 'gray', size = 24, strokeWidth = 2}: IconProps) => {
+const StarIcon = ({color = 'none', border = 'white', size = 24, strokeWidth = 2}: IconProps) => {
   return (
     <svg
       aria-label="star-icon"
@@ -8,8 +8,8 @@ const StarIcon = ({color = 'gray', size = 24, strokeWidth = 2}: IconProps) => {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
+      fill={color}
+      stroke={border}
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"

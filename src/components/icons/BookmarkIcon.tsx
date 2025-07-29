@@ -1,6 +1,6 @@
 import { IconProps } from "../../types.ts";
 
-const BookmarkIcon = ({ color = 'purple', size = 24, strokeWidth = 2 }: IconProps) => {
+const BookmarkIcon = ({ color = 'none', border = 'white', size = 24, strokeWidth = 2 }: IconProps) => {
   return (
     <svg
       aria-label="bookmark-icon"
@@ -8,8 +8,8 @@ const BookmarkIcon = ({ color = 'purple', size = 24, strokeWidth = 2 }: IconProp
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
+      fill={color}
+      stroke={border}
       strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
