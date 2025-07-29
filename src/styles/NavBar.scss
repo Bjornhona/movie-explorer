@@ -1,0 +1,333 @@
+@use "sass:map";
+@use "./variables" as *;
+
+// NavBar Specific Styles
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: map.get($z-index, sticky);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid map.get($colors, gray-200);
+  transition: all map.get($transitions, normal);
+  font-family: $font-family-primary;
+
+  // Glass effect on scroll
+  &.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: map.get($shadows, lg);
+  }
+
+  .navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: map.get($spacing, 4) map.get($spacing, 8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include respond-to-max(md) {
+      padding: map.get($spacing, 3) map.get($spacing, 4);
+    }
+
+    // Logo/Brand Section
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: map.get($spacing, 3);
+      text-decoration: none;
+
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+        background: $primary-gradient;
+        border-radius: map.get($border-radius, lg);
+        @include flex-center;
+        color: map.get($colors, white);
+        font-size: map.get($font-sizes, xl);
+        font-weight: map.get($font-weights, bold);
+        box-shadow: map.get($shadows, md);
+        transition: transform map.get($transitions, normal);
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+
+      .brand-text {
+        font-size: map.get($font-sizes, xl);
+        font-weight: map.get($font-weights, bold);
+        @include gradient-text;
+        letter-spacing: -0.02em;
+
+        @include respond-to-max(md) {
+          font-size: map.get($font-sizes, lg);
+        }
+      }
+    }
+
+    // Navigation Links
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: map.get($spacing, 8);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      @include respond-to-max(md) {
+        gap: map.get($spacing, 4);
+      }
+
+      .nav-item {
+        position: relative;
+
+        .nav-link {
+          display: flex;
+          align-items: center;
+          gap: map.get($spacing, 2);
+          padding: map.get($spacing, 3) map.get($spacing, 4);
+          font-size: map.get($font-sizes, base);
+          font-weight: map.get($font-weights, medium);
+          color: map.get($colors, gray-700);
+          text-decoration: none;
+          border-radius: map.get($border-radius, lg);
+          transition: all map.get($transitions, normal);
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+
+          // Hover effect with gradient background
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: $primary-gradient;
+            transition: left map.get($transitions, normal);
+            z-index: -1;
+          }
+
+          &:hover {
+            color: map.get($colors, white);
+            transform: translateY(-1px);
+
+            &::before {
+              left: 0;
+            }
+          }
+
+          // Active state
+          &.active {
+            background: $primary-gradient;
+            color: map.get($colors, white);
+            box-shadow: map.get($shadows, md);
+
+            &::before {
+              left: 0;
+            }
+          }
+
+          // Icon styling
+          .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+            transition: opacity map.get($transitions, normal);
+
+            @include respond-to-max(md) {
+              width: 18px;
+              height: 18px;
+            }
+          }
+
+          // Text styling
+          .nav-text {
+            font-weight: map.get($font-weights, semibold);
+
+            @include respond-to-max(sm) {
+              display: none;
+            }
+          }
+
+          // Badge for wishlist count
+          .nav-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: map.get($colors, error);
+            color: map.get($colors, white);
+            font-size: map.get($font-sizes, xs);
+            font-weight: map.get($font-weights, bold);
+            padding: 2px 6px;
+            border-radius: map.get($border-radius, full);
+            min-width: 18px;
+            height: 18px;
+            @include flex-center;
+            box-shadow: map.get($shadows, sm);
+
+            @include respond-to-max(sm) {
+              top: -2px;
+              right: -2px;
+              font-size: 10px;
+              min-width: 16px;
+              height: 16px;
+            }
+          }
+        }
+
+        // Underline animation
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          background: $primary-gradient;
+          transition: all map.get($transitions, normal);
+          transform: translateX(-50%);
+        }
+
+        &:hover::after,
+        .nav-link.active + &::after {
+          width: 80%;
+        }
+      }
+    }
+
+    // Mobile Menu Toggle
+    .navbar-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      padding: map.get($spacing, 2);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      border-radius: map.get($border-radius, base);
+
+      @include respond-to-max(md) {
+        display: flex;
+      }
+
+      .toggle-line {
+        width: 24px;
+        height: 2px;
+        background: map.get($colors, gray-700);
+        transition: all map.get($transitions, normal);
+        border-radius: 1px;
+      }
+
+      &.active {
+        .toggle-line {
+          &:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+          }
+          &:nth-child(2) {
+            opacity: 0;
+          }
+          &:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+          }
+        }
+      }
+    }
+  }
+
+  // Mobile Menu
+  .mobile-menu {
+    display: none;
+    background: map.get($colors, white);
+    border-top: 1px solid map.get($colors, gray-200);
+    padding: map.get($spacing, 4);
+    box-shadow: map.get($shadows, md);
+
+    @include respond-to-max(md) {
+      display: block;
+    }
+
+    &.active {
+      display: block;
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: map.get($spacing, 2);
+
+      .nav-item {
+        .nav-link {
+          padding: map.get($spacing, 4);
+          border-radius: map.get($border-radius, lg);
+          font-size: map.get($font-sizes, lg);
+          font-weight: map.get($font-weights, semibold);
+
+          &:hover {
+            background: map.get($colors, gray-50);
+          }
+
+          &.active {
+            background: $primary-gradient;
+            color: map.get($colors, white);
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive Design
+  @include respond-to-max(md) {
+    .navbar-container {
+      .navbar-nav {
+        display: none;
+      }
+    }
+  }
+
+  // Animation for mobile menu
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .mobile-menu.active {
+    animation: slideDown 0.3s ease-out;
+  }
+}
+
+// Dark mode support (optional)
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom-color: map.get($colors, gray-800);
+
+    .navbar-container {
+      .navbar-brand {
+        .brand-text {
+          color: map.get($colors, white);
+        }
+      }
+
+      .navbar-nav {
+        .nav-item {
+          .nav-link {
+            color: map.get($colors, gray-300);
+
+            &:hover {
+              color: map.get($colors, white);
+            }
+          }
+        }
+      }
+    }
+  }
+}
