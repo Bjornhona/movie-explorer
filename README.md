@@ -93,9 +93,6 @@ npm run preview          # Preview production build
 # Testing
 npm run test             # Run test suite
 npm run test:watch       # Run tests in watch mode
-
-# Deployment
-npm run deploy           # Deploy to GitHub Pages
 ```
 
 ## 📁 Project Structure
@@ -163,34 +160,11 @@ Test files are located in `src/__tests__/` and follow the naming convention:
 - `ComponentName.test.tsx` for component tests
 - `hookName.test.ts` for hook tests
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push
-
-### GitHub Pages
-
-```bash
-npm run deploy
-```
-
-### Manual Deployment
-
-```bash
-npm run build
-# Serve the dist/ folder with your preferred server
-```
-
 ## 🔧 Environment Variables
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `VITE_TMDB_API_KEY` | Your TMDB API key | ✅ | - |
-| `PORT` | Server port | ❌ | 3000 |
-| `VITE_BASE_URL` | Base URL for development | ❌ | http://localhost:3000 |
+| Variable            | Description       | Required | Default |
+|---------------------|-------------------|----------|---------|
+| `VITE_TMDB_API_KEY` | Your TMDB API key |    ✅    |    -    |
 
 ## 🐛 Troubleshooting
 
@@ -211,7 +185,6 @@ npm run build
 
 **4. Build Errors**
 - Clear node_modules: `rm -rf node_modules && npm install`
-- Check TypeScript errors: `npm run lint`
 
 ### Getting Help
 

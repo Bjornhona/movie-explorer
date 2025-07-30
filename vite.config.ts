@@ -1,35 +1,29 @@
-import { defineConfig } from "vitest/config";
-import react from "@vitejs/plugin-react";
-import path from "path";
-
-const isSSR = process.env.BUILD_TARGET === "server";
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+      '@': path.resolve(__dirname, './src')
+    }
   },
   build: {
-    ssr: isSSR ? "src/entry-server.tsx" : false,
-    outDir: isSSR ? "dist/server" : "dist/client",
-    rollupOptions: {
-      input: isSSR ? "src/entry-server.tsx" : "index.html",
-    },
-    sourcemap: true,
-    target: "esnext",
+    ssr: 'src/entry-server.tsx',
+    outDir: 'dist',
+    sourcemap: true
   },
   server: {
     port: 5173,
-    open: true,
+    open: true
   },
   optimizeDeps: {
-    exclude: ["fsevents"],
+    exclude: ['fsevents'],
   },
   test: {
     globals: true,
-    environment: "jsdom",
-    setupFiles: "src/setupTests.ts",
-  },
-});
+    environment: 'jsdom',
+    setupFiles: 'src/setupTests.ts',
+  }
+})
