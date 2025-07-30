@@ -1,22 +1,24 @@
-# 🎬 React + Vite — Movie Explorer App
+# 🎬 Movie Explorer - React + Vite + TypeScript
 
-This is a fully handcrafted **React + Vite + TypeScript** application that showcases trending movies from [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api). It uses **SCSS for styling** and is implemented with **Server-Side Rendering (SSR)** — without any UI frameworks, boilerplates, or third-party libraries beyond essential tooling.
+A beautiful, modern movie discovery application built with React, Vite, and TypeScript. Browse trending movies, manage your wishlist, and explore upcoming releases with a stunning UI powered by The Movie Database (TMDB) API.
 
+## ✨ Features
 
-## 🚀 Tech Stack
+- 🎭 **Movie Discovery** - Browse upcoming, popular, and top-rated movies
+- ❤️ **Wishlist Management** - Save and manage your favorite movies
+- 🔐 **TMDB Authentication** - Secure login with TMDB account
+- 📱 **Responsive Design** - Beautiful UI that works on all devices
+- ⚡ **Server-Side Rendering** - Fast loading with SSR support
+- 🎨 **Modern Styling** - Custom SCSS with beautiful animations
+- 🧪 **Comprehensive Testing** - Full test coverage with Vitest
 
-- **React 19.1.0** with JSX transform and clean codebase with ES6
-- **Vite** as the modern frontend build tool for fast development
-- **TypeScript** (strict mode)
-- **SCSS** for custom styling — no Tailwind, CSS Modules or Styled Components
-- **SSR** with a custom Express + Vite integration
-- **External API** fetches data from TMDB API
+## 🚀 Quick Start
 
+### Prerequisites
 
-## 🚀 Getting Started
-
-Follow the steps below to set up and run the project locally.
-
+- **Node.js** 18+ (recommended: 22+)
+- **npm** or **yarn** package manager
+- **TMDB API Key** (free at [themoviedb.org](https://www.themoviedb.org/settings/api))
 
 ### 1. Clone the Repository
 
@@ -25,129 +27,217 @@ git clone https://github.com/YOUR-USERNAME/movie-explorer.git
 cd movie-explorer
 ```
 
-
 ### 2. Install Dependencies
-
-Make sure you have Node.js version 22+ installed.
 
 ```bash
 npm install
 # or
-yarn
+yarn install
 ```
 
+### 3. Environment Setup
 
-### 3. Set Up Environment Variables
-
-You'll need an API key from TMDB.
-
-Create a .env file in the root of the project and add:
+Create a `.env` file in the root directory:
 
 ```bash
+# Create .env file
+touch .env
+```
+
+Add your TMDB API key to the `.env` file:
+
+```env
+# TMDB API Configuration
 VITE_TMDB_API_KEY=your_tmdb_api_key_here
+
+# Optional: Customize server port (default: 3000)
+PORT=3000
+
+# Optional: Customize base URL for development
+VITE_BASE_URL=http://localhost:3000
 ```
 
+### 4. Get Your TMDB API Key
 
-### 5. Run project in SSR Mode
+1. Visit [The Movie Database](https://www.themoviedb.org/)
+2. Create a free account
+3. Go to **Settings** → **API**
+4. Request an API key for **Developer** use
+5. Copy your API key and add it to the `.env` file
 
-Run the app in development mode using SSR:
+### 5. Start Development Server
 
 ```bash
+# Start in SSR mode (recommended)
 npm run dev:ssr
-# or
-yarn dev:ssr
+
+# Or start in standard Vite mode
+npm run dev
 ```
 
-This starts the SSR server at http://localhost:3000
+The application will be available at **http://localhost:3000**
 
-⚠️ npm run dev (standard Vite dev mode) is not supported for this app and will result in a hydration mismatch. Always use npm run dev:ssr for proper SSR development.
+⚠️ **Important**: Use `npm run dev:ssr` for proper SSR development. The standard `npm run dev` may cause hydration mismatches.
 
-
-## 🏗 Build
-
-To build both the client and the SSR server:
+## 🏗️ Available Scripts
 
 ```bash
-npm run build
+# Development
+npm run dev:ssr          # Start SSR development server
+npm run dev              # Start standard Vite dev server
+
+# Building
+npm run build            # Build for production
+npm run preview          # Preview production build
+
+# Testing
+npm run test             # Run test suite
+npm run test:watch       # Run tests in watch mode
+
+# Linting
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix linting issues
+
+# Deployment
+npm run deploy           # Deploy to GitHub Pages
 ```
 
-This generates a production-ready output in the dist/ folder.
+## 📁 Project Structure
 
-
-### 2. Preview (production):
-
-After building the app, you can preview it locally using:
-
-```bash
-npm run preview
 ```
-
-This will start a Node server with the compiled files.
-
-
-## 📁 Folder Structure
-
-```bash
-project-root/
-├── public/   
+movie-explorer/
+├── public/                 # Static assets
 ├── src/
-│ ├── App.tsx
-│ ├── entry-client.tsx
-│ ├── entry-server.tsx
-│ ├── styles/
-│ │   └── main.scss
-│ └── components/
-├── index.html
-├── server.ts
-├── package.json  
-├── vite.config.ts
-├── tsconfig.json
-└── README.md
+│   ├── components/         # React components
+│   │   ├── icons/         # SVG icons
+│   │   └── ...
+│   ├── hooks/             # Custom React hooks
+│   ├── styles/            # SCSS stylesheets
+│   │   ├── _variables.scss # Design system variables
+│   │   ├── _components.scss # Shared components
+│   │   └── ...
+│   ├── __tests__/         # Test files
+│   ├── App.tsx            # Main app component
+│   ├── entry-client.tsx   # Client entry point
+│   ├── entry-server.tsx   # Server entry point
+│   └── main.tsx           # App entry point
+├── server.ts              # Express SSR server
+├── vite.config.ts         # Vite configuration
+├── tsconfig.json          # TypeScript configuration
+├── vitest.config.ts       # Test configuration
+├── eslint.config.ts       # ESLint configuration
+└── package.json           # Dependencies and scripts
 ```
 
+## 🎨 Design System
 
-## 🧱 ESLint Configuration
+The application uses a custom design system built with SCSS:
 
-Flat config (eslint.config.ts)
+- **Colors**: Purple gradient theme with semantic color palette
+- **Typography**: Inter font family with responsive sizing
+- **Spacing**: Consistent spacing scale
+- **Components**: Reusable card, button, and layout components
+- **Animations**: Smooth transitions and hover effects
 
-React rules and hooks best practices
+## 🔐 Authentication
 
-TypeScript + Node type support
+The app uses TMDB's authentication system:
 
-No eslint-define-config dependency needed
-
-
-## 🧼 SCSS Styling
-
-Global SCSS variables and mixins can be imported into all components using vite.config.ts’s additionalData setting.
-
+1. **Request Token** - Get a temporary request token
+2. **User Approval** - Redirect to TMDB for user approval
+3. **Session Creation** - Create a session with the approved token
+4. **Account Access** - Fetch user account information
 
 ## 🧪 Testing
 
-No automated tests included in this version.
+The project includes comprehensive tests:
 
-You can test functionality manually by:
+```bash
+# Run all tests
+npm run test
 
-* Searching for movies
-* Refreshing SSR-rendered pages
-* Checking mobile responsiveness
+# Run tests in watch mode
+npm run test:watch
 
+# Run tests with coverage
+npm run test:coverage
+```
 
-## 🌍 Live Demo
-Deployed version not available yet.
+Test files are located in `src/__tests__/` and follow the naming convention:
+- `ComponentName.test.tsx` for component tests
+- `hookName.test.ts` for hook tests
 
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel dashboard
+3. Deploy automatically on push
+
+### GitHub Pages
+
+```bash
+npm run deploy
+```
+
+### Manual Deployment
+
+```bash
+npm run build
+# Serve the dist/ folder with your preferred server
+```
+
+## 🔧 Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `VITE_TMDB_API_KEY` | Your TMDB API key | ✅ | - |
+| `PORT` | Server port | ❌ | 3000 |
+| `VITE_BASE_URL` | Base URL for development | ❌ | http://localhost:3000 |
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**1. Hydration Mismatch**
+- Use `npm run dev:ssr` instead of `npm run dev`
+- Ensure server and client render the same content
+
+**2. API Key Issues**
+- Verify your TMDB API key is correct
+- Check that the key has proper permissions
+- Ensure the `.env` file is in the root directory
+
+**3. Port Already in Use**
+- Change the port in `.env`: `PORT=3001`
+- Or kill the process using the port
+
+**4. Build Errors**
+- Clear node_modules: `rm -rf node_modules && npm install`
+- Check TypeScript errors: `npm run lint`
+
+### Getting Help
+
+1. Check the [Issues](../../issues) page
+2. Review the [TMDB API documentation](https://developers.themoviedb.org/3)
+3. Ensure all dependencies are up to date
 
 ## 📄 License
-This project is provided for technical assessment purposes only. All rights to movie data belong to TheMovieDatabase (TMDB).
 
+This project is provided for technical assessment purposes only. All rights to movie data belong to The Movie Database (TMDB).
 
 ## 🙌 Acknowledgments
 
-* TMDB API
-* Vite Docs
-* React Docs
+- [The Movie Database (TMDB)](https://www.themoviedb.org/) for the API
+- [Vite](https://vitejs.dev/) for the build tool
+- [React](https://react.dev/) for the UI framework
+- [Vitest](https://vitest.dev/) for testing
 
-
-## 🙋‍♀️ Author
+## 👨‍💻 Author
 
 Built by Åsa Eriksson — passionate about clean code, UI/UX, and frontend craftsmanship.
+
+---
+
+**Happy coding! 🎬✨**

@@ -1,4 +1,4 @@
-import type { JSX, SVGProps } from "react";
+import type { JSX } from "react";
 
 export interface Movie {
   id: number;
