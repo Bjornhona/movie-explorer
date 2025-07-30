@@ -8,13 +8,13 @@ describe('Testing Toast component', () => {
     const toast = screen.getByLabelText('toast-message');
     expect(toast).toBeInTheDocument();
     expect(toast).toHaveTextContent('Hello World!');
-    expect(toast).toHaveStyle('color: rgb(0, 128, 0)');
+    expect(toast).toHaveClass('green');
   });
 
-  it('WHEN component renders THEN the toast should show with a custom color', () => {
-    render(<Toast message="Error!" color="rgb(255, 0, 0)" />);
+  it('GIVEN props color red WHEN component renders THEN the toast should show with red color', () => {
+    render(<Toast message="Error!" color="red" />);
     const toast = screen.getByLabelText('toast-message');
-    expect(toast).toHaveStyle('color: rgb(255, 0, 0)');
+    expect(toast).toHaveClass('red');
   });
 
   it('GIVEN a timeout duration WHEN timeout ends THEN should call onClose function', () => {

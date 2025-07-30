@@ -53,7 +53,7 @@ describe("Testing WishlistPage", () => {
     hasMore: false,
   };
 
-  describe("with a wishlist", () => {
+  describe("Testing Wishlist Page", () => {
 
     beforeEach(() => {
       (useWishlistMovies as any).mockImplementation(() => useWishlist);

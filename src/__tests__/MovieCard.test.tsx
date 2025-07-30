@@ -41,6 +41,6 @@ describe("Testing MovieCard Component", () => {
     const movieCard = screen.getByTestId("movie-card");
     fireEvent.click(movieCard);
     expect(movieCard).toBeInTheDocument();
-    expect(handleClick).toHaveBeenCalledWith(123);
+    expect(handleClick).toHaveBeenCalledWith(movie.id);
   });
 });

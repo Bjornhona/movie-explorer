@@ -1,0 +1,25 @@
+@use "sass:map";
+@use "../variables" as *;
+
+.toast-message {
+  position: fixed;
+  bottom: map.get($spacing, 8);
+  left: 50%;
+  transform: translateX(-50%);
+  background: map.get($colors, white);
+  border-radius: map.get($border-radius, lg);
+  padding: map.get($spacing, 3) map.get($spacing, 6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+  min-width: map.get($spacing, 48);
+  text-align: center;
+}
+
+.red {
+  color: map.get($colors, error);
+  border: 1px solid map.get($colors, error);
+}
+.green {
+  color: map.get($colors, success);
+  border: 1px solid map.get($colors, success);
+}

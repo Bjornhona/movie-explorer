@@ -20,7 +20,7 @@ export const useAuthentication = () => {
     storedAccountId && setAccountId(storedAccountId);
   }, []);
 
-  // Step 1: Get request token
+  // Get request token
   const getRequestToken = async () => {
     setLoading(true);
     setError(null);
@@ -41,12 +41,12 @@ export const useAuthentication = () => {
     }
   };
 
-  // Step 2: Redirect user to TMDB approval page
+  // Redirect user to TMDB approval page
   const redirectToTmdbApproval = (requestToken: string, redirectUrl: string) => {
     window.location.href = `https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=${encodeURIComponent(redirectUrl)}`;
   };
 
-  // Step 3: Exchange request token for session ID
+  // Exchange request token for session ID
   const createSession = async (requestToken: string) => {
     setLoading(true);
     setError(null);
@@ -72,7 +72,7 @@ export const useAuthentication = () => {
     }
   };
 
-  // Step 4: Get account ID
+  // Get account ID
   const fetchAccountId = async () => {
     setLoading(true);
     setError(null);
@@ -94,7 +94,7 @@ export const useAuthentication = () => {
     }
   };
 
-  // Step 5: Handle redirect back from TMDB
+  // Handle redirect back from TMDB
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const approved = urlParams.get("approved");
@@ -110,7 +110,7 @@ export const useAuthentication = () => {
     }
   }, []);
 
-  // Step 6: Logout/clear
+  // Logout/clear
   const logout = () => {
     setSessionId(null);
     setAccountId(null);

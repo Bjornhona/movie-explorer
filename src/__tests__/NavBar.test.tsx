@@ -1,5 +1,6 @@
 import NavBar from "../components/NavBar.tsx";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { NAVIGATION_LINKS } from "../constants.ts";
 
 describe('Testing NavBar component', () => {
   beforeEach(() => {
