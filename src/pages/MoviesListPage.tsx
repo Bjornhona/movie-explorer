@@ -50,7 +50,6 @@ const MoviesListPage = () => {
               </div>
               <div className="card-content">
                 <MovieCarousel
-                  title={category.name}
                   categoryId={category.id}
                 />
               </div>

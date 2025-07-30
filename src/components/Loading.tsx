@@ -2,7 +2,7 @@ import "../styles/components/Loading.scss";
 import Card from "./Card.tsx";
 
 interface LoadingProps {
-  type: string;
+  type?: string;
   spinnerText?: string;
   loadingText?: string;
 }

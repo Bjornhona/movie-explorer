@@ -60,13 +60,11 @@ const NavBar = () => {
   return (
     <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
-        {/* Brand/Logo */}
         <div className="navbar-brand" onClick={() => handleNav("/")}>
           <div className="brand-logo">🎬</div>
           <span className="brand-text">MovieExplorer</span>
         </div>
 
-        {/* Desktop Navigation */}
         <ul className="navbar-nav">
           {NAVIGATION_LINKS.map((navLink: NavigationLink, index: number) => (
             <li key={index} className="nav-item">

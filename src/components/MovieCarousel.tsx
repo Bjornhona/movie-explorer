@@ -4,19 +4,13 @@ import { Movie } from "../types.ts";
 import MovieCard from "./MovieCard.tsx";
 import Loading from "./Loading.tsx";
 import { handleMovieSelection } from "../functions.ts";
-import '../styles/components/MovieCarousel.scss';
+import "../styles/components/MovieCarousel.scss";
 
-const MovieCarousel = ({
-  title,
-  categoryId,
-}: {
-  title: string;
-  categoryId: string;
-}) => {
+const MovieCarousel = ({ categoryId }: { categoryId: string }) => {
   const { movies, loading, error, loadMore, hasMore } = useMovies(categoryId);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // Attach observer to the last movie card
+  // Attach observer to the last movie card, the node
   const lastMovieRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading) return;
