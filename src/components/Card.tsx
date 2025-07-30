@@ -4,16 +4,16 @@ import '../styles/components/Card.scss';
 interface CardProps {
   icon?: string;
   title?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const Card = ({icon, title, children}: CardProps) => {
   return (
     <section className="card-section fade-in">
-      {title && <div className="card-header">
+      {(icon || title) && <div className="card-header">
         <h2>
           {icon && <span className="card-icon">{icon}</span>}
-          {title}
+          {title && title}
         </h2>
       </div>}
       <div className="card-content">

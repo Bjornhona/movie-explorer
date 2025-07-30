@@ -15,12 +15,12 @@ const Loading = ({
   return (
     <>
       {type === "loading-more" && (
-        <div className={"loading-component"} data-testid={"loading-component"}>
+        <div className={"loading-component"} data-testid={"loading-more-component"}>
           Loading more movies...
         </div>
       )}
       {type === "loading-state" && (
-        <div className="movie-details-loading">
+        <div className="movie-details-loading" data-testid={"loading-state-component"}>
           <Card>
             <div className="loading-spinner">
               <div>{spinnerText}</div>
