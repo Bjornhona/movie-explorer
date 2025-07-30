@@ -1,11 +1,93 @@
+// =============================================================================
+// MAIN SCSS ENTRY POINT
+// =============================================================================
+
+// Import Sass utilities
 @use "sass:map";
+
+// Import design system (variables and shared components)
 @use "./variables" as *;
 @use "./components" as *;
-// @use "./pages/MoviesListPage.scss";
-// @use "./pages/WishlistPage.scss";
-// @use "./pages/MovieDetailsPage.scss";
-// @use "./components/NavBar.scss";
-// @use "./components/Footer.scss";
-// @use "./pages/LogoutPage.scss";
-// @use "./components/Loading.scss";
-// @use "./pages/NotFoundPage.scss";
+
+// =============================================================================
+// GLOBAL STYLES & RESETS
+// =============================================================================
+
+// CSS Reset and Base Styles
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: map.get($font-sizes, base);
+  line-height: map.get($line-heights, normal);
+  color: map.get($colors, gray-800);
+  background-color: map.get($colors, gray-50);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// =============================================================================
+// UTILITY CLASSES
+// =============================================================================
+
+// Text utilities
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+// Spacing utilities
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.p-0 { padding: 0; }
+
+// Display utilities
+.hidden { display: none; }
+.block { display: block; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+
+// =============================================================================
+// ACCESSIBILITY & FOCUS STYLES
+// =============================================================================
+
+// Focus styles for better accessibility
+*:focus {
+  outline: 2px solid map.get($colors, primary);
+  outline-offset: 2px;
+}
+
+// Skip to content link for screen readers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// =============================================================================
+// PRINT STYLES
+// =============================================================================
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+}

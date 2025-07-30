@@ -94,10 +94,6 @@ npm run preview          # Preview production build
 npm run test             # Run test suite
 npm run test:watch       # Run tests in watch mode
 
-# Linting
-npm run lint             # Run ESLint
-npm run lint:fix         # Fix linting issues
-
 # Deployment
 npm run deploy           # Deploy to GitHub Pages
 ```
