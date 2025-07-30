@@ -15,6 +15,7 @@ describe('useMovies', () => {
       backdrop_path: '/backdrop1.jpg',
       release_date: '2023-01-01',
       homepage: 'https://example.com/1',
+      vote_average: 3.456
     },
     {
       id: 2,
@@ -25,6 +26,7 @@ describe('useMovies', () => {
       backdrop_path: '/backdrop2.jpg',
       release_date: '2023-01-02',
       homepage: 'https://example.com/2',
+      vote_average: 3.456
     },
   ];
   const mockMoviesPage2: Movie[] = [
@@ -37,6 +39,7 @@ describe('useMovies', () => {
       backdrop_path: '/backdrop2.jpg',
       release_date: '2023-01-02',
       homepage: 'https://example.com/2',
+      vote_average: 3.456
     },
     {
       id: 3,
@@ -47,6 +50,7 @@ describe('useMovies', () => {
       backdrop_path: '/backdrop3.jpg',
       release_date: '2023-01-03',
       homepage: 'https://example.com/3',
+      vote_average: 3.456
     },
   ];
 
