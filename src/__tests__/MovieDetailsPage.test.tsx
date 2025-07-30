@@ -1,9 +1,8 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import MovieDetailsPage from "../pages/MovieDetailsPage.tsx";
 import { Movie, MovieDetailsProps } from "../types.ts";
-import { useWishlistMovies } from "../hooks/useWishlistMovies.ts";
 import { CATEGORIES } from "../constants.ts";
-import { Category } from '../types.ts';
+import { Category } from "../types.ts";
 
 const mockedMovie: Movie = {
   id: 123,
@@ -12,14 +11,15 @@ const mockedMovie: Movie = {
   tagline: "When masters unite a new legacy begins.",
   poster_path: "/test-poster.jpg",
   backdrop_path: "/test-backdrop.jpg",
-  release_date: '1974-12-20',
-  homepage: 'https://link.to.some.movies.page.com'
+  release_date: "1974-12-20",
+  homepage: "https://link.to.some.movies.page.com",
+  vote_average: 3.456,
 };
 
-vi.mock('../hooks/useAuthentication', () => ({
+vi.mock("../hooks/useAuthentication", () => ({
   useAuthentication: () => ({
-    sessionId: 'fake-session-id',
-    accountId: 'fake-account-id',
+    sessionId: "fake-session-id",
+    accountId: "fake-account-id",
     loading: false,
     error: null,
     getRequestToken: vi.fn(),
@@ -27,12 +27,12 @@ vi.mock('../hooks/useAuthentication', () => ({
   }),
 }));
 
-vi.mock('../hooks/useMovieById', () => ({
+vi.mock("../hooks/useMovieById", () => ({
   useMovieById: () => ({
     movieById: mockedMovie,
     loading: false,
-    error: null
-  })
+    error: null,
+  }),
 }));
 
 vi.mock("../hooks/useWishlist", () => ({
@@ -41,11 +41,14 @@ vi.mock("../hooks/useWishlist", () => ({
     loading: false,
     error: null,
     success: true,
-  })
+  }),
 }));
 
-vi.mock("../hooks/useWishlistMovies", () => ({
-  useWishlistMovies: vi.fn()
+vi.mock("../hooks/useAccountStates", () => ({
+  useAccountStates: () => ({
+    isMovieInWishlist: vi.fn(),
+    loading: false
+  }),
 }));
 
 describe("Testing MovieListPage", () => {
@@ -54,39 +57,26 @@ describe("Testing MovieListPage", () => {
     movieId: "123",
   };
 
-  const emptyWishlistMoviesReturnValue = {
-    movies: [],
-    loading: false,
-    error: false,
-    loadMore: vi.fn(),
-    hasMore: false
-  }
-
-  const movieInWishlistMoviesReturnValue = {
-    ...emptyWishlistMoviesReturnValue,
-    movies: [mockedMovie]
-  }
-
-  const infoAreaCategory = CATEGORIES.find((c: Category) => c.id === moviesDetailsProps.categoryId) || CATEGORIES[0];
+  const infoAreaCategory =
+    CATEGORIES.find((c: Category) => c.id === moviesDetailsProps.categoryId) ||
+    CATEGORIES[0];
 
   afterEach(() => vi.restoreAllMocks());
 
   describe("with Upcoming as category and no initial movie", () => {
     beforeEach(() => {
-      (useWishlistMovies as any).mockImplementation(() => emptyWishlistMoviesReturnValue);
-      vi.fn().mockResolvedValue({ json: () => Promise.resolve(mockedMovie) });
       render(<MovieDetailsPage {...moviesDetailsProps} />);
     });
 
     it("WHEN component renders THEN the movie title and tagline should show as a header", () => {
-      const movieTitle = screen.getByText(mockedMovie.title);
-      const movieTagline = screen.getByText(mockedMovie.tagline);
+      const movieTitle = screen.getByRole('heading', {name:mockedMovie.title, level: 1});
+      const movieTagline = screen.getByText(`"${mockedMovie.tagline}"`);
       expect(movieTitle).toBeInTheDocument();
       expect(movieTagline).toBeInTheDocument();
     });
 
     it("WHEN component renders THEN the movie image should show", () => {
-      const imageUrl = `https://image.tmdb.org/t/p/w500${mockedMovie.backdrop_path}`;
+      const imageUrl = `https://image.tmdb.org/t/p/w500${mockedMovie.poster_path}`;
       const image = screen.getByRole("img", { name: mockedMovie.title });
       expect(image).toBeInTheDocument();
       expect(image.getAttribute("src")).toEqual(imageUrl);
@@ -105,65 +95,82 @@ describe("Testing MovieListPage", () => {
     it("WHEN clicking the wishlist button THEN the movie should be added to wishlist", async () => {
       const wishlistButton = screen.getByLabelText(/add to wishlist/i);
       const wishlistIcon = wishlistButton.querySelector("svg");
-      expect(wishlistIcon).toHaveAttribute("stroke", "gray");
+      expect(wishlistIcon).toHaveAttribute("stroke", "white");
+      expect(wishlistIcon).toHaveAttribute("fill", "none");
 
       await fireEvent.click(wishlistButton);
-      (useWishlistMovies as any).mockReturnValue(movieInWishlistMoviesReturnValue);
+      
       render(<MovieDetailsPage {...moviesDetailsProps} />);
 
-      expect(wishlistIcon).toHaveAttribute("stroke", "red");
+      expect(wishlistIcon).toHaveAttribute("stroke", "none");
+      expect(wishlistIcon).toHaveAttribute("fill", "hotpink");
     });
 
     it("WHEN component renders THEN an additional info area should show", () => {
       const linkToHomepage = screen.getByRole("link", {
-        name: /go to homepage/i,
+        name: /visit homepage/i,
       });
       expect(linkToHomepage).toBeInTheDocument();
 
-      const releaseDate = screen.getByText('Release date: ' + mockedMovie.release_date);
-      expect(releaseDate).toBeInTheDocument();
+      const releaseDateString = new Date(
+        mockedMovie.release_date
+      ).toLocaleDateString();
+      const releaseDateLabel = screen.getByText("Release Date");
+      const releaseDateValue = screen.getByText(releaseDateString);
+
+      expect(releaseDateLabel).toBeInTheDocument();
+      expect(releaseDateValue).toBeInTheDocument();
     });
 
     it("GIVEN a category WHEN component renders THEN the category should show in the additional info area", () => {
-      const movieCategory = screen.getByText(infoAreaCategory.name);
-      expect(movieCategory).toBeInTheDocument();
+      const movieCategories = screen.getAllByText(infoAreaCategory.name);
+      expect(movieCategories[0]).toBeInTheDocument();
     });
 
     it("GIVEN the Upcoming movie category WHEN component renders THEN a specific font should show", () => {
-      const title = screen.getByText(mockedMovie.title);
-      const style = window.getComputedStyle(title);
-      expect(style.fontFamily).toMatch(/Raleway/i);
+      const title = screen.getByRole("heading", {
+        name: mockedMovie.title,
+        level: 1,
+      });
+      expect(title).toHaveClass("upcoming");
     });
 
     it("GIVEN the Upcoming movie category WHEN component renders THEN the heart icon button should show", () => {
-      expect(screen.getByLabelText("heart-icon")).toBeInTheDocument();
+      const icons = screen.getAllByLabelText("heart-icon");
+      expect(icons[0]).toBeInTheDocument();
+      expect(icons[1]).toBeInTheDocument();
+      const wrongIcons = screen.queryAllByLabelText("star-icon");
+      expect(wrongIcons[0]).toBeFalsy();
     });
 
     it("GIVEN the Upcoming movie category WHEN component renders THEN a specific background color should show", () => {
-      const container = screen.getByTestId("movie-details");
-      expect(container).toHaveStyle("background-color: rgb(255, 192, 203)");
+      const container = screen.getByTestId("movie-details-content");
+      expect(container).toHaveClass("bg-upcoming");
     });
   });
 
-  describe("with Popular as category and initialMovie given", () => {
+  describe("with Popular as category", () => {
     const moviesDetailsPropsPopular: MovieDetailsProps = {
       ...moviesDetailsProps,
       categoryId: "popular",
     };
 
     beforeEach(() => {
-      (useWishlistMovies as any).mockImplementation(() => emptyWishlistMoviesReturnValue);
       render(<MovieDetailsPage {...moviesDetailsPropsPopular} />);
     });
 
     it("GIVEN the Popular movie category WHEN component renders THEN a specific font should show", () => {
-      const title = screen.getByText(mockedMovie.title);
-      const style = window.getComputedStyle(title);
-      expect(style.fontFamily).toMatch(/Poppins/i);
+      const title = screen.getByRole("heading", {
+        name: mockedMovie.title,
+        level: 1,
+      });
+      expect(title).toHaveClass("popular");
     });
 
     it("GIVEN the Popular movie category WHEN component renders THEN the star icon button should show", () => {
-      expect(screen.getByLabelText("star-icon")).toBeInTheDocument();
+      const icons = screen.getAllByLabelText("star-icon");
+      expect(icons[0]).toBeInTheDocument();
+      expect(icons[1]).toBeInTheDocument();
     });
   });
 });

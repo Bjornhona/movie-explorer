@@ -1,8 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import MoviesListPage from '../pages/MoviesListPage.tsx';
-// import { describe, it, vi, expect } from 'vitest';
 
-describe('Testing MovieListPage', () => {
+describe('Testing MoviesListPage', () => {
   let systemUnderTest;
   beforeEach(() => {
     systemUnderTest = render(<MoviesListPage />);
@@ -11,7 +10,7 @@ describe('Testing MovieListPage', () => {
   afterEach(() => vi.restoreAllMocks());
 
   it('WHEN component renders THEN the page title should show', () => {
-    expect(screen.getByText('Movies')).toBeInTheDocument();
+    expect(screen.getByText('Discover Amazing Movies')).toBeInTheDocument();
   });
 
   it('WHEN component renders THEN all three movie carousels should show', () => {

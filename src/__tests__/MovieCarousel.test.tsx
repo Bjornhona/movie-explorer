@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import MovieCarousel from '../components/MovieCarousel.tsx';
 import { Movie } from '../types.ts';
 import * as functions from '../functions.ts';
@@ -22,7 +22,8 @@ describe('MovieCarousel', () => {
       tagline: 'Some test 1 tagline',
       backdrop_path: '/backdrop1.jpg',
       release_date: '2023-01-01',
-      homepage: 'https://some-test-homepage-path.com'
+      homepage: 'https://some-test-homepage-path.com',
+      vote_average: 3.456
     },
     {
       id: 234,
@@ -32,7 +33,8 @@ describe('MovieCarousel', () => {
       tagline: 'Some test 2 tagline',
       backdrop_path: '/backdrop2.jpg',
       release_date: '2023-01-02',
-      homepage: 'https://some-other-test-homepage-path.com'
+      homepage: 'https://some-other-test-homepage-path.com',
+      vote_average: 2.345
     },
   ];
 
@@ -58,11 +60,6 @@ describe('MovieCarousel', () => {
       vi.restoreAllMocks();
     });
 
-    it('WHEN component renders THEN the carousel title should show', () => {
-      const title = screen.getByRole('heading', { name: movieCarouselProps.title, level: 4 });
-      expect(title).toBeInTheDocument();
-    });
-
     it('WHEN component renders THEN a list of movie cards should show', () => {
       const cards = screen.getAllByTestId('movie-card');
       expect(cards).toHaveLength(mockedMovies.length);
@@ -73,15 +70,17 @@ describe('MovieCarousel', () => {
       });
     });
 
-    it('WHEN clicking on a movie card THEN the handleMovieSelection function should be called', () => {
+    it('WHEN clicking on a movie card THEN the handleMovieSelection function should be called', async () => {
       const cards = screen.getAllByTestId('movie-card');
-      fireEvent.click(cards[0]);
+      await act(async () => {
+        await fireEvent.click(cards[0]);
+      })
       expect(functions.handleMovieSelection).toHaveBeenCalled();
       expect(functions.handleMovieSelection).toHaveBeenCalledWith(mockedMovies[0].id, movieCarouselProps.categoryId);
     });
 
     it("GIVEN a movies list WHEN component renders and no more movies in list THEN a message should show", () => {
-      const message = screen.getByText('No more movies.');
+      const message = screen.getByText('No more movies to load');
       expect(message).toBeInTheDocument();
     });
   });

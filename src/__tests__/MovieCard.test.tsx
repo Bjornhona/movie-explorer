@@ -1,35 +1,39 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import MovieCard from "../components/MovieCard.tsx";
-// import { describe, it, vi, expect } from "vitest";
 import { Movie } from "../types.ts";
 
 describe("Testing MovieCard Component", () => {
   const movie: Movie = {
     id: 123,
     title: "Test Movie",
-    tagline: 'Some tagline',
+    tagline: "Some tagline",
     overview: "",
     poster_path: "/test.jpg",
     backdrop_path: "/test.jpg",
-    release_date: '24-12-1975',
-    homepage: 'https://some-homepage-path.com'
+    release_date: "24-12-1975",
+    homepage: "https://some-homepage-path.com",
+    vote_average: 3.456,
   };
 
   const handleClick = vi.fn();
 
   beforeEach(() => {
-    render(
-      <MovieCard movie={movie} ref={undefined} onClick={handleClick} />
-    );
+    render(<MovieCard movie={movie} ref={undefined} onClick={handleClick} />);
   });
 
   afterEach(() => vi.restoreAllMocks());
 
-  it("WHEN component renders THEN the movie title and image show", () => {
-    expect(screen.getByAltText("Test Movie")).toBeInTheDocument();
-    expect(screen.getByAltText("Test Movie")).toHaveAttribute(
+  it("WHEN component renders THEN the movie title should show", () => {
+    const movieTitle = screen.getByRole("heading", { level: 3 });
+    expect(movieTitle).toHaveTextContent(movie.title);
+  });
+
+  it("WHEN component renders THEN the movie image should show", () => {
+    const movieAltText = screen.getByAltText(movie.title);
+    expect(movieAltText).toBeInTheDocument();
+    expect(movieAltText).toHaveAttribute(
       "src",
-      "https://image.tmdb.org/t/p/w500/test.jpg"
+      `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     );
   });
 

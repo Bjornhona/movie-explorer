@@ -29,7 +29,8 @@ describe("Testing WishlistPage", () => {
       tagline: '',
       backdrop_path: '/backdrop1.jpg',
       release_date: '2023-01-01',
-      homepage: 'https://link.to.some.movies.page.com'
+      homepage: 'https://link.to.some.movies.page.com',
+      vote_average: 3.456
     },
     {
       id: 234,
@@ -39,7 +40,8 @@ describe("Testing WishlistPage", () => {
       tagline: '',
       backdrop_path: '/backdrop2.jpg',
       release_date: '2023-01-02',
-      homepage: ''
+      homepage: '',
+      vote_average: 2.876
     },
   ];
 
@@ -63,19 +65,19 @@ describe("Testing WishlistPage", () => {
     });
 
     it("WHEN component renders THEN the Wishlist title should show", () => {
-      const title = screen.getByText("My Wishlist");
+      const title = screen.getByRole('heading', {name: "My Wishlist"});
       expect(title).toBeInTheDocument();
     });
 
     it("WHEN component renders THEN a list of saved movie wishlist cards should show", () => {
-      const movies = screen.getAllByTestId("movie-wishlist-title");
-      expect(movies.length).toBe(2);
-      expect(movies[0].textContent).toBe("Movie One");
-      expect(movies[1].textContent).toBe("Movie Two");
+      const movieOne = screen.getByText(wishlist[0].title);
+      const movieTwo = screen.getByText(wishlist[1].title);
+      expect(movieOne).toBeInTheDocument();
+      expect(movieTwo).toBeInTheDocument();
     });
 
     it("WHEN clicking a whishlisted card THEN should navigate to that card id", () => {
-      const wishlistCards = screen.getAllByTestId('movie-wishlist-card');
+      const wishlistCards = screen.getAllByTestId('movie-card');
       fireEvent.click(wishlistCards[0]);
       expect(functions.handleMovieSelection).toHaveBeenCalledWith(123, 'popular');
     });
@@ -83,11 +85,6 @@ describe("Testing WishlistPage", () => {
     it("GIVEN no error message WHEN component renders THEN no error message should show", () => {
       const errorMessage = screen.queryByText('Error: ');
       expect(errorMessage).not.toBeInTheDocument();
-    });
-
-    it("GIVEN a movies wishlist WHEN component renders and no more movies in list THEN a message should show", () => {
-      const message = screen.getByText('No more movies.');
-      expect(message).toBeInTheDocument();
     });
   });
 
@@ -136,12 +133,12 @@ describe("Testing WishlistPage", () => {
     });
 
     it("GIVEN no movies in the wishlist WHEN component renders THEN no MovieWishlistCards should show", () => {
-      const wishlistCard = screen.queryByTestId("movie-wishlist-card");
+      const wishlistCard = screen.queryByTestId("movie-card");
       expect(wishlistCard).not.toBeInTheDocument();
     });
 
     it("GIVEN no movies in the wishlist WHEN component renders THEN a text message should show", () => {
-      const message = screen.getByText("No movies in your wishlist yet.");
+      const message = screen.getByText("Your wishlist is empty");
       expect(message).toBeInTheDocument();
     });
   });

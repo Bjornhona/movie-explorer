@@ -99,7 +99,7 @@ const WishlistedMoviePage = () => {
             <Error
               icon={"⚠️"}
               title={"Error Loading Wishlist"}
-              error={error}
+              error={`Error: ${error}`}
               buttonText={"Try Again"}
               buttonOnClick={handleGetNewToken}
               buttonType={'secondary'}

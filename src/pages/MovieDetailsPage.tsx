@@ -247,7 +247,10 @@ const MovieDetailsPage = ({ movieId, categoryId }: MovieDetailsPageProps) => {
 
       {/* Main Content */}
       {movieById && (
-        <main className={`movie-content bg-${currentCategory.id}`}>
+        <main
+          data-testid={"movie-details-content"}
+          className={`movie-content bg-${currentCategory.id}`}
+        >
           <div className="content-wrapper">
             <div className="main-section">
               {/* Overview Section */}
